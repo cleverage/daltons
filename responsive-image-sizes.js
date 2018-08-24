@@ -92,7 +92,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       // Set new viewport width
       await page.setViewport(VIEWPORT)
 
-      // Give the browser some time to adjust layout
+      // Give the browser some time to adjust layout, sometimes requiring JS
       await sleep(argv.delay)
 
       // Check image width
