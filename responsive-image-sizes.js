@@ -8,7 +8,7 @@
 
 const fs = require('fs')
 const puppeteer = require('puppeteer')
-const chalk = require('chalk')
+const color = require('ansi-colors')
 
 const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
@@ -54,20 +54,20 @@ const argv = require('yargs')
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
     if (isNaN(argv.minviewport)) {
-      throw new Error(chalk.red('Error: minviewport must be a number'))
+      throw new Error(color.red('Error: minviewport must be a number'))
     }
     if (isNaN(argv.maxviewport)) {
-      throw new Error(chalk.red('Error: maxviewport must be a number'))
+      throw new Error(color.red('Error: maxviewport must be a number'))
     }
     if (isNaN(argv.viewportstep)) {
-      throw new Error(chalk.red('Error: viewportstep must be a number'))
+      throw new Error(color.red('Error: viewportstep must be a number'))
     }
     if (isNaN(argv.delay)) {
-      throw new Error(chalk.red('Error: delay must be a number'))
+      throw new Error(color.red('Error: delay must be a number'))
     }
     if (argv.maxviewport < argv.minviewport) {
       throw new Error(
-        chalk.red('Error: maxviewport must be greater than minviewport'),
+        color.red('Error: maxviewport must be greater than minviewport'),
       )
     }
     return true
@@ -82,15 +82,14 @@ const argv = require('yargs')
 
 const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 ;(async () => {
+  console.log(color.green('Launch headless Chrome'))
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  console.log(chalk.cyan('Go to ' + argv.url))
+  console.log(color.green('Go to ' + argv.url))
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
-    console.log(
-      chalk.cyan('Checking sizes of image selected by ' + argv.selector),
-    )
+    console.log(color.green('Checking sizes of image ' + argv.selector))
     while (VIEWPORT.width <= argv.maxviewport) {
-      console.log(chalk.cyan('Viewport width: ' + VIEWPORT.width))
+      console.log(color.cyan('Viewport width: ' + VIEWPORT.width))
       // Set new viewport width
       await page.setViewport(VIEWPORT)
 
