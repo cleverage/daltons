@@ -38,14 +38,15 @@ const argv = require('yargs')
       type: 'number',
     },
     viewportstep: {
-      alias: 'step',
+      alias: 'p',
       describe: 'Viewport width step',
-      default: 10,
+      default: 1,
       type: 'number',
     },
     delay: {
       alias: 'd',
-      describe: 'Delay after viewport resizing before checking image width',
+      describe:
+        'Delay after viewport resizing before checking image width (ms)',
       default: 500,
       type: 'number',
     },
@@ -55,14 +56,23 @@ const argv = require('yargs')
     if (isNaN(argv.minviewport)) {
       throw new Error(color.red('Error: minviewport must be a number'))
     }
+    if (argv.minviewport < 0) {
+      throw new Error(color.red('Error: minviewport must be >= 0'))
+    }
     if (isNaN(argv.maxviewport)) {
       throw new Error(color.red('Error: maxviewport must be a number'))
     }
     if (isNaN(argv.viewportstep)) {
       throw new Error(color.red('Error: viewportstep must be a number'))
     }
+    if (argv.viewportstep < 1) {
+      throw new Error(color.red('Error: viewportstep must be >= 1'))
+    }
     if (isNaN(argv.delay)) {
       throw new Error(color.red('Error: delay must be a number'))
+    }
+    if (argv.delay < 0) {
+      throw new Error(color.red('Error: delay must be >= 0'))
     }
     if (argv.maxviewport < argv.minviewport) {
       throw new Error(
@@ -75,7 +85,9 @@ const argv = require('yargs')
   .example(
     "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
   )
-  .example("$0 --u 'https://example.com/' --s 'main img[srcset]:first-of-type'")
+  .example(
+    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280",
+  )
   .wrap(null)
   .detectLocale(false).argv
 
