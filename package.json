@@ -4,6 +4,9 @@
   "author": "Nicolas Hoizey <nhoizey@clever-age.com>",
   "description": "A tool helping the choice of optimal responsive image sizes",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/cleverage/responsive-image-sizes/"
+  },
   "bugs": {
     "url": "https://github.com/cleverage/responsive-image-sizes/issues"
   },
