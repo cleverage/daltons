@@ -108,7 +108,9 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       await sleep(argv.delay)
 
       // Check image width
-      // todo
+      let imageWidth = await page.evaluate(sel => {
+        return document.querySelector(sel).width
+      }, argv.selector)
 
       // Increment viewport width
       VIEWPORT.width += argv.viewportstep
