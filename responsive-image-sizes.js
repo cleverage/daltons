@@ -111,7 +111,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       // todo
 
       // Increment viewport width
-      VIEWPORT.width += argv.step
+      VIEWPORT.width += argv.viewportstep
 
       // Update log in the console
       process.stdout.clearLine()
