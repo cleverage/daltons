@@ -1,0 +1,19 @@
+{
+  "name": "responsive-image-sizes",
+  "version": "0.0.1",
+  "author": "Nicolas Hoizey <nhoizey@clever-age.com>",
+  "description": "A tool helping the choice of optimal responsive image sizes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cleverage/responsive-image-sizes/issues"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+    "chalk": "^2.3.2",
+    "cli-table": "^0.3.1",
+    "puppeteer": "^1.4.0",
+    "yargs": "^11.0.0"
+  }
+}
