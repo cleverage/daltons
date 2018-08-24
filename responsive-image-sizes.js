@@ -100,11 +100,8 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
   console.log(color.green('Go to ' + argv.url))
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
     console.log(color.green('Checking sizes of image ' + argv.selector))
-    const sizesTable = new table({
-      head: ['viewport', 'image'],
-      chars: { mid: '', 'left-mid': '', 'mid-mid': '', 'right-mid': '' },
-    })
     process.stdout.write('Current viewport: ' + color.cyan(VIEWPORT.width))
+    const sizes = []
     while (VIEWPORT.width <= argv.maxviewport) {
       // Set new viewport width
       await page.setViewport(VIEWPORT)
@@ -116,7 +113,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       let imageWidth = await page.evaluate(sel => {
         return document.querySelector(sel).width
       }, argv.selector)
-      sizesTable.push([VIEWPORT.width, imageWidth])
+      sizes.push([VIEWPORT.width, imageWidth])
 
       // Increment viewport width
       VIEWPORT.width += argv.viewportstep
@@ -131,6 +128,17 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       }
     }
     console.log(sizesTable.toString())
+    // Output clean table to the console
+      const sizesTable = new table({
+        head: ['viewport', 'image'],
+        colAligns: ['right', 'right'],
+        style: {
+          head: ['green', 'green'],
+          compact: true,
+        },
+      })
+      sizes.map(row => sizesTable.push([row[0], row[1]]))
+      console.log(sizesTable.toString())
   })
 
   await page.browser().close()
