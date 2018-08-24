@@ -102,7 +102,11 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     console.log(color.green('Checking sizes of image ' + argv.selector))
     const sizesTable = new table({
       head: ['viewport', 'image'],
-      chars: { mid: '', 'left-mid': '', 'mid-mid': '', 'right-mid': '' },
+      colAligns: ['right', 'right'],
+      style: {
+        head: ['green', 'green'],
+        compact: true,
+      },
     })
     process.stdout.write('Current viewport: ' + color.cyan(VIEWPORT.width))
     while (VIEWPORT.width <= argv.maxviewport) {
