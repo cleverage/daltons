@@ -8,6 +8,7 @@
 
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
+const table = require('cli-table')
 
 const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
@@ -99,6 +100,10 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
   console.log(color.green('Go to ' + argv.url))
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
     console.log(color.green('Checking sizes of image ' + argv.selector))
+    const sizesTable = new table({
+      head: ['viewport', 'image'],
+      chars: { mid: '', 'left-mid': '', 'mid-mid': '', 'right-mid': '' },
+    })
     process.stdout.write('Current viewport: ' + color.cyan(VIEWPORT.width))
     while (VIEWPORT.width <= argv.maxviewport) {
       // Set new viewport width
@@ -111,6 +116,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       let imageWidth = await page.evaluate(sel => {
         return document.querySelector(sel).width
       }, argv.selector)
+      sizesTable.push([VIEWPORT.width, imageWidth])
 
       // Increment viewport width
       VIEWPORT.width += argv.viewportstep
@@ -124,6 +130,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
         )
       }
     }
+    console.log(sizesTable.toString())
   })
 
   await page.browser().close()
