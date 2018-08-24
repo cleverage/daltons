@@ -99,8 +99,8 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
   console.log(color.green('Go to ' + argv.url))
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
     console.log(color.green('Checking sizes of image ' + argv.selector))
+    process.stdout.write('Current viewport: ' + color.cyan(VIEWPORT.width))
     while (VIEWPORT.width <= argv.maxviewport) {
-      console.log(color.cyan('Viewport width: ' + VIEWPORT.width))
       // Set new viewport width
       await page.setViewport(VIEWPORT)
 
@@ -112,6 +112,15 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 
       // Increment viewport width
       VIEWPORT.width += argv.step
+
+      // Update log in the console
+      process.stdout.clearLine()
+      process.stdout.cursorTo(0)
+      if (VIEWPORT.width <= argv.maxviewport) {
+        process.stdout.write(
+          'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
+        )
+      }
     }
   })
 
