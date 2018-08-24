@@ -74,9 +74,9 @@ const argv = require('yargs')
   })
   .help()
   .example(
-    "$0 --url 'https://localhost/' --selector 'main img[srcset]:first-of-type'",
+    "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
   )
-  .example("$0 --u 'https://localhost/' --s 'main img[srcset]:first-of-type'")
+  .example("$0 --u 'https://example.com/' --s 'main img[srcset]:first-of-type'")
   .wrap(null)
   .detectLocale(false).argv
 
