@@ -59,6 +59,12 @@ const argv = require('yargs')
     if (isNaN(argv.maxviewport)) {
       throw new Error(chalk.red('Error: maxviewport must be a number'))
     }
+    if (isNaN(argv.viewportstep)) {
+      throw new Error(chalk.red('Error: viewportstep must be a number'))
+    }
+    if (isNaN(argv.delay)) {
+      throw new Error(chalk.red('Error: delay must be a number'))
+    }
     if (argv.maxviewport < argv.minviewport) {
       throw new Error(
         chalk.red('Error: maxviewport must be greater than minviewport'),
