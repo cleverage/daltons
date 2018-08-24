@@ -99,7 +99,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       // todo
 
       // Increment viewport width
-      VIEWPORT.width = Math.min(VIEWPORT.width + argv.step, argv.maxviewport)
+      VIEWPORT.width += argv.step
     }
   })
 
