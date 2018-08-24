@@ -6,6 +6,8 @@
  *     node responsive-image-sizes.js -h
  */
 
+const fs = require('fs')
+const util = require('util')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const table = require('cli-table')
@@ -51,6 +53,11 @@ const argv = require('yargs')
       default: 500,
       type: 'number',
     },
+    csvfile: {
+      alias: 'f',
+      describe: 'File path to which saving the data in CSV format',
+      type: 'string',
+    },
   })
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
@@ -80,6 +87,9 @@ const argv = require('yargs')
         color.red('Error: maxviewport must be greater than minviewport'),
       )
     }
+    if (argv.csvfile && fs.existsSync(argv.csvfile)) {
+      throw new Error(color.red(`Error: file ${argv.csvfile} already exists`))
+    }
     return true
   })
   .help()
@@ -95,13 +105,13 @@ const argv = require('yargs')
 const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 ;(async () => {
   console.log(color.green('Launch headless Chrome'))
+  const sizes = []
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   console.log(color.green('Go to ' + argv.url))
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
     console.log(color.green('Checking sizes of image ' + argv.selector))
     process.stdout.write('Current viewport: ' + color.cyan(VIEWPORT.width))
-    const sizes = []
     while (VIEWPORT.width <= argv.maxviewport) {
       // Set new viewport width
       await page.setViewport(VIEWPORT)
@@ -128,6 +138,20 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       }
     }
     console.log(sizesTable.toString())
+    // Save data into the CSV file
+    if (argv.csvfile) {
+      let csvString = 'viewport,image\n'
+      sizes.map(row => (csvString += `${row[0]},${row[1]}` + '\n'))
+      const writeFile = util.promisify(fs.writeFile)
+      await writeFile(argv.csvfile, csvString)
+        .then(() => {
+            console.log(color.green('Data saved to CSV file ' + argv.csvfile))
+        })
+        .catch(error =>
+          console.log(color.red("Couldn't save data to CSV file: " + error)),
+        )
+    }
+
     // Output clean table to the console
       const sizesTable = new table({
         head: ['viewport', 'image'],
