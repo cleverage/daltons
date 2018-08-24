@@ -6,7 +6,6 @@
  *     node responsive-image-sizes.js -h
  */
 
-const fs = require('fs')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 
