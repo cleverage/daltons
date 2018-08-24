@@ -91,10 +91,16 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     )
     while (VIEWPORT.width <= argv.maxviewport) {
       console.log(chalk.cyan('Viewport width: ' + VIEWPORT.width))
+      // Set new viewport width
       await page.setViewport(VIEWPORT)
 
       // Give the browser some time to adjust layout
       await sleep(argv.delay)
+
+      // Check image width
+      // todo
+
+      // Increment viewport width
       VIEWPORT.width = Math.min(VIEWPORT.width + argv.step, argv.maxviewport)
     }
   })
