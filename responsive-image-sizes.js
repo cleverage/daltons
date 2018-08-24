@@ -44,10 +44,9 @@ const argv = require('yargs')
       default: 10,
       type: 'number',
     },
-    timeout: {
-      alias: 't',
-      describe:
-        'Timeout after page finish loading before changing viewport width',
+    delay: {
+      alias: 'd',
+      describe: 'Delay after viewport resizing before checking image width',
       default: 500,
       type: 'number',
     },
@@ -87,8 +86,9 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     while (VIEWPORT.width <= argv.maxviewport) {
       console.log(chalk.cyan('Viewport width: ' + VIEWPORT.width))
       await page.setViewport(VIEWPORT)
-      await page.reload({ waitUntil: 'networkidle2' })
-      await sleep(argv.timeout)
+
+      // Give the browser some time to adjust layout
+      await sleep(argv.delay)
       VIEWPORT.width = Math.min(VIEWPORT.width + argv.step, argv.maxviewport)
     }
   })
