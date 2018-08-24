@@ -58,6 +58,10 @@ const argv = require('yargs')
       describe: 'File path to which saving the data in CSV format',
       type: 'string',
     },
+    verbose: {
+      alias: 'v',
+      describe: 'Log progress and result in the console',
+    },
   })
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
@@ -90,6 +94,13 @@ const argv = require('yargs')
     if (argv.csvfile && fs.existsSync(argv.csvfile)) {
       throw new Error(color.red(`Error: file ${argv.csvfile} already exists`))
     }
+    if (!argv.csvfile && !argv.verbose) {
+      throw new Error(
+        color.red(
+          'Error: data should be either saved in a file (--csvfile option) and/or output to the console (--verbose option)',
+        ),
+      )
+    }
     return true
   })
   .help()
@@ -97,21 +108,29 @@ const argv = require('yargs')
     "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
   )
   .example(
-    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280",
+    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -f ./sizes.csv --verbose",
   )
   .wrap(null)
   .detectLocale(false).argv
 
 const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 ;(async () => {
-  console.log(color.green('Launch headless Chrome'))
   const sizes = []
+  if (argv.verbose) {
+    console.log(color.green('Launch headless Chrome'))
+  }
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  console.log(color.green('Go to ' + argv.url))
+  if (argv.verbose) {
+    console.log(color.green('Go to ' + argv.url))
+  }
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
-    console.log(color.green('Checking sizes of image ' + argv.selector))
-    process.stdout.write('Current viewport: ' + color.cyan(VIEWPORT.width))
+    if (argv.verbose) {
+      console.log(color.green('Checking sizes of image ' + argv.selector))
+      process.stdout.write(
+        'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
+      )
+    }
     while (VIEWPORT.width <= argv.maxviewport) {
       // Set new viewport width
       await page.setViewport(VIEWPORT)
@@ -129,15 +148,17 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       VIEWPORT.width += argv.viewportstep
 
       // Update log in the console
-      process.stdout.clearLine()
-      process.stdout.cursorTo(0)
-      if (VIEWPORT.width <= argv.maxviewport) {
-        process.stdout.write(
-          'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
-        )
+      if (argv.verbose) {
+        process.stdout.clearLine()
+        process.stdout.cursorTo(0)
+        if (VIEWPORT.width <= argv.maxviewport) {
+          process.stdout.write(
+            'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
+          )
+        }
       }
     }
-    console.log(sizesTable.toString())
+
     // Save data into the CSV file
     if (argv.csvfile) {
       let csvString = 'viewport,image\n'
@@ -145,7 +166,9 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       const writeFile = util.promisify(fs.writeFile)
       await writeFile(argv.csvfile, csvString)
         .then(() => {
+          if (argv.verbose) {
             console.log(color.green('Data saved to CSV file ' + argv.csvfile))
+          }
         })
         .catch(error =>
           console.log(color.red("Couldn't save data to CSV file: " + error)),
@@ -153,6 +176,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     }
 
     // Output clean table to the console
+    if (argv.verbose) {
       const sizesTable = new table({
         head: ['viewport', 'image'],
         colAligns: ['right', 'right'],
@@ -163,6 +187,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       })
       sizes.map(row => sizesTable.push([row[0], row[1]]))
       console.log(sizesTable.toString())
+    }
   })
 
   await page.browser().close()
