@@ -19,7 +19,7 @@ const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 const argv = require('yargs')
   .options({
     contextsfile: {
-      alias: 'cf',
+      alias: 'c',
       describe:
         'File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)',
       type: 'string',
@@ -35,14 +35,14 @@ const argv = require('yargs')
       demandOption: true,
     },
     minviewport: {
-      alias: 'min',
+      alias: 'i',
       describe: 'Minimum viewport width to check',
       default: 240,
       defaultDescription: '240: viewport width of some feature phones',
       type: 'number',
     },
     maxviewport: {
-      alias: 'max',
+      alias: 'x',
       describe: 'Maximum viewport width to check',
       default: 1920,
       defaultDescription: '1920: full HD viewport width',
@@ -62,7 +62,7 @@ const argv = require('yargs')
       type: 'number',
     },
     variationsfile: {
-      alias: 'vf',
+      alias: 'a',
       describe:
         'File path to which saving the image width variations data, in CSV format',
       type: 'string',
@@ -74,7 +74,7 @@ const argv = require('yargs')
       type: 'number',
     },
     destfile: {
-      alias: 'df',
+      alias: 'f',
       describe:
         'File path to which saving the image widths for the srcset attribute',
       type: 'string',
