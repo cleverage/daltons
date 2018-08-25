@@ -288,9 +288,9 @@ const argv = require('yargs')
   // Save data into the CSV file
   if (argv.destfile) {
     let fileString = `
-page                       : ${argv.url}
-image selector             : ${argv.selector}
-recommended sizes in srcset: ${srcset.join(',')}`
+page           : ${argv.url}
+image selector : ${argv.selector}
+sizes in srcset: ${srcset.join(',')}`
     await writeFile(argv.destfile, fileString)
       .then(() => {
         if (argv.verbose) {
