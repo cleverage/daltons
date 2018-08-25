@@ -67,6 +67,12 @@ const argv = require('yargs')
         'File path to which saving the image width variations data, in CSV format',
       type: 'string',
     },
+    widthsnumber: {
+      alias: 'n',
+      describe: 'Number of widths to recommend',
+      default: 5,
+      type: 'number',
+    },
     destfile: {
       alias: 'df',
       describe:
@@ -90,6 +96,10 @@ const argv = require('yargs')
       'variationsfile',
     ],
     'Step 2: get variations of image size across viewport widths',
+  )
+  .group(
+    ['widthsnumber', 'destfile'],
+    'Step 3: compute optimal n sizes from both datasets',
   )
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
