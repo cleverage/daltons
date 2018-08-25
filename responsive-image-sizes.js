@@ -72,6 +72,19 @@ const argv = require('yargs')
       describe: 'Log progress and result in the console',
     },
   })
+  .group(['contexts'], 'Step 1: get actual contexts of site visitors')
+  .group(
+    [
+      'url',
+      'selector',
+      'minviewport',
+      'maxviewport',
+      'viewportstep',
+      'delay',
+      'variationsfile',
+    ],
+    'Step 2: get variations of image size across viewport widths',
+  )
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
     if (isNaN(argv.minviewport)) {
