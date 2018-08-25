@@ -55,9 +55,10 @@ const argv = require('yargs')
       default: 500,
       type: 'number',
     },
-    csvfile: {
+    destfile: {
       alias: 'f',
-      describe: 'File path to which saving the data in CSV format',
+      describe:
+        'File path to which saving the image widths for the srcset attribute',
       type: 'string',
     },
     verbose: {
@@ -93,13 +94,13 @@ const argv = require('yargs')
         color.red('Error: maxviewport must be greater than minviewport'),
       )
     }
-    if (argv.csvfile && fs.existsSync(argv.csvfile)) {
-      throw new Error(color.red(`Error: file ${argv.csvfile} already exists`))
+    if (argv.destfile && fs.existsSync(argv.destfile)) {
+      throw new Error(color.red(`Error: file ${argv.destfile} already exists`))
     }
-    if (!argv.csvfile && !argv.verbose) {
+    if (!argv.destfile && !argv.verbose) {
       throw new Error(
         color.red(
-          'Error: data should be either saved in a file (--csvfile option) and/or output to the console (--verbose option)',
+          'Error: data should be either saved in a file (--destfile option) and/or output to the console (--verbose option)',
         ),
       )
     }
@@ -110,7 +111,7 @@ const argv = require('yargs')
     "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
   )
   .example(
-    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -f ./sizes.csv --verbose",
+    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -f ./srcset-widths.txt --verbose",
   )
   .wrap(null)
   .detectLocale(false).argv
@@ -218,5 +219,29 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     console.log(
       color.bgCyan.black('Step 3: compute optimal n sizes from both datasets'),
     )
+  }
+
+  let srcset = []
+
+  // Compute data
+  // todo
+
+  // Save data into the CSV file
+  if (argv.destfile) {
+    let fileString = `
+page                       : ${argv.url}
+image selector             : ${argv.selector}
+recommended sizes in srcset: ${srcset.join(',')}`
+    await writeFile(argv.destfile, fileString)
+      .then(() => {
+        if (argv.verbose) {
+          console.log(color.green(`Data saved to file ${argv.destfile}`))
+        }
+      })
+      .catch(error =>
+        console.log(
+          color.red(`Couldn't save data to file ${argv.destfile}: ${error}`),
+        ),
+      )
   }
 })()
