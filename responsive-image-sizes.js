@@ -104,43 +104,78 @@ const argv = require('yargs')
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
     if (isNaN(argv.minviewport)) {
-      throw new Error(color.red('Error: minviewport must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('minviewport')} must be a number`),
+      )
     }
     if (argv.minviewport < 0) {
-      throw new Error(color.red('Error: minviewport must be >= 0'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('minviewport')} must be >= 0`),
+      )
     }
     if (isNaN(argv.maxviewport)) {
-      throw new Error(color.red('Error: maxviewport must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('maxviewport')} must be a number`),
+      )
     }
     if (isNaN(argv.viewportstep)) {
-      throw new Error(color.red('Error: viewportstep must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('viewportstep')} must be a number`),
+      )
     }
     if (argv.viewportstep < 1) {
-      throw new Error(color.red('Error: viewportstep must be >= 1'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('viewportstep')} must be >= 1`),
+      )
     }
     if (isNaN(argv.delay)) {
-      throw new Error(color.red('Error: delay must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('delay')} must be a number`),
+      )
     }
     if (argv.delay < 0) {
-      throw new Error(color.red('Error: delay must be >= 0'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('delay')} must be >= 0`),
+      )
     }
     if (argv.maxviewport < argv.minviewport) {
       throw new Error(
-        color.red('Error: maxviewport must be greater than minviewport'),
+        color.red(
+          `Error: ${color.redBright(
+            'maxviewport',
+          )} must be greater than minviewport`,
+        ),
       )
     }
     if (argv.variationsfile && fs.existsSync(argv.variationsfile)) {
       throw new Error(
-        color.red(`Error: file ${argv.variationsfile} already exists`),
+        color.red(
+          `Error: file ${argv.variationsfile} set with ${color.redBright(
+            'variationsfile',
+          )} already exists`,
+        ),
+      )
+    }
+    if (isNaN(argv.widthsnumber)) {
+      throw new Error(
+        color.red(`Error: ${color.redBright('widthsnumber')} must be a number`),
       )
     }
     if (argv.destfile && fs.existsSync(argv.destfile)) {
-      throw new Error(color.red(`Error: file ${argv.destfile} already exists`))
+      throw new Error(
+        color.red(
+          `Error: file ${argv.destfile} set with ${color.redBright(
+            'destfile',
+          )} already exists`,
+        ),
+      )
     }
     if (!argv.destfile && !argv.verbose) {
       throw new Error(
         color.red(
-          'Error: data should be either saved in a file (--destfile option) and/or output to the console (--verbose option)',
+          `Error: data should be either saved in a file (${color.redBright(
+            'destfile',
+          )} and/or output to the console (${color.redBright('verbose')}`,
         ),
       )
     }
