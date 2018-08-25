@@ -6,6 +6,8 @@ Run `node responsive-image-sizes.js -h`
 
 Steps required to get the image sizes list:
 
-1. get the CSS width of the image in the page at different viewport widths
-1. get statistics about actual viewports and screen densities of site visitors
-1. compute optimal n sizes from both datasets
+## Step 1: get actual contexts (viewports and screen densities) of site visitors
+
+## Step 2: get variations of image size across viewport widths
+
+## Step 3: compute optimal n sizes from both datasets

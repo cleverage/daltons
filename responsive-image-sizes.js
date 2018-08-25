@@ -8,6 +8,8 @@
 
 const fs = require('fs')
 const util = require('util')
+const writeFile = util.promisify(fs.writeFile)
+
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const table = require('cli-table')
@@ -16,6 +18,12 @@ const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
 const argv = require('yargs')
   .options({
+    contextsfile: {
+      alias: 'cf',
+      describe:
+        'File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)',
+      type: 'string',
+    },
     url: {
       alias: 'u',
       describe: 'Page URL',
@@ -53,9 +61,22 @@ const argv = require('yargs')
       default: 500,
       type: 'number',
     },
-    csvfile: {
-      alias: 'f',
-      describe: 'File path to which saving the data in CSV format',
+    variationsfile: {
+      alias: 'vf',
+      describe:
+        'File path to which saving the image width variations data, in CSV format',
+      type: 'string',
+    },
+    widthsnumber: {
+      alias: 'n',
+      describe: 'Number of widths to recommend',
+      default: 5,
+      type: 'number',
+    },
+    destfile: {
+      alias: 'df',
+      describe:
+        'File path to which saving the image widths for the srcset attribute',
       type: 'string',
     },
     verbose: {
@@ -63,41 +84,98 @@ const argv = require('yargs')
       describe: 'Log progress and result in the console',
     },
   })
+  .group(['contextsfile'], 'Step 1: get actual contexts of site visitors')
+  .group(
+    [
+      'url',
+      'selector',
+      'minviewport',
+      'maxviewport',
+      'viewportstep',
+      'delay',
+      'variationsfile',
+    ],
+    'Step 2: get variations of image size across viewport widths',
+  )
+  .group(
+    ['widthsnumber', 'destfile'],
+    'Step 3: compute optimal n sizes from both datasets',
+  )
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
     if (isNaN(argv.minviewport)) {
-      throw new Error(color.red('Error: minviewport must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('minviewport')} must be a number`),
+      )
     }
     if (argv.minviewport < 0) {
-      throw new Error(color.red('Error: minviewport must be >= 0'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('minviewport')} must be >= 0`),
+      )
     }
     if (isNaN(argv.maxviewport)) {
-      throw new Error(color.red('Error: maxviewport must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('maxviewport')} must be a number`),
+      )
     }
     if (isNaN(argv.viewportstep)) {
-      throw new Error(color.red('Error: viewportstep must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('viewportstep')} must be a number`),
+      )
     }
     if (argv.viewportstep < 1) {
-      throw new Error(color.red('Error: viewportstep must be >= 1'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('viewportstep')} must be >= 1`),
+      )
     }
     if (isNaN(argv.delay)) {
-      throw new Error(color.red('Error: delay must be a number'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('delay')} must be a number`),
+      )
     }
     if (argv.delay < 0) {
-      throw new Error(color.red('Error: delay must be >= 0'))
+      throw new Error(
+        color.red(`Error: ${color.redBright('delay')} must be >= 0`),
+      )
     }
     if (argv.maxviewport < argv.minviewport) {
       throw new Error(
-        color.red('Error: maxviewport must be greater than minviewport'),
+        color.red(
+          `Error: ${color.redBright(
+            'maxviewport',
+          )} must be greater than minviewport`,
+        ),
       )
     }
-    if (argv.csvfile && fs.existsSync(argv.csvfile)) {
-      throw new Error(color.red(`Error: file ${argv.csvfile} already exists`))
-    }
-    if (!argv.csvfile && !argv.verbose) {
+    if (argv.variationsfile && fs.existsSync(argv.variationsfile)) {
       throw new Error(
         color.red(
-          'Error: data should be either saved in a file (--csvfile option) and/or output to the console (--verbose option)',
+          `Error: file ${argv.variationsfile} set with ${color.redBright(
+            'variationsfile',
+          )} already exists`,
+        ),
+      )
+    }
+    if (isNaN(argv.widthsnumber)) {
+      throw new Error(
+        color.red(`Error: ${color.redBright('widthsnumber')} must be a number`),
+      )
+    }
+    if (argv.destfile && fs.existsSync(argv.destfile)) {
+      throw new Error(
+        color.red(
+          `Error: file ${argv.destfile} set with ${color.redBright(
+            'destfile',
+          )} already exists`,
+        ),
+      )
+    }
+    if (!argv.destfile && !argv.verbose) {
+      throw new Error(
+        color.red(
+          `Error: data should be either saved in a file (${color.redBright(
+            'destfile',
+          )} and/or output to the console (${color.redBright('verbose')}`,
         ),
       )
     }
@@ -108,28 +186,49 @@ const argv = require('yargs')
     "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
   )
   .example(
-    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -f ./sizes.csv --verbose",
+    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -vf ./variations.csv -df ./srcset-widths.txt --verbose",
   )
   .wrap(null)
   .detectLocale(false).argv
-
-const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 ;(async () => {
-  const sizes = []
+  /* ======================================================================== */
+  if (argv.verbose) {
+    console.log(
+      color.bgCyan.black(
+        'Step 1: get actual contexts (viewports & screen densities) of site visitors',
+      ),
+    )
+  }
+
+  // todo
+
+  /* ======================================================================== */
+  if (argv.verbose) {
+    console.log(
+      color.bgCyan.black(
+        'Step 2: get variations of image size across viewport widths',
+      ),
+    )
+  }
+
+  const VIEWPORT = {
+    width: argv.minviewport,
+    height: 2000,
+    deviceScaleFactor: 1,
+  }
+  const imageWidths = []
   if (argv.verbose) {
     console.log(color.green('Launch headless Chrome'))
   }
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   if (argv.verbose) {
-    console.log(color.green('Go to ' + argv.url))
+    console.log(color.green(`Go to ${argv.url}`))
   }
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
     if (argv.verbose) {
-      console.log(color.green('Checking sizes of image ' + argv.selector))
-      process.stdout.write(
-        'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
-      )
+      console.log(color.green(`Checking sizes of image ${argv.selector}`))
+      process.stdout.write(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
     }
     while (VIEWPORT.width <= argv.maxviewport) {
       // Set new viewport width
@@ -142,7 +241,7 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
       let imageWidth = await page.evaluate(sel => {
         return document.querySelector(sel).width
       }, argv.selector)
-      sizes.push([VIEWPORT.width, imageWidth])
+      imageWidths.push([VIEWPORT.width, imageWidth])
 
       // Increment viewport width
       VIEWPORT.width += argv.viewportstep
@@ -153,42 +252,90 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
         process.stdout.cursorTo(0)
         if (VIEWPORT.width <= argv.maxviewport) {
           process.stdout.write(
-            'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
+            `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
           )
         }
       }
     }
 
     // Save data into the CSV file
-    if (argv.csvfile) {
-      let csvString = 'viewport,image\n'
-      sizes.map(row => (csvString += `${row[0]},${row[1]}` + '\n'))
-      const writeFile = util.promisify(fs.writeFile)
-      await writeFile(argv.csvfile, csvString)
+    if (argv.variationsfile) {
+      let csvString = 'viewport width (px);image width (px)\n'
+      sizes.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
+      await writeFile(argv.variationsfile, csvString)
         .then(() => {
           if (argv.verbose) {
-            console.log(color.green('Data saved to CSV file ' + argv.csvfile))
+            console.log(
+              color.green(
+                `Image width variations saved to CSV file ${
+                  argv.variationsfile
+                }`,
+              ),
+            )
           }
         })
         .catch(error =>
-          console.log(color.red("Couldn't save data to CSV file: " + error)),
+          console.log(
+            color.red(
+              `Couldn't save image width variations to CSV file ${
+                argv.variationsfile
+              }: ${error}`,
+            ),
+          ),
         )
     }
 
     // Output clean table to the console
     if (argv.verbose) {
-      const sizesTable = new table({
-        head: ['viewport', 'image'],
+      const imageWidthsTable = new table({
+        head: ['viewport width', 'image width'],
         colAligns: ['right', 'right'],
         style: {
           head: ['green', 'green'],
           compact: true,
         },
       })
-      sizes.map(row => sizesTable.push([row[0], row[1]]))
-      console.log(sizesTable.toString())
+      imageWidths.map(row =>
+        imageWidthsTable.push([row[0] + 'px', row[1] + 'px']),
+      )
+      console.log(imageWidthsTable.toString())
     }
   })
 
   await page.browser().close()
+
+  /* ======================================================================== */
+  if (argv.verbose) {
+    console.log(
+      color.bgCyan.black('Step 3: compute optimal n sizes from both datasets'),
+    )
+  }
+
+  let srcset = []
+
+  // Compute data
+  // todo
+
+  if (argv.verbose) {
+    console.dir(srcset)
+  }
+
+  // Save data into the CSV file
+  if (argv.destfile) {
+    let fileString = `
+page           : ${argv.url}
+image selector : ${argv.selector}
+sizes in srcset: ${srcset.join(',')}`
+    await writeFile(argv.destfile, fileString)
+      .then(() => {
+        if (argv.verbose) {
+          console.log(color.green(`Data saved to file ${argv.destfile}`))
+        }
+      })
+      .catch(error =>
+        console.log(
+          color.red(`Couldn't save data to file ${argv.destfile}: ${error}`),
+        ),
+      )
+  }
 })()
