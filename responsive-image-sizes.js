@@ -115,8 +115,6 @@ const argv = require('yargs')
   )
   .wrap(null)
   .detectLocale(false).argv
-
-const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 ;(async () => {
   const sizes = []
   /* ======================================================================== */
@@ -139,6 +137,11 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     )
   }
 
+  const VIEWPORT = {
+    width: argv.minviewport,
+    height: 2000,
+    deviceScaleFactor: 1,
+  }
   if (argv.verbose) {
     console.log(color.green('Launch headless Chrome'))
   }
