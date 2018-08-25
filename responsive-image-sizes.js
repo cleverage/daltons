@@ -182,6 +182,7 @@ const argv = require('yargs')
     }
     return true
   })
+  .alias('h', 'help')
   .help()
   .example(
     "node $0 --contextsfile ./contexts.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose",
