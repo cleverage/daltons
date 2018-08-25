@@ -183,10 +183,10 @@ const argv = require('yargs')
   })
   .help()
   .example(
-    "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
+    "node $0 --contextsfile ./contexts.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose",
   )
   .example(
-    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -vf ./variations.csv -df ./srcset-widths.txt --verbose",
+    "node $0 -c ./contexts.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v",
   )
   .wrap(null)
   .detectLocale(false).argv
