@@ -22,6 +22,7 @@ const argv = require('yargs')
       alias: 'c',
       describe:
         'File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)',
+      demandOption: true,
       type: 'string',
     },
     url: {
