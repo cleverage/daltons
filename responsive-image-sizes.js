@@ -18,8 +18,8 @@ const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
 const argv = require('yargs')
   .options({
-    contexts: {
-      alias: 'c',
+    contextsfile: {
+      alias: 'cf',
       describe:
         'File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)',
       type: 'string',
@@ -78,7 +78,7 @@ const argv = require('yargs')
       describe: 'Log progress and result in the console',
     },
   })
-  .group(['contexts'], 'Step 1: get actual contexts of site visitors')
+  .group(['contextsfile'], 'Step 1: get actual contexts of site visitors')
   .group(
     [
       'url',
