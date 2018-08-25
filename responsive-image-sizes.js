@@ -55,6 +55,12 @@ const argv = require('yargs')
       default: 500,
       type: 'number',
     },
+    variationsfile: {
+      alias: 'vf',
+      describe:
+        'File path to which saving the image width variations data, in CSV format',
+      type: 'string',
+    },
     destfile: {
       alias: 'f',
       describe:
@@ -92,6 +98,11 @@ const argv = require('yargs')
     if (argv.maxviewport < argv.minviewport) {
       throw new Error(
         color.red('Error: maxviewport must be greater than minviewport'),
+      )
+    }
+    if (argv.variationsfile && fs.existsSync(argv.variationsfile)) {
+      throw new Error(
+        color.red(`Error: file ${argv.variationsfile} already exists`),
       )
     }
     if (argv.destfile && fs.existsSync(argv.destfile)) {
@@ -186,17 +197,29 @@ const argv = require('yargs')
     }
 
     // Save data into the CSV file
-    if (argv.csvfile) {
-      let csvString = 'viewport,image\n'
-      sizes.map(row => (csvString += `${row[0]},${row[1]}` + '\n'))
-      await writeFile(argv.csvfile, csvString)
+    if (argv.variationsfile) {
+      let csvString = 'viewport width (px);image width (px)\n'
+      sizes.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
+      await writeFile(argv.variationsfile, csvString)
         .then(() => {
           if (argv.verbose) {
-            console.log(color.green('Data saved to CSV file ' + argv.csvfile))
+            console.log(
+              color.green(
+                `Image width variations saved to CSV file ${
+                  argv.variationsfile
+                }`,
+              ),
+            )
           }
         })
         .catch(error =>
-          console.log(color.red("Couldn't save data to CSV file: " + error)),
+          console.log(
+            color.red(
+              `Couldn't save image width variations to CSV file ${
+                argv.variationsfile
+              }: ${error}`,
+            ),
+          ),
         )
     }
 
