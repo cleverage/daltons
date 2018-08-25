@@ -8,6 +8,8 @@
 
 const fs = require('fs')
 const util = require('util')
+const writeFile = util.promisify(fs.writeFile)
+
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const table = require('cli-table')
@@ -163,7 +165,6 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
     if (argv.csvfile) {
       let csvString = 'viewport,image\n'
       sizes.map(row => (csvString += `${row[0]},${row[1]}` + '\n'))
-      const writeFile = util.promisify(fs.writeFile)
       await writeFile(argv.csvfile, csvString)
         .then(() => {
           if (argv.verbose) {
