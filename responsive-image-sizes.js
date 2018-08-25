@@ -68,7 +68,7 @@ const argv = require('yargs')
       type: 'string',
     },
     destfile: {
-      alias: 'f',
+      alias: 'df',
       describe:
         'File path to which saving the image widths for the srcset attribute',
       type: 'string',
