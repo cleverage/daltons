@@ -301,6 +301,11 @@ const argv = require('yargs')
       console.log(imageWidthsTable.toString())
     }
   })
+    .catch(error =>
+      console.log(
+        color.red(`Couldn't load page located at ${argv.url}:\n${error}`),
+      ),
+    )
 
   await page.browser().close()
 
