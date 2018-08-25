@@ -159,14 +159,12 @@ const argv = require('yargs')
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   if (argv.verbose) {
-    console.log(color.green('Go to ' + argv.url))
+    console.log(color.green(`Go to ${argv.url}`))
   }
   await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
     if (argv.verbose) {
-      console.log(color.green('Checking sizes of image ' + argv.selector))
-      process.stdout.write(
-        'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
-      )
+      console.log(color.green(`Checking sizes of image ${argv.selector}`))
+      process.stdout.write(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
     }
     while (VIEWPORT.width <= argv.maxviewport) {
       // Set new viewport width
@@ -190,7 +188,7 @@ const argv = require('yargs')
         process.stdout.cursorTo(0)
         if (VIEWPORT.width <= argv.maxviewport) {
           process.stdout.write(
-            'Current viewport: ' + color.cyan(VIEWPORT.width) + 'px',
+            `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
           )
         }
       }
