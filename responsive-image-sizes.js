@@ -195,7 +195,7 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(
       color.bgCyan.black(
-        'Step 1: get actual contexts (viewports & screen densities) of site visitors',
+        '\nStep 1: get actual contexts (viewports & screen densities) of site visitors',
       ),
     )
   }
@@ -206,7 +206,7 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(
       color.bgCyan.black(
-        'Step 2: get variations of image size across viewport widths',
+        '\nStep 2: get variations of image size across viewport widths',
       ),
     )
   }
@@ -225,82 +225,86 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(color.green(`Go to ${argv.url}`))
   }
-  await page.goto(argv.url, { waitUntil: 'networkidle2' }).then(async () => {
-    if (argv.verbose) {
-      console.log(color.green(`Checking sizes of image ${argv.selector}`))
-      process.stdout.write(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
-    }
-    while (VIEWPORT.width <= argv.maxviewport) {
-      // Set new viewport width
-      await page.setViewport(VIEWPORT)
-
-      // Give the browser some time to adjust layout, sometimes requiring JS
-      await sleep(argv.delay)
-
-      // Check image width
-      let imageWidth = await page.evaluate(sel => {
-        return document.querySelector(sel).width
-      }, argv.selector)
-      imageWidths.push([VIEWPORT.width, imageWidth])
-
-      // Increment viewport width
-      VIEWPORT.width += argv.viewportstep
-
-      // Update log in the console
+  await page
+    .goto(argv.url, { waitUntil: 'networkidle2' })
+    .then(async () => {
       if (argv.verbose) {
-        process.stdout.clearLine()
-        process.stdout.cursorTo(0)
-        if (VIEWPORT.width <= argv.maxviewport) {
-          process.stdout.write(
-            `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
-          )
-        }
+        console.log(color.green(`Checking sizes of image ${argv.selector}`))
+        process.stdout.write(
+          `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
+        )
       }
-    }
+      while (VIEWPORT.width <= argv.maxviewport) {
+        // Set new viewport width
+        await page.setViewport(VIEWPORT)
 
-    // Save data into the CSV file
-    if (argv.variationsfile) {
-      let csvString = 'viewport width (px);image width (px)\n'
-      sizes.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
-      await writeFile(argv.variationsfile, csvString)
-        .then(() => {
-          if (argv.verbose) {
-            console.log(
-              color.green(
-                `Image width variations saved to CSV file ${
-                  argv.variationsfile
-                }`,
-              ),
+        // Give the browser some time to adjust layout, sometimes requiring JS
+        await sleep(argv.delay)
+
+        // Check image width
+        let imageWidth = await page.evaluate(sel => {
+          return document.querySelector(sel).width
+        }, argv.selector)
+        imageWidths.push([VIEWPORT.width, imageWidth])
+
+        // Increment viewport width
+        VIEWPORT.width += argv.viewportstep
+
+        // Update log in the console
+        if (argv.verbose) {
+          process.stdout.clearLine()
+          process.stdout.cursorTo(0)
+          if (VIEWPORT.width <= argv.maxviewport) {
+            process.stdout.write(
+              `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
             )
           }
-        })
-        .catch(error =>
-          console.log(
-            color.red(
-              `Couldn't save image width variations to CSV file ${
-                argv.variationsfile
-              }: ${error}`,
-            ),
-          ),
-        )
-    }
+        }
+      }
 
-    // Output clean table to the console
-    if (argv.verbose) {
-      const imageWidthsTable = new table({
-        head: ['viewport width', 'image width'],
-        colAligns: ['right', 'right'],
-        style: {
-          head: ['green', 'green'],
-          compact: true,
-        },
-      })
-      imageWidths.map(row =>
-        imageWidthsTable.push([row[0] + 'px', row[1] + 'px']),
-      )
-      console.log(imageWidthsTable.toString())
-    }
-  })
+      // Save data into the CSV file
+      if (argv.variationsfile) {
+        let csvString = 'viewport width (px);image width (px)\n'
+        sizes.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
+        await writeFile(argv.variationsfile, csvString)
+          .then(() => {
+            if (argv.verbose) {
+              console.log(
+                color.green(
+                  `Image width variations saved to CSV file ${
+                    argv.variationsfile
+                  }`,
+                ),
+              )
+            }
+          })
+          .catch(error =>
+            console.log(
+              color.red(
+                `Couldn't save image width variations to CSV file ${
+                  argv.variationsfile
+                }:\n${error}`,
+              ),
+            ),
+          )
+      }
+
+      // Output clean table to the console
+      if (argv.verbose) {
+        const imageWidthsTable = new table({
+          head: ['viewport width', 'image width'],
+          colAligns: ['right', 'right'],
+          style: {
+            head: ['green', 'green'],
+            compact: true,
+          },
+        })
+        imageWidths.map(row =>
+          imageWidthsTable.push([row[0] + 'px', row[1] + 'px']),
+        )
+        console.log(imageWidthsTable.toString())
+      }
+    })
     .catch(error =>
       console.log(
         color.red(`Couldn't load page located at ${argv.url}:\n${error}`),
@@ -312,7 +316,9 @@ const argv = require('yargs')
   /* ======================================================================== */
   if (argv.verbose) {
     console.log(
-      color.bgCyan.black('Step 3: compute optimal n sizes from both datasets'),
+      color.bgCyan.black(
+        '\nStep 3: compute optimal n sizes from both datasets',
+      ),
     )
   }
 
@@ -339,7 +345,7 @@ sizes in srcset: ${srcset.join(',')}`
       })
       .catch(error =>
         console.log(
-          color.red(`Couldn't save data to file ${argv.destfile}: ${error}`),
+          color.red(`Couldn't save data to file ${argv.destfile}:\n${error}`),
         ),
       )
   }
