@@ -151,7 +151,7 @@ const argv = require('yargs')
     "$0 --url 'https://example.com/' --selector 'main img[srcset]:first-of-type'",
   )
   .example(
-    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -f ./srcset-widths.txt --verbose",
+    "$0 -u 'https://example.com/' -s 'main img[srcset]:first-of-type' --min 320 --max 1280 -vf ./variations.csv -df ./srcset-widths.txt --verbose",
   )
   .wrap(null)
   .detectLocale(false).argv
