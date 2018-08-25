@@ -118,6 +118,26 @@ const argv = require('yargs')
 const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
 ;(async () => {
   const sizes = []
+  /* ======================================================================== */
+  if (argv.verbose) {
+    console.log(
+      color.bgCyan.black(
+        'Step 1: get actual contexts (viewports & screen densities) of site visitors',
+      ),
+    )
+  }
+
+  // todo
+
+  /* ======================================================================== */
+  if (argv.verbose) {
+    console.log(
+      color.bgCyan.black(
+        'Step 2: get variations of image size across viewport widths',
+      ),
+    )
+  }
+
   if (argv.verbose) {
     console.log(color.green('Launch headless Chrome'))
   }
@@ -192,4 +212,11 @@ const VIEWPORT = { width: argv.minviewport, height: 2000, deviceScaleFactor: 1 }
   })
 
   await page.browser().close()
+
+  /* ======================================================================== */
+  if (argv.verbose) {
+    console.log(
+      color.bgCyan.black('Step 3: compute optimal n sizes from both datasets'),
+    )
+  }
 })()
