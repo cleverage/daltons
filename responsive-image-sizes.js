@@ -116,7 +116,6 @@ const argv = require('yargs')
   .wrap(null)
   .detectLocale(false).argv
 ;(async () => {
-  const sizes = []
   /* ======================================================================== */
   if (argv.verbose) {
     console.log(
@@ -142,6 +141,7 @@ const argv = require('yargs')
     height: 2000,
     deviceScaleFactor: 1,
   }
+  const imageWidths = []
   if (argv.verbose) {
     console.log(color.green('Launch headless Chrome'))
   }
@@ -168,7 +168,7 @@ const argv = require('yargs')
       let imageWidth = await page.evaluate(sel => {
         return document.querySelector(sel).width
       }, argv.selector)
-      sizes.push([VIEWPORT.width, imageWidth])
+      imageWidths.push([VIEWPORT.width, imageWidth])
 
       // Increment viewport width
       VIEWPORT.width += argv.viewportstep
@@ -202,16 +202,18 @@ const argv = require('yargs')
 
     // Output clean table to the console
     if (argv.verbose) {
-      const sizesTable = new table({
-        head: ['viewport', 'image'],
+      const imageWidthsTable = new table({
+        head: ['viewport width', 'image width'],
         colAligns: ['right', 'right'],
         style: {
           head: ['green', 'green'],
           compact: true,
         },
       })
-      sizes.map(row => sizesTable.push([row[0], row[1]]))
-      console.log(sizesTable.toString())
+      imageWidths.map(row =>
+        imageWidthsTable.push([row[0] + 'px', row[1] + 'px']),
+      )
+      console.log(imageWidthsTable.toString())
     }
   })
 
