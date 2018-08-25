@@ -18,6 +18,12 @@ const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
 const argv = require('yargs')
   .options({
+    contexts: {
+      alias: 'c',
+      describe:
+        'File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)',
+      type: 'string',
+    },
     url: {
       alias: 'u',
       describe: 'Page URL',
