@@ -281,6 +281,10 @@ const argv = require('yargs')
   // Compute data
   // todo
 
+  if (argv.verbose) {
+    console.dir(srcset)
+  }
+
   // Save data into the CSV file
   if (argv.destfile) {
     let fileString = `
