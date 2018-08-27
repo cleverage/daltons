@@ -1,5 +1,5 @@
 /**
- * Get the CSS width of an image in a page at different viewport widths
+ * Choose optimal responsive image widths to put in your `srcset` attribute
  *
  * Usage:
  *
@@ -96,11 +96,11 @@ const argv = require('yargs')
       'delay',
       'variationsfile',
     ],
-    'Step 2: get variations of image size across viewport widths',
+    'Step 2: get variations of image width across viewport widths',
   )
   .group(
     ['widthsnumber', 'destfile'],
-    'Step 3: compute optimal n sizes from both datasets',
+    'Step 3: compute optimal n widths from both datasets',
   )
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
@@ -208,7 +208,7 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(
       color.bgCyan.black(
-        '\nStep 2: get variations of image size across viewport widths',
+        '\nStep 2: get variations of image width across viewport widths',
       ),
     )
   }
@@ -231,7 +231,7 @@ const argv = require('yargs')
     .goto(argv.url, { waitUntil: 'networkidle2' })
     .then(async () => {
       if (argv.verbose) {
-        console.log(color.green(`Checking sizes of image ${argv.selector}`))
+        console.log(color.green(`Checking widths of image ${argv.selector}`))
         process.stdout.write(
           `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
         )
@@ -267,7 +267,7 @@ const argv = require('yargs')
       // Save data into the CSV file
       if (argv.variationsfile) {
         let csvString = 'viewport width (px);image width (px)\n'
-        sizes.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
+        imageWidths.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
         await writeFile(argv.variationsfile, csvString)
           .then(() => {
             if (argv.verbose) {
@@ -319,7 +319,7 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(
       color.bgCyan.black(
-        '\nStep 3: compute optimal n sizes from both datasets',
+        '\nStep 3: compute optimal n widths from both datasets',
       ),
     )
   }
@@ -338,7 +338,7 @@ const argv = require('yargs')
     let fileString = `
 page           : ${argv.url}
 image selector : ${argv.selector}
-sizes in srcset: ${srcset.join(',')}`
+widths in srcset: ${srcset.join(',')}`
     await writeFile(argv.destfile, fileString)
       .then(() => {
         if (argv.verbose) {
