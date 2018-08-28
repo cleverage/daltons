@@ -29,15 +29,11 @@ const argv = require('yargs')
     minviewport: {
       alias: 'i',
       describe: 'Minimum viewport width to check',
-      default: 240,
-      defaultDescription: '240: viewport width of some feature phones',
       type: 'number',
     },
     maxviewport: {
       alias: 'x',
       describe: 'Maximum viewport width to check',
-      default: 1920,
-      defaultDescription: '1920: full HD viewport width',
       type: 'number',
     },
     url: {
@@ -95,7 +91,7 @@ const argv = require('yargs')
   )
   .check(function(argv) {
     // waiting for https://github.com/yargs/yargs/issues/1079
-    if (isNaN(argv.minviewport)) {
+    if (argv.minviewport !== undefined && isNaN(argv.minviewport)) {
       throw new Error(
         color.red(`Error: ${color.redBright('minviewport')} must be a number`),
       )
@@ -105,9 +101,18 @@ const argv = require('yargs')
         color.red(`Error: ${color.redBright('minviewport')} must be >= 0`),
       )
     }
-    if (isNaN(argv.maxviewport)) {
+    if (argv.maxviewport !== undefined && isNaN(argv.maxviewport)) {
       throw new Error(
         color.red(`Error: ${color.redBright('maxviewport')} must be a number`),
+      )
+    }
+    if (argv.maxviewport < argv.minviewport) {
+      throw new Error(
+        color.red(
+          `Error: ${color.redBright(
+            'maxviewport',
+          )} must be greater than minviewport`,
+        ),
       )
     }
     if (isNaN(argv.delay)) {
@@ -118,15 +123,6 @@ const argv = require('yargs')
     if (argv.delay < 0) {
       throw new Error(
         color.red(`Error: ${color.redBright('delay')} must be >= 0`),
-      )
-    }
-    if (argv.maxviewport < argv.minviewport) {
-      throw new Error(
-        color.red(
-          `Error: ${color.redBright(
-            'maxviewport',
-          )} must be greater than minviewport`,
-        ),
       )
     }
     if (argv.variationsfile && fs.existsSync(argv.variationsfile)) {
@@ -198,6 +194,38 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(color.green(`Imported ${contexts.length} lines of context`))
   }
+  const contextMinViewport = contexts.reduce(
+    (min, p) => (p.viewport < min ? p.viewport : min),
+    contexts[0].viewport,
+  )
+  const contextMaxViewport = contexts.reduce(
+    (max, p) => (p.viewport > max ? p.viewport : max),
+    contexts[0].viewport,
+  )
+  if (argv.verbose) {
+    console.log(
+      color.green(
+        `Viewports in context go from ${contextMinViewport}px to ${contextMaxViewport}px`,
+      ),
+    )
+  }
+
+  minViewport = contextMinViewport
+  if (argv.minviewport !== undefined) {
+    minViewport = Math.max(contextMinViewport, argv.minviewport)
+  }
+  maxViewport = contextMaxViewport
+  if (argv.maxviewport !== undefined) {
+    maxViewport = Math.min(contextMaxViewport, argv.maxviewport)
+  }
+
+  if (argv.verbose) {
+    console.log(
+      color.green(
+        `Viewports will be considered from ${minViewport}px to ${maxViewport}px`,
+      ),
+    )
+  }
 
   /* ======================================================================== */
   if (argv.verbose) {
@@ -209,7 +237,7 @@ const argv = require('yargs')
   }
 
   const VIEWPORT = {
-    width: argv.minviewport,
+    width: minViewport,
     height: 2000,
     deviceScaleFactor: 1,
   }
@@ -231,7 +259,7 @@ const argv = require('yargs')
           `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
         )
       }
-      while (VIEWPORT.width <= argv.maxviewport) {
+      while (VIEWPORT.width <= maxViewport) {
         // Set new viewport width
         await page.setViewport(VIEWPORT)
 
@@ -251,7 +279,7 @@ const argv = require('yargs')
         if (argv.verbose) {
           process.stdout.clearLine()
           process.stdout.cursorTo(0)
-          if (VIEWPORT.width <= argv.maxviewport) {
+          if (VIEWPORT.width <= maxViewport) {
             process.stdout.write(
               `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
             )
