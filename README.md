@@ -1,4 +1,4 @@
-# Responsive Image Sizes
+# Responsive Image Widths
 
 A command-line tool helping the choice of optimal responsive image widths to put in your `srcset` attribute.
 
