@@ -10,6 +10,7 @@ const fs = require('fs')
 const util = require('util')
 const writeFile = util.promisify(fs.writeFile)
 
+const csvparse = require('csv-parse/lib/sync')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const table = require('cli-table')
@@ -182,7 +183,21 @@ const argv = require('yargs')
     )
   }
 
-  // todo
+  // Load content from the CSV file
+  let contextsCsv = fs.readFileSync(argv.contextsfile, 'utf8')
+
+  // Transform CSV into an array
+  const hasHeader = contextsCsv.match(/[a-zA-Z]/)
+  let contexts = csvparse(contextsCsv, {
+    columns: ['viewport', 'density', 'views'],
+    from: hasHeader ? 2 : 1,
+    cast: function(value, context) {
+      return parseInt(value, 10)
+    },
+  })
+  if (argv.verbose) {
+    console.log(color.green(`Imported ${contexts.length} lines of context`))
+  }
 
   /* ======================================================================== */
   if (argv.verbose) {
