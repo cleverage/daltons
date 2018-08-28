@@ -25,16 +25,6 @@ const argv = require('yargs')
       demandOption: true,
       type: 'string',
     },
-    url: {
-      alias: 'u',
-      describe: 'Page URL',
-      demandOption: true,
-    },
-    selector: {
-      alias: 's',
-      describe: 'Image selector in the page',
-      demandOption: true,
-    },
     minviewport: {
       alias: 'i',
       describe: 'Minimum viewport width to check',
@@ -49,11 +39,15 @@ const argv = require('yargs')
       defaultDescription: '1920: full HD viewport width',
       type: 'number',
     },
-    viewportstep: {
-      alias: 'p',
-      describe: 'Viewport width step',
-      default: 1,
-      type: 'number',
+    url: {
+      alias: 'u',
+      describe: 'Page URL',
+      demandOption: true,
+    },
+    selector: {
+      alias: 's',
+      describe: 'Image selector in the page',
+      demandOption: true,
     },
     delay: {
       alias: 'd',
@@ -85,17 +79,13 @@ const argv = require('yargs')
       describe: 'Log progress and result in the console',
     },
   })
+  .group(
+    ['minviewport', 'maxviewport'],
+    'Global: limit viewport widths, for example for Art Direction (see docs)',
+  )
   .group(['contextsfile'], 'Step 1: get actual contexts of site visitors')
   .group(
-    [
-      'url',
-      'selector',
-      'minviewport',
-      'maxviewport',
-      'viewportstep',
-      'delay',
-      'variationsfile',
-    ],
+    ['url', 'selector', 'delay', 'variationsfile'],
     'Step 2: get variations of image width across viewport widths',
   )
   .group(
@@ -117,16 +107,6 @@ const argv = require('yargs')
     if (isNaN(argv.maxviewport)) {
       throw new Error(
         color.red(`Error: ${color.redBright('maxviewport')} must be a number`),
-      )
-    }
-    if (isNaN(argv.viewportstep)) {
-      throw new Error(
-        color.red(`Error: ${color.redBright('viewportstep')} must be a number`),
-      )
-    }
-    if (argv.viewportstep < 1) {
-      throw new Error(
-        color.red(`Error: ${color.redBright('viewportstep')} must be >= 1`),
       )
     }
     if (isNaN(argv.delay)) {
@@ -250,7 +230,7 @@ const argv = require('yargs')
         imageWidths.push([VIEWPORT.width, imageWidth])
 
         // Increment viewport width
-        VIEWPORT.width += argv.viewportstep
+        VIEWPORT.width++
 
         // Update log in the console
         if (argv.verbose) {
