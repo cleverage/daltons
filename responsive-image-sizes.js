@@ -270,7 +270,7 @@ const argv = require('yargs')
         let imageWidth = await page.evaluate(sel => {
           return document.querySelector(sel).width
         }, argv.selector)
-        imageWidths.push([VIEWPORT.width, imageWidth])
+        imageWidths[VIEWPORT.width] = imageWidth
 
         // Increment viewport width
         VIEWPORT.width++
@@ -290,7 +290,10 @@ const argv = require('yargs')
       // Save data into the CSV file
       if (argv.variationsfile) {
         let csvString = 'viewport width (px);image width (px)\n'
-        imageWidths.map(row => (csvString += `${row[0]};${row[1]}` + '\n'))
+        imageWidths.map(
+          (imageWidth, viewportWidth) =>
+            (csvString += `${viewportWidth};${imageWidth}` + '\n'),
+        )
         await writeFile(argv.variationsfile, csvString)
           .then(() => {
             if (argv.verbose) {
@@ -324,8 +327,8 @@ const argv = require('yargs')
             compact: true,
           },
         })
-        imageWidths.map(row =>
-          imageWidthsTable.push([row[0] + 'px', row[1] + 'px']),
+        imageWidths.map((imageWidth, viewportWidth) =>
+          imageWidthsTable.push([viewportWidth + 'px', imageWidth + 'px']),
         )
         console.log(imageWidthsTable.toString())
       }
@@ -347,10 +350,28 @@ const argv = require('yargs')
     )
   }
 
-  let srcset = []
+  if (argv.verbose) {
+    console.log(color.green('Compute all perfect image widths'))
+  }
+  let perfectWidths = {}
+  contexts.map((value, index) => {
+    if (value.viewport >= minViewport && value.viewport <= maxViewport) {
+      perfectWidth = imageWidths[value.viewport] * value.density
+      if (perfectWidths[perfectWidth] === undefined) {
+        perfectWidths[perfectWidth] = 0
+      }
+      perfectWidths[perfectWidth] += value.views
+    }
+  })
+  if (argv.verbose) {
+    console.dir(perfectWidths)
+  }
 
-  // Compute data
+  if (argv.verbose) {
+    console.log(color.green(`Find ${argv.widthsnumber} best widths`))
+  }
   // todo
+  let srcset = []
 
   if (argv.verbose) {
     console.dir(srcset)
