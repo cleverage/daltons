@@ -361,23 +361,42 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(color.green('Compute all perfect image widths'))
   }
-  let perfectWidths = {}
+  let perfectWidthsTemp = []
+  let totalViews = 0
   contexts.map((value, index) => {
     if (value.viewport >= minViewport && value.viewport <= maxViewport) {
-      perfectWidth = imageWidths[value.viewport] * value.density
-      if (perfectWidths[perfectWidth] === undefined) {
-        perfectWidths[perfectWidth] = 0
+      perfectWidth = Math.ceil(imageWidths[value.viewport] * value.density)
+      if (perfectWidthsTemp[perfectWidth] === undefined) {
+        perfectWidthsTemp[perfectWidth] = 0
       }
-      perfectWidths[perfectWidth] += value.views
+      perfectWidthsTemp[perfectWidth] += value.views
+      totalViews += value.views
     }
   })
+  // Change views numbers to percentages and create array without holes
+  let perfectWidths = []
+  perfectWidthsTemp.map((value, index) => {
+    perfectWidths.push({
+      width: index,
+      percentage: value / totalViews,
+    })
+  })
   if (argv.verbose) {
+    console.log(
+      color.green(`${perfectWidths.length} perfect widths have been computed`),
+    )
     console.dir(perfectWidths)
   }
 
   if (argv.verbose) {
     console.log(color.green(`Find ${argv.widthsnumber} best widths`))
   }
+  // Change views numbers to percentages and transform the object to an array
+  perfectWidths.sort((a, b) => {
+    return a.percentage - b.percentage
+  })
+  console.dir(perfectWidths)
+
   // todo
   let srcset = []
 
