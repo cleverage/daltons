@@ -181,12 +181,12 @@ const argv = require('yargs')
 
   // Load content from the CSV file
   let contextsCsv = fs.readFileSync(argv.contextsfile, 'utf8')
+  const csvHasHeader = contextsCsv.match(/[a-zA-Z]/)
 
   // Transform CSV into an array
-  const hasHeader = contextsCsv.match(/[a-zA-Z]/)
   let contexts = csvparse(contextsCsv, {
     columns: ['viewport', 'density', 'views'],
-    from: hasHeader ? 2 : 1,
+    from: csvHasHeader ? 2 : 1,
     cast: function(value, context) {
       return parseInt(value, 10)
     },
