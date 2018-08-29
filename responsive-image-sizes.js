@@ -188,7 +188,11 @@ const argv = require('yargs')
     columns: ['viewport', 'density', 'views'],
     from: csvHasHeader ? 2 : 1,
     cast: function(value, context) {
-      return parseInt(value, 10)
+      if (context.column == 'density') {
+        return parseFloat(value)
+      } else {
+        return parseInt(value, 10)
+      }
     },
   })
   if (argv.verbose) {
