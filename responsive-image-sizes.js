@@ -226,7 +226,9 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(
       color.green(
-        `Viewports will be considered from ${minViewport}px to ${maxViewport}px`,
+        `Viewports will be considered from ${color.white(
+          minViewport + 'px',
+        )} to ${color.white(maxViewport + 'px')}`,
       ),
     )
   }
@@ -258,7 +260,9 @@ const argv = require('yargs')
     .goto(argv.url, { waitUntil: 'networkidle2' })
     .then(async () => {
       if (argv.verbose) {
-        console.log(color.green(`Checking widths of image ${argv.selector}`))
+        console.log(
+          color.green(`Checking widths of image ${color.white(argv.selector)}`),
+        )
         process.stdout.write(
           `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
         )
