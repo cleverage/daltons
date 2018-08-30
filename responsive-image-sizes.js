@@ -181,14 +181,18 @@ const argv = require('yargs')
 
   // Load content from the CSV file
   let contextsCsv = fs.readFileSync(argv.contextsfile, 'utf8')
+  const csvHasHeader = contextsCsv.match(/[a-zA-Z]/)
 
   // Transform CSV into an array
-  const hasHeader = contextsCsv.match(/[a-zA-Z]/)
   let contexts = csvparse(contextsCsv, {
     columns: ['viewport', 'density', 'views'],
-    from: hasHeader ? 2 : 1,
+    from: csvHasHeader ? 2 : 1,
     cast: function(value, context) {
-      return parseInt(value, 10)
+      if (context.column == 'density') {
+        return parseFloat(value)
+      } else {
+        return parseInt(value, 10)
+      }
     },
   })
   if (argv.verbose) {
@@ -222,7 +226,9 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(
       color.green(
-        `Viewports will be considered from ${minViewport}px to ${maxViewport}px`,
+        `Viewports will be considered from ${color.white(
+          minViewport + 'px',
+        )} to ${color.white(maxViewport + 'px')}`,
       ),
     )
   }
@@ -254,7 +260,9 @@ const argv = require('yargs')
     .goto(argv.url, { waitUntil: 'networkidle2' })
     .then(async () => {
       if (argv.verbose) {
-        console.log(color.green(`Checking widths of image ${argv.selector}`))
+        console.log(
+          color.green(`Checking widths of image ${color.white(argv.selector)}`),
+        )
         process.stdout.write(
           `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
         )
@@ -353,19 +361,40 @@ const argv = require('yargs')
   if (argv.verbose) {
     console.log(color.green('Compute all perfect image widths'))
   }
-  let perfectWidths = {}
+  let perfectWidthsTemp = []
+  let totalViews = 0
   contexts.map((value, index) => {
     if (value.viewport >= minViewport && value.viewport <= maxViewport) {
-      perfectWidth = imageWidths[value.viewport] * value.density
-      if (perfectWidths[perfectWidth] === undefined) {
-        perfectWidths[perfectWidth] = 0
+      perfectWidth = Math.ceil(imageWidths[value.viewport] * value.density)
+      if (perfectWidthsTemp[perfectWidth] === undefined) {
+        perfectWidthsTemp[perfectWidth] = 0
       }
-      perfectWidths[perfectWidth] += value.views
+      perfectWidthsTemp[perfectWidth] += value.views
+      totalViews += value.views
     }
   })
+  // Change views numbers to percentages and create an array without holes
+  let perfectWidths = []
+  perfectWidthsTemp.map((value, index) => {
+    perfectWidths.push({
+      width: index,
+      percentage: value / totalViews,
+    })
+  })
   if (argv.verbose) {
+    console.log(
+      color.green(`${perfectWidths.length} perfect widths have been computed`),
+    )
     console.dir(perfectWidths)
   }
+
+  if (argv.verbose) {
+    console.log(color.green('Sort the array by percentage in decreasing order'))
+  }
+  perfectWidths.sort((a, b) => {
+    return b.percentage - a.percentage
+  })
+  console.dir(perfectWidths)
 
   if (argv.verbose) {
     console.log(color.green(`Find ${argv.widthsnumber} best widths`))
