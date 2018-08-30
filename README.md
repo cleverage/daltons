@@ -10,4 +10,4 @@ Run `node responsive-image-sizes.js -h`
 - Step 2: get variations of image width across viewport widths
 - Step 3: compute optimal n widths from both datasets
 
-See details in [the full documentation](/docs/)
+See details in [the full documentation](https://cleverage.github.io/responsive-image-widths/)
