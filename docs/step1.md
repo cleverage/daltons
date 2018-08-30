@@ -48,3 +48,9 @@ ga('set', {
 
 ga('send', 'pageview')
 ```
+
+You will then have to get the data from your analytics solution. Wait for a while to get accurate data, depending on your traffic.
+
+Here's how to create a custom report in Google Analytics, for example:
+
+![Creating a custom report in Google Analytics](google-analytics-custom-report.png)
