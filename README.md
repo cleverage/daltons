@@ -4,7 +4,7 @@ A command-line tool helping the choice of optimal responsive image widths to put
 
 Run `node responsive-image-sizes.js -h`
 
-## Steps required to get the image widths list
+Steps required to get the image widths list:
 
 - Step 1: get actual contexts (viewports and screen densities) of site visitors
 - Step 2: get variations of image width across viewport widths
