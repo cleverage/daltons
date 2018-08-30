@@ -373,7 +373,7 @@ const argv = require('yargs')
       totalViews += value.views
     }
   })
-  // Change views numbers to percentages and create array without holes
+  // Change views numbers to percentages and create an array without holes
   let perfectWidths = []
   perfectWidthsTemp.map((value, index) => {
     perfectWidths.push({
@@ -389,14 +389,16 @@ const argv = require('yargs')
   }
 
   if (argv.verbose) {
-    console.log(color.green(`Find ${argv.widthsnumber} best widths`))
+    console.log(color.green('Sort the array by percentage in decreasing order'))
   }
-  // Change views numbers to percentages and transform the object to an array
   perfectWidths.sort((a, b) => {
-    return a.percentage - b.percentage
+    return b.percentage - a.percentage
   })
   console.dir(perfectWidths)
 
+  if (argv.verbose) {
+    console.log(color.green(`Find ${argv.widthsnumber} best widths`))
+  }
   // todo
   let srcset = []
 
