@@ -6,9 +6,9 @@ Run `node responsive-image-sizes.js -h`
 
 ## Steps required to get the image widths list
 
-- [Step 1: get actual contexts (viewports and screen densities) of site visitors](/step1.html)
-- [Step 2: get variations of image width across viewport widths](/step2.html)
-- [Step 3: compute optimal n widths from both datasets](/step3.html)
+- [Step 1: get actual contexts (viewports and screen densities) of site visitors](/responsive-image-widths/step1.html)
+- [Step 2: get variations of image width across viewport widths](/responsive-image-widths/step2.html)
+- [Step 3: compute optimal n widths from both datasets](/responsive-image-widths/step3.html)
 
 ## How to deal with multiple `<source>` with `mix/max-width` media queries (Art Direction)
 
