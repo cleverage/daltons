@@ -2,7 +2,9 @@
 
 A command-line tool helping the choice of optimal responsive image widths to put in your `srcset` attribute(s).
 
-Run `node responsive-image-sizes.js -h`
+Install as a global package: `npm install -g cleverage/responsive-image-widths#master`
+
+Run: `npx responsive-image-widths -h`
 
 Steps required to get the image widths list:
 
