@@ -1,23 +1,36 @@
 {
-  "name": "responsive-image-sizes",
+  "name": "responsive-image-widths",
   "version": "0.0.1",
   "author": "Nicolas Hoizey <nhoizey@clever-age.com>",
   "description": "A tool helping the choice of optimal responsive image sizes",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/cleverage/responsive-image-sizes/"
+    "url": "https://github.com/cleverage/responsive-image-widths/"
   },
   "bugs": {
-    "url": "https://github.com/cleverage/responsive-image-sizes/issues"
+    "url": "https://github.com/cleverage/responsive-image-widths/issues"
   },
   "engines": {
     "node": ">=8"
+  },
+  "main": "./index.js",
+  "bin": {
+    "responsive-image-widths": "./index.js"
+  },
+  "scripts": {
+    "test": "npx eslint ."
   },
   "dependencies": {
     "ansi-colors": "^3.0.3",
     "cli-table": "^0.3.1",
     "csv-parse": "^3.0.0",
     "puppeteer": "^1.4.0",
-    "yargs": "^11.0.0"
+    "yargs": "^12.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "prettier": "^1.14.2"
   }
 }
