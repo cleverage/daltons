@@ -1,19 +1,23 @@
+#!/usr/bin/env node
 /**
  * Choose optimal responsive image widths to put in your `srcset` attribute
  *
  * Usage:
  *
- *     node responsive-image-sizes.js -h
+ *     npx responsive-image-widths -h
  */
 
 const fs = require('fs')
 const util = require('util')
 const writeFile = util.promisify(fs.writeFile)
+const path = require('path')
 
 const csvparse = require('csv-parse/lib/sync')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const table = require('cli-table')
+
+const currentPath = process.cwd()
 
 const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
@@ -125,7 +129,10 @@ const argv = require('yargs')
         color.red(`Error: ${color.redBright('delay')} must be >= 0`),
       )
     }
-    if (argv.variationsfile && fs.existsSync(argv.variationsfile)) {
+    if (
+      argv.variationsfile &&
+      fs.existsSync(path.resolve(currentPath, argv.variationsfile))
+    ) {
       throw new Error(
         color.red(
           `Error: file ${argv.variationsfile} set with ${color.redBright(
@@ -139,7 +146,10 @@ const argv = require('yargs')
         color.red(`Error: ${color.redBright('widthsnumber')} must be a number`),
       )
     }
-    if (argv.destfile && fs.existsSync(argv.destfile)) {
+    if (
+      argv.destfile &&
+      fs.existsSync(path.resolve(currentPath, argv.destfile))
+    ) {
       throw new Error(
         color.red(
           `Error: file ${argv.destfile} set with ${color.redBright(
@@ -162,10 +172,10 @@ const argv = require('yargs')
   .alias('h', 'help')
   .help()
   .example(
-    "node $0 --contextsfile ./contexts.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose",
+    "npx $0 --contextsfile ./contexts.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose",
   )
   .example(
-    "node $0 -c ./contexts.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v",
+    "npx $0 -c ./contexts.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v",
   )
   .wrap(null)
   .detectLocale(false).argv
@@ -180,7 +190,10 @@ const argv = require('yargs')
   }
 
   // Load content from the CSV file
-  let contextsCsv = fs.readFileSync(argv.contextsfile, 'utf8')
+  let contextsCsv = fs.readFileSync(
+    path.resolve(currentPath, argv.contextsfile),
+    'utf8',
+  )
   const csvHasHeader = contextsCsv.match(/[a-zA-Z]/)
 
   // Transform CSV into an array
@@ -302,7 +315,10 @@ const argv = require('yargs')
           (imageWidth, viewportWidth) =>
             (csvString += `${viewportWidth};${imageWidth}` + '\n'),
         )
-        await writeFile(argv.variationsfile, csvString)
+        await writeFile(
+          path.resolve(currentPath, argv.variationsfile),
+          csvString,
+        )
           .then(() => {
             if (argv.verbose) {
               console.log(
@@ -412,7 +428,7 @@ const argv = require('yargs')
 page           : ${argv.url}
 image selector : ${argv.selector}
 widths in srcset: ${srcset.join(',')}`
-    await writeFile(argv.destfile, fileString)
+    await writeFile(path.resolve(currentPath, argv.destfile), fileString)
       .then(() => {
         if (argv.verbose) {
           console.log(color.green(`Data saved to file ${argv.destfile}`))
