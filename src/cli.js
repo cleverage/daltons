@@ -1,3 +1,11 @@
+#!/usr/bin/env node
+/**
+ * Choose optimal responsive image widths to put in your `srcset` attribute
+ *
+ * Usage:
+ *
+ *     npx responsive-image-widths -h
+ */
 const yargs = require('yargs')
 const run = require('./index.js')
 
