@@ -26,6 +26,6 @@ If you have some code like this:
 You will have to run the script twice, with (at least) these parameters, to get widths for both `srcset`s:
 
 ```shell
-npx responsive-image-width --maxviewport 799
-npx responsive-image-width --minviewport 800
+npx responsive-image-width --max-viewport 799
+npx responsive-image-width --min-viewport 800
 ```

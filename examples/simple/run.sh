@@ -1,3 +1,3 @@
 #!/bin/sh
 path=`pwd`
-node ../../index.js --contextsfile ./contexts.csv --url "file://${path}/page.html" --selector 'img' --verbose
+node ../../src/cli.js --contexts-file ./contexts.csv --url "file://${path}/page.html" --selector 'img' --verbose

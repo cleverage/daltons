@@ -11,7 +11,7 @@ This step requires a CSV file with the following columns:
 There are a few requirements:
 
 - use a comma separator
-- don't use any thousands separator
+- don’t use any thousands separator
 - viewport width and number of page views are integers
 - screen density is a float using a dot as decimal separator
 
@@ -51,6 +51,6 @@ ga('send', 'pageview')
 
 You will then have to get the data from your analytics solution. Wait for a while to get accurate data, depending on your traffic.
 
-Here's how to create a custom report in Google Analytics, for example:
+Here’s how to create a custom report in Google Analytics, for example:
 
 ![Creating a custom report in Google Analytics](google-analytics-custom-report.png)

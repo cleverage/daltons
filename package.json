@@ -13,9 +13,9 @@
   "engines": {
     "node": ">=8"
   },
-  "main": "./index.js",
+  "main": "./src/index.js",
   "bin": {
-    "responsive-image-widths": "./index.js"
+    "responsive-image-widths": "./src/cli.js"
   },
   "scripts": {
     "test": "npx eslint ."
@@ -24,8 +24,8 @@
     "ansi-colors": "^3.0.3",
     "cli-table": "^0.3.1",
     "csv-parse": "^3.0.0",
-    "puppeteer": "^1.4.0",
-    "yargs": "^12.0.1"
+    "puppeteer": "^1.8.0",
+    "yargs": "^12.0.2"
   },
   "devDependencies": {
     "eslint": "^5.5.0",
