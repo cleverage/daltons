@@ -1,12 +1,3 @@
-#!/usr/bin/env node
-/**
- * Choose optimal responsive image widths to put in your `srcset` attribute
- *
- * Usage:
- *
- *     npx responsive-image-widths -h
- */
-
 const fs = require('fs')
 const util = require('util')
 const path = require('path')
