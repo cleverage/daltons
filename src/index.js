@@ -71,11 +71,11 @@ module.exports = async function main(settings) {
             `Checking widths of image ${color.white(options.selector)}`,
           ),
         )
+        process.stdout.write(
+          `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
+        )
       }
       while (VIEWPORT.width <= options.maxViewport) {
-        if (options.verbose) {
-          console.log(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
-        }
         // Set new viewport width
         await page.setViewport(VIEWPORT)
 
@@ -90,6 +90,17 @@ module.exports = async function main(settings) {
 
         // Increment viewport width
         VIEWPORT.width++
+
+        // Update log in the console
+        if (options.verbose) {
+          process.stdout.clearLine()
+          process.stdout.cursorTo(0)
+          if (VIEWPORT.width <= options.maxViewport) {
+            process.stdout.write(
+              `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
+            )
+          }
+        }
       }
 
       // Save data into the CSV file
