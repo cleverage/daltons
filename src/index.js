@@ -53,7 +53,7 @@ module.exports = async function main(settings) {
     height: 2000,
     deviceScaleFactor: 1,
   }
-  const imageWidths = []
+  const imageWidths = new Map()
   if (options.verbose) {
     console.log(color.green('Launch headless Chrome'))
   }
@@ -71,11 +71,11 @@ module.exports = async function main(settings) {
             `Checking widths of image ${color.white(options.selector)}`,
           ),
         )
+        process.stdout.write(
+          `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
+        )
       }
       while (VIEWPORT.width <= options.maxViewport) {
-        if (options.verbose) {
-          console.log(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
-        }
         // Set new viewport width
         await page.setViewport(VIEWPORT)
 
@@ -86,16 +86,27 @@ module.exports = async function main(settings) {
         let imageWidth = await page.evaluate(sel => {
           return document.querySelector(sel).width
         }, options.selector)
-        imageWidths[VIEWPORT.width] = imageWidth
+        imageWidths.set(VIEWPORT.width, imageWidth)
 
         // Increment viewport width
         VIEWPORT.width++
+
+        // Update log in the console
+        if (options.verbose) {
+          process.stdout.clearLine()
+          process.stdout.cursorTo(0)
+          if (VIEWPORT.width <= options.maxViewport) {
+            process.stdout.write(
+              `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
+            )
+          }
+        }
       }
 
       // Save data into the CSV file
       if (options.variationsFile) {
         let csvString = 'viewport width (px);image width (px)\n'
-        imageWidths.map(
+        imageWidths.forEach(
           (imageWidth, viewportWidth) =>
             (csvString += `${viewportWidth};${imageWidth}` + '\n'),
         )
@@ -135,7 +146,7 @@ module.exports = async function main(settings) {
             compact: true,
           },
         })
-        imageWidths.map((imageWidth, viewportWidth) =>
+        imageWidths.forEach((imageWidth, viewportWidth) =>
           imageWidthsTable.push([viewportWidth + 'px', imageWidth + 'px']),
         )
         console.log(imageWidthsTable.toString())
@@ -161,43 +172,52 @@ module.exports = async function main(settings) {
   if (options.verbose) {
     console.log(color.green('Compute all perfect image widths'))
   }
-  let perfectWidthsTemp = []
+  let perfectWidths = new Map()
   let totalViews = 0
   contexts.map(value => {
     if (
       value.viewport >= options.minViewport &&
       value.viewport <= options.maxViewport
     ) {
-      perfectWidth = Math.ceil(imageWidths[value.viewport] * value.density)
-      if (perfectWidthsTemp[perfectWidth] === undefined) {
-        perfectWidthsTemp[perfectWidth] = 0
-      }
-      perfectWidthsTemp[perfectWidth] += value.views
+      perfectWidth = Math.ceil(imageWidths.get(value.viewport) * value.density)
+      perfectWidths.set(
+        perfectWidth,
+        (perfectWidths.get(perfectWidth) || 0) + value.views,
+      )
       totalViews += value.views
     }
   })
-  // Change views numbers to percentages and create an array without holes
-  let perfectWidths = []
-  perfectWidthsTemp.map((value, index) => {
-    perfectWidths.push({
-      width: index,
-      percentage: value / totalViews,
-    })
+  // Change views numbers to percentages
+  perfectWidths.forEach((views, width) => {
+    perfectWidths.set(width, views / totalViews)
   })
+  // sort by decreasing percentages
+  perfectWidths = new Map(
+    [...perfectWidths.entries()].sort((a, b) => {
+      return b[1] - a[1]
+    }),
+  )
   if (options.verbose) {
     console.log(
-      color.green(`${perfectWidths.length} perfect widths have been computed`),
+      color.green(`${perfectWidths.size} perfect widths have been computed`),
     )
-    console.dir(perfectWidths)
+    const perfectWidthsTable = new Table({
+      head: ['percentage', 'image width'],
+      colAligns: ['right', 'right'],
+      style: {
+        head: ['green', 'green'],
+        compact: true,
+      },
+    })
+    perfectWidths.forEach((percentage, imageWidth) => {
+      let roundedPercentage = percentage * 100
+      perfectWidthsTable.push([
+        roundedPercentage.toFixed(2) + ' %',
+        imageWidth + 'px',
+      ])
+    })
+    console.log(perfectWidthsTable.toString())
   }
-
-  if (options.verbose) {
-    console.log(color.green('Sort the array by percentage in decreasing order'))
-  }
-  perfectWidths.sort((a, b) => {
-    return b.percentage - a.percentage
-  })
-  console.dir(perfectWidths)
 
   if (options.verbose) {
     console.log(color.green(`Find ${options.widthsNumber} best widths`))

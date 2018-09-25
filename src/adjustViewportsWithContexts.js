@@ -21,10 +21,10 @@ module.exports = function adjustViewportsWithContexts(contexts, opt) {
     maxViewport: contextMaxViewport,
   }
 
-  if (opt.minViewport !== undefined) {
+  if (opt.minViewport) {
     result.minViewport = Math.max(contextMinViewport, opt.minViewport)
   }
-  if (opt.maxViewport !== undefined) {
+  if (opt.maxViewport) {
     result.maxViewport = Math.min(contextMaxViewport, opt.maxViewport)
   }
 
