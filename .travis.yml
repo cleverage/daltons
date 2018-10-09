@@ -1,0 +1,14 @@
+sudo: required
+language: node_js
+node_js:
+  - '8'
+cache:
+  directories:
+    - node_modules
+before_script:
+  - export CHROME_PATH="$(which google-chrome-stable)"
+script:
+  - npm run test:lint
+  - npm run test:examples -- --ci
+addons:
+  chrome: stable
