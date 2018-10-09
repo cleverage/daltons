@@ -18,7 +18,9 @@
     "responsive-image-widths": "./src/cli.js"
   },
   "scripts": {
-    "test": "npx eslint ."
+    "test": "npm run test:lint && npm run test:examples",
+    "test:lint": "npx eslint .",
+    "test:examples": "jest"
   },
   "dependencies": {
     "ansi-colors": "^3.0.3",
@@ -31,6 +33,7 @@
     "eslint": "^5.5.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
+    "jest": "^23.6.0",
     "prettier": "^1.14.2"
   }
 }
