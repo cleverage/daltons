@@ -1,6 +1,7 @@
 const csvparse = require('csv-parse/lib/sync')
 const fs = require('fs')
 const color = require('ansi-colors')
+const logger = require('./logger')
 
 module.exports = function getContext(csvFile, opt) {
   // Load content from the CSV file
@@ -20,9 +21,7 @@ module.exports = function getContext(csvFile, opt) {
     },
   })
 
-  if (opt.verbose) {
-    console.log(color.green(`Imported ${result.length} lines of context`))
-  }
+  logger.info(color.green(`Imported ${result.length} lines of context`))
 
   return result
 }
