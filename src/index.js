@@ -5,11 +5,10 @@ const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const adjustViewportsWithContexts = require('./adjustViewportsWithContexts')
 const getContexts = require('./getContexts')
+const browse = require('./browse')
 const logger = require('./logger')
 
 const writeFile = util.promisify(fs.writeFile)
-
-const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
 const defaultOptions = {
   url: null,
@@ -46,119 +45,12 @@ module.exports = async function main(settings) {
     ),
   )
 
-  const VIEWPORT = {
-    width: options.minViewport,
-    height: 2000,
-    deviceScaleFactor: 1,
-  }
-  const imageWidths = new Map()
-
-  logger.info(color.green('Launch headless Chrome'))
-
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-
-  logger.info(color.green(`Go to ${options.url}`))
-
-  await page
-    .goto(options.url, { waitUntil: 'networkidle2' })
-    .then(async () => {
-      logger.info(
-        color.green(
-          `Checking widths of image ${color.white(options.selector)}`,
-        ),
-      )
-      const spinner = logger.newSpinner()
-      if (spinner) {
-        spinner.start('Starting…')
-      }
-
-      while (VIEWPORT.width <= options.maxViewport) {
-        // Update log in the console
-        if (spinner) {
-          spinner.tick(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
-        }
-        // Set new viewport width
-        await page.setViewport(VIEWPORT)
-
-        // Give the browser some time to adjust layout, sometimes requiring JS
-        await sleep(options.delay)
-
-        // Check image width
-        let imageWidth = await page.evaluate(sel => {
-          return document.querySelector(sel).width
-        }, options.selector)
-        imageWidths.set(VIEWPORT.width, imageWidth)
-
-        // Increment viewport width
-        VIEWPORT.width++
-      }
-
-      if (spinner) {
-        spinner.stop(
-          `Finished at viewport: ${color.cyan(options.maxViewport)}px`,
-        )
-      }
-
-      // Save data into the CSV file
-      if (options.variationsFile) {
-        let csvString = 'viewport width (px);image width (px)\n'
-        imageWidths.forEach(
-          (imageWidth, viewportWidth) =>
-            (csvString += `${viewportWidth};${imageWidth}` + '\n'),
-        )
-        await writeFile(
-          path.resolve(options.basePath, options.variationsFile),
-          csvString,
-        )
-          .then(() => {
-            logger.info(
-              color.green(
-                `Image width variations saved to CSV file ${
-                  options.variationsFile
-                }`,
-              ),
-            )
-          })
-          .catch(error =>
-            logger.error(
-              `Couldn’t save image width variations to CSV file ${
-                options.variationsFile
-              }:\n${error}`,
-            ),
-          )
-      }
-
-      // Output clean table to the console
-      const imageWidthsTable = logger.newTable({
-        head: ['viewport width', 'image width'],
-        colAligns: ['right', 'right'],
-        style: {
-          head: ['green', 'green'],
-          compact: true,
-        },
-      })
-      if (imageWidthsTable) {
-        imageWidths.forEach((imageWidth, viewportWidth) =>
-          imageWidthsTable.push([viewportWidth + 'px', imageWidth + 'px']),
-        )
-        logger.info(imageWidthsTable.toString())
-      }
-    })
-    .catch(error =>
-      logger.error(`Couldn’t load page located at ${options.url}:\n${error}`),
-    )
-
-  await page.browser().close()
+  const imageWidths = await browse(options)
 
   /* ======================================================================== */
-  if (options.verbose) {
-    logger.info(
-      color.bgCyan.black(
-        '\nStep 3: compute optimal n widths from both datasets',
-      ),
-    )
-  }
+  logger.info(
+    color.bgCyan.black('\nStep 3: compute optimal n widths from both datasets'),
+  )
 
   logger.info(color.green('Compute all perfect image widths'))
 

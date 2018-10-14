@@ -17,10 +17,11 @@ class Spinner {
   }
   stop(msg) {
     process.stdout.clearLine()
+    process.stdout.cursorTo(0)
     if (!msg) {
       return
     }
-    process.stdout.write(msg)
+    process.stdout.write(msg + '\n')
   }
 }
 
