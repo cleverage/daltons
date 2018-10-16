@@ -1,5 +1,7 @@
 # Responsive Image Widths
 
+[![Build Status](https://travis-ci.org/cleverage/responsive-image-widths.svg?branch=master)](https://travis-ci.org/cleverage/responsive-image-widths)
+
 A command-line tool helping the choice of optimal responsive image widths to put in your `srcset` attribute(s).
 
 Install as a global package: `npm install -g cleverage/responsive-image-widths#master`
