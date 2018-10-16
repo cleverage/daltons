@@ -130,4 +130,6 @@ widths in srcset: ${srcset.join(',')}`
         ),
       )
   }
+
+  return perfectWidths
 }
