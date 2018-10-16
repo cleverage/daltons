@@ -1,4 +1,5 @@
 const color = require('ansi-colors')
+const logger = require('./logger')
 
 module.exports = function adjustViewportsWithContexts(contexts, opt) {
   const contextMinViewport = contexts.reduce(
@@ -9,13 +10,11 @@ module.exports = function adjustViewportsWithContexts(contexts, opt) {
     (max, p) => (p.viewport > max ? p.viewport : max),
     contexts[0].viewport,
   )
-  if (opt.verbose) {
-    console.log(
-      color.green(
-        `Viewports in context go from ${contextMinViewport}px to ${contextMaxViewport}px`,
-      ),
-    )
-  }
+  logger.info(
+    color.green(
+      `Viewports in context go from ${contextMinViewport}px to ${contextMaxViewport}px`,
+    ),
+  )
   const result = {
     minViewport: contextMinViewport,
     maxViewport: contextMaxViewport,
@@ -28,15 +27,13 @@ module.exports = function adjustViewportsWithContexts(contexts, opt) {
     result.maxViewport = Math.min(contextMaxViewport, opt.maxViewport)
   }
 
-  if (opt.verbose) {
-    console.log(
-      color.green(
-        `Viewports will be considered from ${color.white(
-          result.minViewport + 'px',
-        )} to ${color.white(result.maxViewport + 'px')}`,
-      ),
-    )
-  }
+  logger.info(
+    color.green(
+      `Viewports will be considered from ${color.white(
+        result.minViewport + 'px',
+      )} to ${color.white(result.maxViewport + 'px')}`,
+    ),
+  )
 
   return result
 }

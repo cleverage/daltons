@@ -6,8 +6,13 @@
  *
  *     npx responsive-image-widths -h
  */
+const fs = require('fs')
+const path = require('path')
 const yargs = require('yargs')
+const color = require('ansi-colors')
 const run = require('./index.js')
+
+const currentPath = process.cwd()
 
 const argv = yargs
   .options({
@@ -151,7 +156,7 @@ const argv = yargs
         color.red(
           `Error: data should be either saved in a file (${color.redBright(
             'destFile',
-          )} and/or output to the console (${color.redBright('verbose')}`,
+          )} and/or output to the console (${color.redBright('verbose')})`,
         ),
       )
     }

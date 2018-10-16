@@ -3,13 +3,12 @@ const util = require('util')
 const path = require('path')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
-const Table = require('cli-table')
 const adjustViewportsWithContexts = require('./adjustViewportsWithContexts')
 const getContexts = require('./getContexts')
+const browse = require('./browse')
+const logger = require('./logger')
 
 const writeFile = util.promisify(fs.writeFile)
-
-const sleep = timeout => new Promise(r => setTimeout(r, timeout))
 
 const defaultOptions = {
   url: null,
@@ -26,13 +25,13 @@ const defaultOptions = {
 module.exports = async function main(settings) {
   const options = Object.assign({}, defaultOptions, settings)
 
-  if (options.verbose) {
-    console.log(
-      color.bgCyan.black(
-        '\nStep 1: get actual contexts (viewports & screen densities) of site visitors',
-      ),
-    )
-  }
+  logger.level = options.verbose ? 'info' : 'warn'
+
+  logger.info(
+    color.bgCyan.black(
+      '\nStep 1: get actual contexts (viewports & screen densities) of site visitors',
+    ),
+  )
   let contexts = getContexts(
     path.resolve(options.basePath, options.contextsFile),
     options,
@@ -40,138 +39,21 @@ module.exports = async function main(settings) {
   Object.assign(options, adjustViewportsWithContexts(contexts, options))
 
   /* ======================================================================== */
-  if (options.verbose) {
-    console.log(
-      color.bgCyan.black(
-        '\nStep 2: get variations of image width across viewport widths',
-      ),
-    )
-  }
+  logger.info(
+    color.bgCyan.black(
+      '\nStep 2: get variations of image width across viewport widths',
+    ),
+  )
 
-  const VIEWPORT = {
-    width: options.minViewport,
-    height: 2000,
-    deviceScaleFactor: 1,
-  }
-  const imageWidths = new Map()
-  if (options.verbose) {
-    console.log(color.green('Launch headless Chrome'))
-  }
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-  if (options.verbose) {
-    console.log(color.green(`Go to ${options.url}`))
-  }
-  await page
-    .goto(options.url, { waitUntil: 'networkidle2' })
-    .then(async () => {
-      if (options.verbose) {
-        console.log(
-          color.green(
-            `Checking widths of image ${color.white(options.selector)}`,
-          ),
-        )
-        process.stdout.write(
-          `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
-        )
-      }
-      while (VIEWPORT.width <= options.maxViewport) {
-        // Set new viewport width
-        await page.setViewport(VIEWPORT)
-
-        // Give the browser some time to adjust layout, sometimes requiring JS
-        await sleep(options.delay)
-
-        // Check image width
-        let imageWidth = await page.evaluate(sel => {
-          return document.querySelector(sel).width
-        }, options.selector)
-        imageWidths.set(VIEWPORT.width, imageWidth)
-
-        // Increment viewport width
-        VIEWPORT.width++
-
-        // Update log in the console
-        if (options.verbose) {
-          process.stdout.clearLine()
-          process.stdout.cursorTo(0)
-          if (VIEWPORT.width <= options.maxViewport) {
-            process.stdout.write(
-              `Current viewport: ${color.cyan(VIEWPORT.width)}px`,
-            )
-          }
-        }
-      }
-
-      // Save data into the CSV file
-      if (options.variationsFile) {
-        let csvString = 'viewport width (px);image width (px)\n'
-        imageWidths.forEach(
-          (imageWidth, viewportWidth) =>
-            (csvString += `${viewportWidth};${imageWidth}` + '\n'),
-        )
-        await writeFile(
-          path.resolve(options.basePath, options.variationsFile),
-          csvString,
-        )
-          .then(() => {
-            if (options.verbose) {
-              console.log(
-                color.green(
-                  `Image width variations saved to CSV file ${
-                    options.variationsFile
-                  }`,
-                ),
-              )
-            }
-          })
-          .catch(error =>
-            console.log(
-              color.red(
-                `Couldn’t save image width variations to CSV file ${
-                  options.variationsFile
-                }:\n${error}`,
-              ),
-            ),
-          )
-      }
-
-      // Output clean table to the console
-      if (options.verbose) {
-        const imageWidthsTable = new Table({
-          head: ['viewport width', 'image width'],
-          colAligns: ['right', 'right'],
-          style: {
-            head: ['green', 'green'],
-            compact: true,
-          },
-        })
-        imageWidths.forEach((imageWidth, viewportWidth) =>
-          imageWidthsTable.push([viewportWidth + 'px', imageWidth + 'px']),
-        )
-        console.log(imageWidthsTable.toString())
-      }
-    })
-    .catch(error =>
-      console.log(
-        color.red(`Couldn’t load page located at ${options.url}:\n${error}`),
-      ),
-    )
-
-  await page.browser().close()
+  const imageWidths = await browse(options)
 
   /* ======================================================================== */
-  if (options.verbose) {
-    console.log(
-      color.bgCyan.black(
-        '\nStep 3: compute optimal n widths from both datasets',
-      ),
-    )
-  }
+  logger.info(
+    color.bgCyan.black('\nStep 3: compute optimal n widths from both datasets'),
+  )
 
-  if (options.verbose) {
-    console.log(color.green('Compute all perfect image widths'))
-  }
+  logger.info(color.green('Compute all perfect image widths'))
+
   let perfectWidths = new Map()
   let totalViews = 0
   contexts.map(value => {
@@ -197,18 +79,19 @@ module.exports = async function main(settings) {
       return b[1] - a[1]
     }),
   )
-  if (options.verbose) {
-    console.log(
-      color.green(`${perfectWidths.size} perfect widths have been computed`),
-    )
-    const perfectWidthsTable = new Table({
-      head: ['percentage', 'image width'],
-      colAligns: ['right', 'right'],
-      style: {
-        head: ['green', 'green'],
-        compact: true,
-      },
-    })
+
+  logger.info(
+    color.green(`${perfectWidths.size} perfect widths have been computed`),
+  )
+  const perfectWidthsTable = logger.newTable({
+    head: ['percentage', 'image width'],
+    colAligns: ['right', 'right'],
+    style: {
+      head: ['green', 'green'],
+      compact: true,
+    },
+  })
+  if (perfectWidthsTable) {
     perfectWidths.forEach((percentage, imageWidth) => {
       let roundedPercentage = percentage * 100
       perfectWidthsTable.push([
@@ -216,12 +99,11 @@ module.exports = async function main(settings) {
         imageWidth + 'px',
       ])
     })
-    console.log(perfectWidthsTable.toString())
+    logger.info(perfectWidthsTable.toString())
   }
 
-  if (options.verbose) {
-    console.log(color.green(`Find ${options.widthsNumber} best widths`))
-  }
+  logger.info(color.green(`Find ${options.widthsNumber} best widths`))
+
   // todo
   let srcset = []
 
@@ -230,25 +112,21 @@ module.exports = async function main(settings) {
   }
 
   // Save data into the CSV file
-  if (options.destfile) {
+  if (options.destFile) {
     let fileString = `
 page           : ${options.url}
 image selector : ${options.selector}
 widths in srcset: ${srcset.join(',')}`
     await writeFile(
-      path.resolve(options.basePath, options.destfile),
+      path.resolve(options.basePath, options.destFile),
       fileString,
     )
       .then(() => {
-        if (options.verbose) {
-          console.log(color.green(`Data saved to file ${options.destfile}`))
-        }
+        logger.info(color.green(`Data saved to file ${options.destFile}`))
       })
       .catch(error =>
-        console.log(
-          color.red(
-            `Couldn’t save data to file ${options.destfile}:\n${error}`,
-          ),
+        logger.error(
+          `Couldn’t save data to file ${options.destFile}:\n${error}`,
         ),
       )
   }
