@@ -4,7 +4,21 @@
 
 `responsive-image-widths` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
 
-## How it works
+## Why do we need this tool?
+
+We want to provide the best experience to [our clients](https://www.clever-age.com/en/our-work/)' users, so optimizing web performance is one of our main concerns.
+
+Using responsive images in every projects, we wanted to be able to make it as efficient as possible. The main difficulty is choosing the image widths we put in `srcset` attributes, because nothing in the standard tells us about this.
+
+## How does it work?
+
+It takes 3 steps for `responsive-image-widths` to find the best widths to put in the `srcset` attribute of a responsive image:
+
+- take Real User Monitoring (RUM) of viewport widths and screen densities
+- list the image's widths across all of these viewport widths
+- compute the optimal image widths to put in the `srcset` attribute to cover all these needs
+
+Learn more in [the full documentation](https://cleverage.github.io/responsive-image-widths/).
 
 ## Usage
 
@@ -22,14 +36,9 @@ Then run it with the `-h` option to get help:
 npx responsive-image-widths -h
 ```
 
-Or see details in [the full documentation](https://cleverage.github.io/responsive-image-widths/).
+Or see detailed options in [the full documentation](https://cleverage.github.io/responsive-image-widths/options.html) and look at [examples and use cases](https://cleverage.github.io/responsive-image-widths/#examples-and-use-cases).
 
-## Related projects
-
-- [Sizer-Soze](https://blog.yoav.ws/who_is_sizer_soze/), developed by [Yoav Weiss](https://github.com/yoavweiss), "is a utility that enables you to evaluate how much you could save by properly resizing your images to match their display size on various viewports".
-- [imaging-heap](https://github.com/filamentgroup/imaging-heap), developed by [Zach Leatherman](https://github.com/zachleat) is "a command line tool to measure the efficiency of your responsive image markup across viewport sizes and device pixel ratios".
-
-## Built With
+## Built with
 
 * [Node.js](https://nodejs.org/en/)
 * [Puppeteer](https://developers.google.com/web/tools/puppeteer/), a Node.js library which provides a high-level API to control headless Chrome

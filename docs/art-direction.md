@@ -1,4 +1,6 @@
-# Art Direction
+[Back home](/)
+
+# Use case: Art Direction
 
 How to deal with multiple `<source>` with `mix/max-width` media queries (Art Direction)?
 

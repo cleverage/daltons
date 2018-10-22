@@ -1,4 +1,6 @@
-# Options
+[Back home](/)
+
+# Detailed options
 
 Quite a lot of options are necessary to run `responsive-image-widths`, some being mandatory and other optional.
 
