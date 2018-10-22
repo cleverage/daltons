@@ -2,16 +2,45 @@
 
 [![Build Status](https://travis-ci.org/cleverage/responsive-image-widths.svg?branch=master)](https://travis-ci.org/cleverage/responsive-image-widths)
 
-A command-line tool helping the choice of optimal responsive image widths to put in your `srcset` attribute(s).
+`responsive-image-widths` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
 
-Install as a global package: `npm install -g cleverage/responsive-image-widths#master`
+## How it works
 
-Run: `npx responsive-image-widths -h`
+## Usage
 
-Steps required to get the image widths list:
+To install and run this application, you'll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
-- Step 1: get actual contexts (viewports and screen densities) of site visitors
-- Step 2: get variations of image width across viewport widths
-- Step 3: compute optimal n widths from both datasets
+From your command line, install `responsive-image-widths` as a global package:
 
-See details in [the full documentation](https://cleverage.github.io/responsive-image-widths/)
+```
+npm install -g "cleverage/responsive-image-widths#master"
+```
+
+Then run it with the `-h` option to get help:
+
+```
+npx responsive-image-widths -h
+```
+
+Or see details in [the full documentation](https://cleverage.github.io/responsive-image-widths/).
+
+## Related projects
+
+- [Sizer-Soze](https://blog.yoav.ws/who_is_sizer_soze/), developed by [Yoav Weiss](https://github.com/yoavweiss), "is a utility that enables you to evaluate how much you could save by properly resizing your images to match their display size on various viewports".
+- [imaging-heap](https://github.com/filamentgroup/imaging-heap), developed by [Zach Leatherman](https://github.com/zachleat) is "a command line tool to measure the efficiency of your responsive image markup across viewport sizes and device pixel ratios".
+
+## Built With
+
+* Node.js
+* Puppeteer
+
+## Authors
+
+* **[Nicolas Hoizey](https://github.com/nhoizey)**: *Idea and initial work*
+* **[Yvain Liechti](https://github.com/ryuran)**: *Initial work*
+
+See also the list of [contributors](https://github.com/cleverage/responsive-image-widths/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
