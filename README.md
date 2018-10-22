@@ -31,8 +31,8 @@ Or see details in [the full documentation](https://cleverage.github.io/responsiv
 
 ## Built With
 
-* Node.js
-* Puppeteer
+* [Node.js](https://nodejs.org/en/)
+* [Puppeteer](https://developers.google.com/web/tools/puppeteer/), a Node.js library which provides a high-level API to control headless Chrome
 
 ## Authors
 
