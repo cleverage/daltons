@@ -22,7 +22,7 @@ Learn more in [the full documentation](https://cleverage.github.io/responsive-im
 
 ## Usage
 
-To install and run this application, you'll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
+To install and run this application, you’ll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
 From your command line, install `responsive-image-widths` as a global package:
 
