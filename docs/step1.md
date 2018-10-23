@@ -1,8 +1,12 @@
-# Step 1: get actual contexts (viewports and screen densities) of site visitors
+[< Back home](/responsive-image-widths/)
+
+# Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website
 
 ## Load data listing page views with actual contexts of site visitors
 
-This step requires a CSV file with the following columns:
+You need to provide a file with contexts, which are statistics about viewport widths and screen density of the website’s visitors.
+
+The contexts file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
 
 - viewport width in `px`
 - screen density in `dppx`
@@ -10,10 +14,13 @@ This step requires a CSV file with the following columns:
 
 There are a few requirements:
 
+- put column headers in first row
 - use a comma separator
 - don’t use any thousands separator
 - viewport width and number of page views are integers
 - screen density is a float using a dot as decimal separator
+
+See this example from the project’s repository: [contexts.csv](https://github.com/cleverage/responsive-image-widths/blob/master/examples/simple/contexts.csv)
 
 ## Getting these data with an Analytics solution
 
@@ -49,7 +56,7 @@ ga('set', {
 ga('send', 'pageview')
 ```
 
-You will then have to get the data from your analytics solution. Wait for a while to get accurate data, depending on your traffic.
+You will then have to get the data from your Analytics solution. Wait for a while to get accurate data, depending on your traffic.
 
 Here’s how to create a custom report in Google Analytics, for example:
 
