@@ -1,4 +1,4 @@
-[Back home](/)
+[< Back home](/responsive-image-widths/)
 
 # Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website
 

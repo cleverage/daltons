@@ -1,4 +1,4 @@
-[Back home](/)
+[< Back home](/responsive-image-widths/)
 
 # Step 2: detect the image’s widths across all of these viewport widths
 

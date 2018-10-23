@@ -1,4 +1,4 @@
-[Back home](/)
+[< Back home](/responsive-image-widths/)
 
 # Use case: Art Direction
 
