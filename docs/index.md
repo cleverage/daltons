@@ -6,13 +6,13 @@
 
 ## Why do we need this tool?
 
-We want to provide the best experience to [our clients](https://www.clever-age.com/en/our-work/)' users, so optimizing web performance is one of our main concerns.
+We want to provide the best experience to [our clients](https://www.clever-age.com/en/our-work/)’ users, so optimizing web performance is one of our main concerns.
 
 Using responsive images in every projects, we wanted to be able to make it as efficient as possible. The main difficulty is choosing the image widths we put in `srcset` attributes, because nothing in the standard tells us about this.
 
 ## How can we choose the responsive image widths?
 
-We didn't invent anything here, we're standing on the shoulders of giants.
+We didn’t invent anything here, we’re standing on the shoulders of giants.
 
 Back in 2015, [Jason Grigsby](https://cloudfour.com/is/jason-grigsby/) wrote this in [Responsive Images 101, Part 9: Image Breakpoints](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/):
 
@@ -20,27 +20,27 @@ Back in 2015, [Jason Grigsby](https://cloudfour.com/is/jason-grigsby/) wrote thi
 
 Jason presented a few ways to decide which image sizes to put in the `srcset` attribute of responsive images.
 
-[Cloudinary](https://cloudinary.com) then developed the [Responsive Image Breakpoints Generator](https://www.responsivebreakpoints.com/), based on Jason's [setting image breakpoints based on a performance budget](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#setting-image-breakpoints-based-on-a-performance-budget) idea. It was already a good optimization.
+[Cloudinary](https://cloudinary.com) then developed the [Responsive Image Breakpoints Generator](https://www.responsivebreakpoints.com/), based on Jason’s [setting image breakpoints based on a performance budget](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#setting-image-breakpoints-based-on-a-performance-budget) idea. It was already a good optimization.
 
 > We’d start by defining a budget for the amount of wasted bytes that the browser would be allowed to download above what is needed to fit the size of the image in the page.
 
-But we believe the most efficient of Jason's ideas is [setting image breakpoints based on most frequent requests](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#setting-image-breakpoints-based-on-most-frequent-requests), inspired by a discussion with [Yoav Weiss](https://blog.yoav.ws/) from Akamai (who made [Blink and webkit support responsive images](https://blog.yoav.ws/by_the_people/) before joining Akamai) and [Ilya Grigorik](https://www.igvita.com/) from Google:
+But we believe the most efficient of Jason’s ideas is [setting image breakpoints based on most frequent requests](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#setting-image-breakpoints-based-on-most-frequent-requests), inspired by a discussion with [Yoav Weiss](https://blog.yoav.ws/) from Akamai (who made [Blink and webkit support responsive images](https://blog.yoav.ws/by_the_people/) before joining Akamai) and [Ilya Grigorik](https://www.igvita.com/) from Google:
 
 > For these organizations, they can tie their image processing and breakpoints logic to their analytics and change the size of the images over time if they find that new image sizes are getting requested more frequently.
 
-Jason Grigsby also wrote in the same article that [humans shouldn’t be doing this](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#humans-shouldnt-be-doing-this), and we agree. That's why we starting developing `responsive-image-widths`.
+Jason Grigsby also wrote in the same article that [humans shouldn’t be doing this](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#humans-shouldnt-be-doing-this), and we agree. That’s why we starting developing `responsive-image-widths`.
 
 ## How does it work?
 
 It takes 3 steps for `responsive-image-widths` to find the best widths to put in the `srcset` attribute of a responsive image:
 
 - [Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website](/responsive-image-widths/step1.html)
-- [Step 2: detect the image's widths across all of these viewport widths](/responsive-image-widths/step2.html)
+- [Step 2: detect the image’s widths across all of these viewport widths](/responsive-image-widths/step2.html)
 - [Step 3: compute the optimal image widths to put in the `srcset` attribute to cover all these needs](/responsive-image-widths/step3.html)
 
 ## Getting started
 
-To install and run this application, you'll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
+To install and run this application, you’ll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
 From your command line, install `responsive-image-widths` as a global package:
 
@@ -88,7 +88,7 @@ See [details about each option](/responsive-image-widths/options.html).
 
 ## Examples and use cases
 
-There are a few examples in the project's repository: [examples](https://github.com/cleverage/responsive-image-widths/tree/master/examples)
+There are a few examples in the project’s repository: [examples](https://github.com/cleverage/responsive-image-widths/tree/master/examples)
 
 Use cases:
 
