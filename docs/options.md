@@ -17,20 +17,20 @@ These options can be useful:
 Warning: reducing the number of viewport widths to check also speeds up the script execution, but be careful with results based only on a subset of actual values.
 </aside>
 
-|option|alias|required?|type|default value|description|
-|------|-----|---------|----|-------------|-----------|
-|`--minViewport`|`-i`|optional|number| |Sets the minimum viewport width to check.|
-|`--maxViewport`|`-x`|optional|number| |Sets the maximum viewport width to check.|
+| option          | alias | required? | type   | default value | description                               |
+| --------------- | ----- | --------- | ------ | ------------- | ----------------------------------------- |
+| `--minViewport` | `-i`  | optional  | number |               | Sets the minimum viewport width to check. |
+| `--maxViewport` | `-x`  | optional  | number |               | Sets the maximum viewport width to check. |
 
 ## Step 1: get actual contexts of site visitors
 
-|option|alias|required?|type|default value|description|
-|------|-----|---------|----|-------------|-----------|
-|`--contextsFile `| |required|file path| |File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)|
+| option           | alias | required? | type      | default value | description                                           |
+| ---------------- | ----- | --------- | --------- | ------------- | ----------------------------------------------------- |
+| `--contextsFile` |       | required  | file path |               | File path from which reading the actual contexts data |
 
-You need to provide a file with “contexts”, which means statistics about viewport widths and screen density of the website's visitors.
+You need to provide a file with contexts, which means statistics about viewport widths and screen density of the website's visitors.
 
-The “contexts” file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
+The contexts file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
 
 - screen density, in dppx
 - viewport width, in px
@@ -38,13 +38,10 @@ The “contexts” file should be in [<abbr title="Coma-Separated Values">CSV</a
 
 See the provided example: [contexts.csv](https://github.com/cleverage/responsive-image-widths/blob/master/examples/simple/contexts.csv)
 
-
-
 ## Step 2: get variations of image width across viewport widths
 
-|option|alias|required?|type|default value|description|
-|------|-----|---------|----|-------------|-----------|
-|`--url`|`-u`|required|URL| |Defines the URL of the page in which to check the image width across viewport widths.|
+| option  | alias | required? | type | default value | description                                                                           |
+| ------- | ----- | --------- | ---- | ------------- | ------------------------------------------------------------------------------------- |
+| `--url` | `-u`  | required  | URL  |               | Defines the URL of the page in which to check the image width across viewport widths. |
 
 ## Step 3: compute optimal n widths from both datasets
-
