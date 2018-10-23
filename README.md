@@ -27,7 +27,7 @@ To install and run this application, you’ll need [Node.js](https://nodejs.org/
 From your command line, install `responsive-image-widths` as a global package:
 
 ```
-npm install -g "cleverage/responsive-image-widths#master"
+npm i -g github:cleverage/responsive-image-widths#master
 ```
 
 Then run it with the `-h` option to get help:
