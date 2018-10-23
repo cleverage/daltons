@@ -28,7 +28,7 @@ Warning: reducing the number of viewport widths to check also speeds up the scri
 | ---------------- | ----- | --------- | --------- | ------------- | ----------------------------------------------------- |
 | `--contextsFile` |       | required  | file path |               | File path from which reading the actual contexts data |
 
-You need to provide a file with contexts, which means statistics about viewport widths and screen density of the website's visitors.
+You need to provide a file with contexts, which means statistics about viewport widths and screen density of the website’s visitors.
 
 The contexts file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
 
