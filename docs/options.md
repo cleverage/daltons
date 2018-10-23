@@ -30,13 +30,7 @@ Warning: reducing the number of viewport widths to check also speeds up the scri
 
 You need to provide a file with contexts, which means statistics about viewport widths and screen density of the website’s visitors.
 
-The contexts file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
-
-- screen density, in dppx
-- viewport width, in px
-- number of page views
-
-See the provided example: [contexts.csv](https://github.com/cleverage/responsive-image-widths/blob/master/examples/simple/contexts.csv)
+See the details of [step 1](/responsive-image-widths/step1.html).
 
 ## Step 2: get variations of image width across viewport widths
 
