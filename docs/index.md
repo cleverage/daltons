@@ -101,13 +101,13 @@ Use cases:
 
 ## Built with
 
-* [Node.js](https://nodejs.org/en/)
-* [Puppeteer](https://developers.google.com/web/tools/puppeteer/), a Node.js library which provides a high-level API to control headless Chrome
+- [Node.js](https://nodejs.org/en/)
+- [Puppeteer](https://developers.google.com/web/tools/puppeteer/), a Node.js library which provides a high-level API to control headless Chrome
 
 ## Authors
 
-* [Nicolas Hoizey](https://github.com/nhoizey): Idea and initial work, maintainer
-* [Yvain Liechti](https://github.com/ryuran): Early contributor, maintainer
+- [Nicolas Hoizey](https://github.com/nhoizey): Idea and initial work, maintainer
+- [Yvain Liechti](https://github.com/ryuran): Early contributor, maintainer
 
 See also the list of [contributors](https://github.com/cleverage/responsive-image-widths/contributors) who participated in this project.
 
