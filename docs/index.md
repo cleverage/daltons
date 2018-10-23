@@ -1,6 +1,9 @@
 # Responsive Image Widths
 
-[![Build Status](https://travis-ci.org/cleverage/responsive-image-widths.svg?branch=master)](https://travis-ci.org/cleverage/responsive-image-widths)
+[![Travis build status](https://img.shields.io/travis/cleverage/responsive-image-widths.svg?style=popout)](https://travis-ci.org/cleverage/responsive-image-widths)
+[![Known Vulnerabilities](https://snyk.io/test/github/cleverage/responsive-image-widths/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cleverage/responsive-image-widths?targetFile=package.json)
+[![License](https://img.shields.io/github/license/cleverage/responsive-image-widths.svg?style=popout)](https://github.com/cleverage/responsive-image-widths/blob/master/LICENSE.md)
+[![GitHub stars](https://img.shields.io/github/stars/cleverage/responsive-image-widths.svg?style=social)](https://github.com/cleverage/responsive-image-widths/stargazers)
 
 `responsive-image-widths` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
 
