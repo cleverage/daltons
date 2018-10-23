@@ -15,7 +15,7 @@ Using responsive images in every projects, we wanted to be able to make it as ef
 It takes 3 steps for `responsive-image-widths` to find the best widths to put in the `srcset` attribute of a responsive image:
 
 - take Real User Monitoring (RUM) of viewport widths and screen densities
-- list the image's widths across all of these viewport widths
+- list the image’s widths across all of these viewport widths
 - compute the optimal image widths to put in the `srcset` attribute to cover all these needs
 
 Learn more in [the full documentation](https://cleverage.github.io/responsive-image-widths/).
