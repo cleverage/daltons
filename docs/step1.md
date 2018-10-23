@@ -1,4 +1,6 @@
-# Step 1: get actual contexts (viewports and screen densities) of site visitors
+[Back home](/)
+
+# Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website
 
 ## Load data listing page views with actual contexts of site visitors
 
