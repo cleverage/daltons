@@ -6,7 +6,7 @@
 
 ## Why do we need this tool?
 
-We want to provide the best experience to [our clients](https://www.clever-age.com/en/our-work/)' users, so optimizing web performance is one of our main concerns.
+We want to provide the best experience to [our clients](https://www.clever-age.com/en/our-work/)’ users, so optimizing web performance is one of our main concerns.
 
 Using responsive images in every projects, we wanted to be able to make it as efficient as possible. The main difficulty is choosing the image widths we put in `srcset` attributes, because nothing in the standard tells us about this.
 
