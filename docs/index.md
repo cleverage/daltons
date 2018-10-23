@@ -88,6 +88,10 @@ See [details about each option](/responsive-image-widths/options.html).
 
 ## Examples and use cases
 
+There are a few examples in the project's repository: [examples](https://github.com/cleverage/responsive-image-widths/tree/master/examples)
+
+Use cases:
+
 - [How to deal with multiple `<source>` with `mix/max-width` media queries (Art Direction)](/responsive-image-widths/art-direction.html)
 
 ## Related projects
