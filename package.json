@@ -23,17 +23,17 @@
     "test:examples": "jest"
   },
   "dependencies": {
-    "ansi-colors": "^3.0.3",
+    "ansi-colors": "^3.2.1",
     "cli-table": "^0.3.1",
-    "csv-parse": "^3.0.0",
-    "puppeteer": "^1.8.0",
-    "yargs": "^12.0.2"
+    "csv-parse": "^4.0.1",
+    "puppeteer": "^1.11.0",
+    "yargs": "^12.0.5"
   },
   "devDependencies": {
-    "eslint": "^5.5.0",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-prettier": "^2.6.2",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "jest": "^23.6.0",
-    "prettier": "^1.14.2"
+    "prettier": "^1.15.3"
   }
 }
