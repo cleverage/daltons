@@ -1,21 +1,21 @@
 {
-  "name": "responsive-image-widths",
+  "name": "daltons",
   "version": "0.0.1",
   "author": "Nicolas Hoizey <nhoizey@clever-age.com>",
   "description": "A tool helping the choice of optimal responsive image sizes",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/cleverage/responsive-image-widths/"
+    "url": "https://github.com/cleverage/daltons/"
   },
   "bugs": {
-    "url": "https://github.com/cleverage/responsive-image-widths/issues"
+    "url": "https://github.com/cleverage/daltons/issues"
   },
   "engines": {
     "node": ">=8"
   },
   "main": "./src/index.js",
   "bin": {
-    "responsive-image-widths": "./src/cli.js"
+    "daltons": "./src/cli.js"
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:examples",
