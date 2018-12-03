@@ -31,7 +31,7 @@ But we believe the most efficient of Jason’s ideas is [setting image breakpoin
 
 > For these organizations, they can tie their image processing and breakpoints logic to their analytics and change the size of the images over time if they find that new image sizes are getting requested more frequently.
 
-Jason Grigsby also wrote in the same article that [humans shouldn’t be doing this](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#humans-shouldnt-be-doing-this), and we agree. That’s why we starting developing `daltons`.
+Jason Grigsby also wrote in the same article that [humans shouldn’t be doing this](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#humans-shouldnt-be-doing-this), and we agree. That’s why we started developing `daltons`.
 
 ## How does it work?
 
