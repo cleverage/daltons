@@ -1,8 +1,8 @@
-[< Back home](/responsive-image-widths/)
+[< Back home](/daltons/)
 
 # Detailed options
 
-Quite a lot of options are necessary to run `responsive-image-widths`, some being mandatory and other optional.
+Quite a lot of options are necessary to run `daltons`, some being mandatory and other optional.
 
 Here are the details:
 
@@ -11,7 +11,7 @@ Here are the details:
 These options can be useful:
 
 - When some viewport width values taken from statistics are obviously out of range
-- For the [Art Direction](/responsive-image-widths/art-direction.html) use case
+- For the [Art Direction](/daltons/art-direction.html) use case
 
 <aside class="warning">
 Warning: reducing the number of viewport widths to check also speeds up the script execution, but be careful with results based only on a subset of actual values.
@@ -30,7 +30,7 @@ Warning: reducing the number of viewport widths to check also speeds up the scri
 
 You need to provide a file with contexts, which means statistics about viewport widths and screen density of the website’s visitors.
 
-See the details of [step 1](/responsive-image-widths/step1.html).
+See the details of [step 1](/daltons/step1.html).
 
 ## Step 2: get variations of image width across viewport widths
 

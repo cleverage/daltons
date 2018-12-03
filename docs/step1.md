@@ -1,4 +1,4 @@
-[< Back home](/responsive-image-widths/)
+[< Back home](/daltons/)
 
 # Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website
 
@@ -20,7 +20,7 @@ There are a few requirements:
 - viewport width and number of page views are integers
 - screen density is a float using a dot as decimal separator
 
-See this example from the project’s repository: [contexts.csv](https://github.com/cleverage/responsive-image-widths/blob/master/examples/simple/contexts.csv)
+See this example from the project’s repository: [contexts.csv](https://github.com/cleverage/daltons/blob/master/examples/simple/contexts.csv)
 
 ## Getting these data with an Analytics solution
 

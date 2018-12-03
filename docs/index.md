@@ -1,11 +1,11 @@
-# Responsive Image Widths
+# Daltons
 
-[![Travis build status](https://img.shields.io/travis/cleverage/responsive-image-widths.svg?style=popout)](https://travis-ci.org/cleverage/responsive-image-widths)
-[![Known Vulnerabilities](https://snyk.io/test/github/cleverage/responsive-image-widths/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cleverage/responsive-image-widths?targetFile=package.json)
-[![License](https://img.shields.io/github/license/cleverage/responsive-image-widths.svg?style=popout)](https://github.com/cleverage/responsive-image-widths/blob/master/LICENSE.md)
-[![GitHub stars](https://img.shields.io/github/stars/cleverage/responsive-image-widths.svg?style=social)](https://github.com/cleverage/responsive-image-widths/stargazers)
+[![Travis build status](https://img.shields.io/travis/cleverage/daltons.svg?style=popout)](https://travis-ci.org/cleverage/daltons)
+[![Known Vulnerabilities](https://snyk.io/test/github/cleverage/daltons/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cleverage/daltons?targetFile=package.json)
+[![License](https://img.shields.io/github/license/cleverage/daltons.svg?style=popout)](https://github.com/cleverage/daltons/blob/master/LICENSE.md)
+[![GitHub stars](https://img.shields.io/github/stars/cleverage/daltons.svg?style=social)](https://github.com/cleverage/daltons/stargazers)
 
-`responsive-image-widths` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
+`daltons` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
 
 ## Why do we need this tool?
 
@@ -31,30 +31,30 @@ But we believe the most efficient of Jason’s ideas is [setting image breakpoin
 
 > For these organizations, they can tie their image processing and breakpoints logic to their analytics and change the size of the images over time if they find that new image sizes are getting requested more frequently.
 
-Jason Grigsby also wrote in the same article that [humans shouldn’t be doing this](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#humans-shouldnt-be-doing-this), and we agree. That’s why we starting developing `responsive-image-widths`.
+Jason Grigsby also wrote in the same article that [humans shouldn’t be doing this](https://cloudfour.com/thinks/responsive-images-101-part-9-image-breakpoints/#humans-shouldnt-be-doing-this), and we agree. That’s why we starting developing `daltons`.
 
 ## How does it work?
 
-It takes 3 steps for `responsive-image-widths` to find the best widths to put in the `srcset` attribute of a responsive image:
+It takes 3 steps for `daltons` to find the best widths to put in the `srcset` attribute of a responsive image:
 
-- [Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website](/responsive-image-widths/step1.html)
-- [Step 2: detect the image’s widths across all of these viewport widths](/responsive-image-widths/step2.html)
-- [Step 3: compute the optimal image widths to put in the `srcset` attribute to cover all these needs](/responsive-image-widths/step3.html)
+- [Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website](/daltons/step1.html)
+- [Step 2: detect the image’s widths across all of these viewport widths](/daltons/step2.html)
+- [Step 3: compute the optimal image widths to put in the `srcset` attribute to cover all these needs](/daltons/step3.html)
 
 ## Getting started
 
 To install and run this application, you’ll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
-From your command line, install `responsive-image-widths` as a global package:
+From your command line, install `daltons` as a global package:
 
 ```
-npm install -g "cleverage/responsive-image-widths#master"
+npm install -g "cleverage/daltons#master"
 ```
 
 Then run it with the `-h` option to get help:
 
 ```
-npx responsive-image-widths -h
+npx daltons -h
 ```
 
 It will output the following help:
@@ -87,33 +87,13 @@ Examples:
   npx cli.js -c ./contexts.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v
 ```
 
-See [details about each option](/responsive-image-widths/options.html).
+See [details about each option](/daltons/options.html).
 
 ## Examples and use cases
 
-There are a few examples in the project’s repository: [examples](https://github.com/cleverage/responsive-image-widths/tree/master/examples)
+There are a few examples in the project’s repository: [examples](https://github.com/cleverage/daltons/tree/master/examples)
 
 Use cases:
 
-- [How to deal with multiple `<source>` with `mix/max-width` media queries (Art Direction)](/responsive-image-widths/art-direction.html)
+- [How to deal with multiple `<source>` with `mix/max-width` media queries (Art Direction)](/daltons/art-direction.html)
 
-## Related projects
-
-- [Sizer-Soze](https://blog.yoav.ws/who_is_sizer_soze/), developed by [Yoav Weiss](https://github.com/yoavweiss), “is a utility that enables you to evaluate how much you could save by properly resizing your images to match their display size on various viewports”.
-- [imaging-heap](https://github.com/filamentgroup/imaging-heap), developed by [Zach Leatherman](https://github.com/zachleat) is “a command line tool to measure the efficiency of your responsive image markup across viewport sizes and device pixel ratios”.
-
-## Built with
-
-- [Node.js](https://nodejs.org/en/)
-- [Puppeteer](https://developers.google.com/web/tools/puppeteer/), a Node.js library which provides a high-level API to control headless Chrome
-
-## Authors
-
-- [Nicolas Hoizey](https://github.com/nhoizey): Idea and initial work, maintainer
-- [Yvain Liechti](https://github.com/ryuran): Early contributor, maintainer
-
-See also the list of [contributors](https://github.com/cleverage/responsive-image-widths/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

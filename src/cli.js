@@ -4,7 +4,7 @@
  *
  * Usage:
  *
- *     npx responsive-image-widths -h
+ *     npx daltons -h
  */
 const fs = require('fs')
 const path = require('path')
