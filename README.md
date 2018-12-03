@@ -30,7 +30,7 @@ To install and run this application, you’ll need [Node.js](https://nodejs.org/
 From your command line, install `daltons` as a global package:
 
 ```
-npm i -g github:cleverage/daltons#master
+npm i -g github:cleverage/daltons
 ```
 
 Then run it with the `-h` option to get help:
