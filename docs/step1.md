@@ -24,7 +24,9 @@ See this example from the project’s repository: [contexts.csv](https://github.
 
 ## Getting these data with an Analytics solution
 
-You can feed custom dimensions to your Analytics solution:
+You should be able to feed custom dimensions to your Analytics solution.
+
+### Computing values
 
 ```javascript
 // get device pixel ratio in dppx
@@ -44,7 +46,13 @@ var viewport_width = Math.max(
   document.documentElement.clientWidth,
   window.innerWidth || 0,
 )
+```
 
+### Sending data to the analytics solution
+
+Here is the code to use to send these data to Google Analytics:
+
+```javascript
 // Code to send these custom dimensions to Google Analytics
 ga('create', '<GoogleAnalyticsId>', 'auto')
 
@@ -58,6 +66,8 @@ ga('send', 'pageview')
 
 You will then have to get the data from your Analytics solution. Wait for a while to get accurate data, depending on your traffic.
 
+### Using collected data
+
 Here’s how to create a custom report in Google Analytics, for example:
 
-![Creating a custom report in Google Analytics](google-analytics-custom-report.png)
+![Creating a custom report in Google Analytics](ga-custom-report.png)
