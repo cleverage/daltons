@@ -1,11 +1,11 @@
-# Responsive Image Widths
+# Daltons
 
-[![Travis build status](https://img.shields.io/travis/cleverage/responsive-image-widths.svg?style=popout)](https://travis-ci.org/cleverage/responsive-image-widths)
-[![Known Vulnerabilities](https://snyk.io/test/github/cleverage/responsive-image-widths/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cleverage/responsive-image-widths?targetFile=package.json)
-[![License](https://img.shields.io/github/license/cleverage/responsive-image-widths.svg?style=popout)](https://github.com/cleverage/responsive-image-widths/blob/master/LICENSE.md)
-[![GitHub stars](https://img.shields.io/github/stars/cleverage/responsive-image-widths.svg?style=social)](https://github.com/cleverage/responsive-image-widths/stargazers)
+[![Travis build status](https://img.shields.io/travis/cleverage/daltons.svg?style=popout)](https://travis-ci.org/cleverage/daltons)
+[![Known Vulnerabilities](https://snyk.io/test/github/cleverage/daltons/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cleverage/daltons?targetFile=package.json)
+[![License](https://img.shields.io/github/license/cleverage/daltons.svg?style=popout)](https://github.com/cleverage/daltons/blob/master/LICENSE.md)
+[![GitHub stars](https://img.shields.io/github/stars/cleverage/daltons.svg?style=social)](https://github.com/cleverage/daltons/stargazers)
 
-`responsive-image-widths` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
+`daltons` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
 
 ## Why do we need this tool?
 
@@ -15,31 +15,31 @@ Using responsive images in every projects, we wanted to be able to make it as ef
 
 ## How does it work?
 
-It takes 3 steps for `responsive-image-widths` to find the best widths to put in the `srcset` attribute of a responsive image:
+It takes 3 steps for `daltons` to find the best widths to put in the `srcset` attribute of a responsive image:
 
 - take Real User Monitoring (RUM) of viewport widths and screen densities
 - list the image’s widths across all of these viewport widths
 - compute the optimal image widths to put in the `srcset` attribute to cover all these needs
 
-Learn more in [the full documentation](https://cleverage.github.io/responsive-image-widths/).
+Learn more in [the full documentation](https://cleverage.github.io/daltons/).
 
 ## Usage
 
 To install and run this application, you’ll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
-From your command line, install `responsive-image-widths` as a global package:
+From your command line, install `daltons` as a global package:
 
 ```
-npm i -g github:cleverage/responsive-image-widths#master
+npm i -g github:cleverage/daltons#master
 ```
 
 Then run it with the `-h` option to get help:
 
 ```
-npx responsive-image-widths -h
+npx daltons -h
 ```
 
-Or see detailed options in [the full documentation](https://cleverage.github.io/responsive-image-widths/options.html) and look at [examples and use cases](https://cleverage.github.io/responsive-image-widths/#examples-and-use-cases).
+Or see detailed options in [the full documentation](https://cleverage.github.io/daltons/options.html) and look at [examples and use cases](https://cleverage.github.io/daltons/#examples-and-use-cases).
 
 ## Built with
 
@@ -51,7 +51,7 @@ Or see detailed options in [the full documentation](https://cleverage.github.io/
 - [Nicolas Hoizey](https://github.com/nhoizey): Idea and initial work, maintainer
 - [Yvain Liechti](https://github.com/ryuran): Early contributor, maintainer
 
-See also the list of [contributors](https://github.com/cleverage/responsive-image-widths/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/cleverage/daltons/contributors) who participated in this project.
 
 ## License
 
