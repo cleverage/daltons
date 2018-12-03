@@ -1,4 +1,4 @@
-[< Back home](/responsive-image-widths/)
+[< Back home](/daltons/)
 
 # Step 2: detect the image’s widths across all of these viewport widths
 

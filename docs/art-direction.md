@@ -1,4 +1,4 @@
-[< Back home](/responsive-image-widths/)
+[< Back home](/daltons/)
 
 # Use case: Art Direction
 
@@ -16,6 +16,6 @@ If you have some code like this:
 You will have to run the script twice, with (at least) these parameters, to get widths for both `srcset`s:
 
 ```shell
-npx responsive-image-widths --max-viewport 799 --verbose
-npx responsive-image-widths --min-viewport 800 --verbose
+npx daltons --max-viewport 799 --verbose
+npx daltons --min-viewport 800 --verbose
 ```

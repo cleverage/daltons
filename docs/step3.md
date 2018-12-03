@@ -1,4 +1,4 @@
-[< Back home](/responsive-image-widths/)
+[< Back home](/daltons/)
 
 # Step 3: compute the optimal image widths to put in the `srcset` attribute to cover all these needs
 
