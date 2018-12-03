@@ -56,3 +56,8 @@ See also the list of [contributors](https://github.com/cleverage/daltons/contrib
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Related projects
+
+- [Sizer-Soze](https://blog.yoav.ws/who_is_sizer_soze/), developed by [Yoav Weiss](https://github.com/yoavweiss), “is a utility that enables you to evaluate how much you could save by properly resizing your images to match their display size on various viewports”.
+- [imaging-heap](https://github.com/filamentgroup/imaging-heap), developed by [Zach Leatherman](https://github.com/zachleat) is “a command line tool to measure the efficiency of your responsive image markup across viewport sizes and device pixel ratios”.

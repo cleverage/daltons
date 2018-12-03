@@ -97,11 +97,6 @@ Use cases:
 
 - [How to deal with multiple `<source>` with `mix/max-width` media queries (Art Direction)](/responsive-image-widths/art-direction.html)
 
-## Related projects
-
-- [Sizer-Soze](https://blog.yoav.ws/who_is_sizer_soze/), developed by [Yoav Weiss](https://github.com/yoavweiss), “is a utility that enables you to evaluate how much you could save by properly resizing your images to match their display size on various viewports”.
-- [imaging-heap](https://github.com/filamentgroup/imaging-heap), developed by [Zach Leatherman](https://github.com/zachleat) is “a command line tool to measure the efficiency of your responsive image markup across viewport sizes and device pixel ratios”.
-
 ## Built with
 
 - [Node.js](https://nodejs.org/en/)
