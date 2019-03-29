@@ -66,7 +66,7 @@ ga('send', 'pageview')
 
 You will then have to get the data from your Analytics solution. Wait for a while to get accurate data, depending on your traffic.
 
-*Note: Google Analytics provides a native browserSize variable, but it is a session-scoped dimension. We need pageview-scoped dimensions (hence `ga('send', 'pageview')`) because we will use these data to optimize image sizes for each page view. Viewport width (and screen density) of one user with multiple page views (actually browsing the site, more engaged) should influence the optimizations more than one user bouncing with one single page view, so sessions are not as accurate as page views.*
+*Note: Google Analytics provides [a native browserSize variable](https://developers.google.com/analytics/devguides/reporting/core/dimsmets#view=detail&group=platform_or_device&jump=ga_browsersize), but it is a session-scoped dimension. We need pageview-scoped dimensions (hence `ga('send', 'pageview')`) because we will use these data to optimize image sizes for each page view. Viewport width (and screen density) of one user with multiple page views (actually browsing the site, more engaged) should influence the optimizations more than one user bouncing with one single page view, so sessions are not as accurate as page views.*
 
 ### Using collected data
 
