@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stats parsing from CSV file example csv 1`] = `
+Array [
+  Object {
+    "density": 1,
+    "viewport": 1020,
+    "views": 35,
+  },
+  Object {
+    "density": 2,
+    "viewport": 1021,
+    "views": 3,
+  },
+  Object {
+    "density": 1,
+    "viewport": 1022,
+    "views": 53,
+  },
+  Object {
+    "density": 2,
+    "viewport": 1023,
+    "views": 12,
+  },
+  Object {
+    "density": 1,
+    "viewport": 1024,
+    "views": 23,
+  },
+  Object {
+    "density": 1.5,
+    "viewport": 1025,
+    "views": 27,
+  },
+  Object {
+    "density": 1,
+    "viewport": 1026,
+    "views": 28,
+  },
+  Object {
+    "density": 1.25,
+    "viewport": 1027,
+    "views": 32,
+  },
+  Object {
+    "density": 1,
+    "viewport": 1028,
+    "views": 7,
+  },
+  Object {
+    "density": 1,
+    "viewport": 1029,
+    "views": 18,
+  },
+  Object {
+    "density": 1.1,
+    "viewport": 1030,
+    "views": 23,
+  },
+]
+`;
