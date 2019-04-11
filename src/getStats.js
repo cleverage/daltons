@@ -3,17 +3,17 @@ const fs = require('fs')
 const color = require('ansi-colors')
 const logger = require('./logger')
 
-module.exports = function getContext(csvFile, opt) {
+module.exports = function getStats(csvFile, opt) {
   // Load content from the CSV file
-  const contextsCsv = fs.readFileSync(csvFile, 'utf8')
-  const csvHasHeader = contextsCsv.match(/[a-zA-Z]/)
+  const statsCsv = fs.readFileSync(csvFile, 'utf8')
+  const csvHasHeader = statsCsv.match(/[a-zA-Z]/)
 
   // Transform CSV into an array
-  const result = csvparse(contextsCsv, {
+  const result = csvparse(statsCsv, {
     columns: ['viewport', 'density', 'views'],
     from: csvHasHeader ? 2 : 1,
-    cast: function(value, context) {
-      if (context.column == 'density') {
+    cast: function(value, stats) {
+      if (stats.column == 'density') {
         return parseFloat(value)
       } else {
         return parseInt(value, 10)
@@ -21,7 +21,7 @@ module.exports = function getContext(csvFile, opt) {
     },
   })
 
-  logger.info(color.green(`Imported ${result.length} lines of context`))
+  logger.info(color.green(`Imported ${result.length} lines of stats`))
 
   return result
 }

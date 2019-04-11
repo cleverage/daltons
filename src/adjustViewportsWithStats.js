@@ -1,30 +1,30 @@
 const color = require('ansi-colors')
 const logger = require('./logger')
 
-module.exports = function adjustViewportsWithContexts(contexts, opt) {
-  const contextMinViewport = contexts.reduce(
+module.exports = function adjustViewportsWithStats(stats, opt) {
+  const statsMinViewport = stats.reduce(
     (min, p) => (p.viewport < min ? p.viewport : min),
-    contexts[0].viewport,
+    stats[0].viewport,
   )
-  const contextMaxViewport = contexts.reduce(
+  const statsMaxViewport = stats.reduce(
     (max, p) => (p.viewport > max ? p.viewport : max),
-    contexts[0].viewport,
+    stats[0].viewport,
   )
   logger.info(
     color.green(
-      `Viewports in context go from ${contextMinViewport}px to ${contextMaxViewport}px`,
+      `Viewports in stats go from ${statsMinViewport}px to ${statsMaxViewport}px`,
     ),
   )
   const result = {
-    minViewport: contextMinViewport,
-    maxViewport: contextMaxViewport,
+    minViewport: statsMinViewport,
+    maxViewport: statsMaxViewport,
   }
 
   if (opt.minViewport) {
-    result.minViewport = Math.max(contextMinViewport, opt.minViewport)
+    result.minViewport = Math.max(statsMinViewport, opt.minViewport)
   }
   if (opt.maxViewport) {
-    result.maxViewport = Math.min(contextMaxViewport, opt.maxViewport)
+    result.maxViewport = Math.min(statsMaxViewport, opt.maxViewport)
   }
 
   logger.info(

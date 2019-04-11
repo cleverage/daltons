@@ -2,11 +2,11 @@
 
 # Step 1: take Real User Monitoring (RUM) of viewport widths and screen densities used on the website
 
-## Load data listing page views with actual contexts of site visitors
+## Load stats listing page views with actual contexts (viewport, density) of site visitors
 
-You need to provide a file with contexts, which are statistics about viewport widths and screen density of the website’s visitors.
+You need to provide a file with statistics about viewport widths and screen densities of the website’s visitors.
 
-The contexts file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
+The stats file should be in [<abbr title="Coma-Separated Values">CSV</abbr>](https://en.wikipedia.org/wiki/Comma-separated_values) format, with these three columns:
 
 - viewport width in `px`
 - screen density in `dppx`
@@ -20,7 +20,7 @@ There are a few requirements:
 - viewport width and number of page views are integers
 - screen density is a float using a dot as decimal separator
 
-See this example from the project’s repository: [contexts.csv](https://github.com/cleverage/daltons/blob/master/examples/simple/contexts.csv)
+See this example from the project’s repository: [stats.csv](https://github.com/cleverage/daltons/blob/master/examples/simple/stats.csv)
 
 ## Getting these data with an Analytics solution
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`examples nicolas-hoizey.com example should return the list of perfect width for its image and contexts 1`] = `
+exports[`examples nicolas-hoizey.com example should return the list of perfect width for its image and stats 1`] = `
 Map {
   800 => 0.5477375936969963,
   1600 => 0.23050828910652732,
@@ -181,7 +181,7 @@ Map {
 }
 `;
 
-exports[`examples simple example should return the list of perfect width for its image and contexts 1`] = `
+exports[`examples simple example should return the list of perfect width for its image and stats 1`] = `
 Map {
   511 => 0.20306513409961685,
   510 => 0.13409961685823754,

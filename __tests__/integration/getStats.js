@@ -1,12 +1,10 @@
 const path = require('path')
-const getContexts = require('../../src/getContexts')
+const getStats = require('../../src/getStats')
 
 describe('Stats parsing from CSV file', () => {
   it(`example csv`, async () => {
     expect(
-      getContexts(
-        path.resolve(__dirname, '../../examples/simple/contexts.csv'),
-      ),
+      getStats(path.resolve(__dirname, '../../examples/simple/stats.csv')),
     ).toMatchSnapshot()
   }, 200)
 })

@@ -16,10 +16,10 @@ const currentPath = process.cwd()
 
 const argv = yargs
   .options({
-    contextsFile: {
+    statsFile: {
       alias: 'c',
       describe:
-        'File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)',
+        'File path from which reading the actual stats in CSV format (screen density in dppx, viewport width in px, number of page views)',
       demandOption: true,
       type: 'string',
     },
@@ -77,7 +77,7 @@ const argv = yargs
     ['minViewport', 'maxViewport'],
     'Global: limit viewport widths, for example for Art Direction (see docs)',
   )
-  .group(['contextsFile'], 'Step 1: get actual contexts of site visitors')
+  .group(['statsFile'], 'Step 1: get actual stats of site visitors')
   .group(
     ['url', 'selector', 'delay', 'variationsFile'],
     'Step 2: get variations of image width across viewport widths',
@@ -165,10 +165,10 @@ const argv = yargs
   .alias('h', 'help')
   .help()
   .example(
-    "npx $0 --contextsFile ./contexts.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose",
+    "npx $0 --statsFile ./stats.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose",
   )
   .example(
-    "npx $0 -c ./contexts.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v",
+    "npx $0 -c ./stats.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v",
   )
   .wrap(null)
   .detectLocale(false).argv
