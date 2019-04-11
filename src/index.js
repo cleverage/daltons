@@ -76,6 +76,10 @@ module.exports = async function main(settings) {
   // sort by decreasing percentages
   perfectWidths = new Map(
     [...perfectWidths.entries()].sort((a, b) => {
+      if (a[1] == b[1]) {
+        // same percentage, sort by image width
+        return b[0] - a[0]
+      }
       return b[1] - a[1]
     }),
   )
