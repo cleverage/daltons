@@ -11,7 +11,7 @@ describe('examples', () => {
   const examples = fs.readdirSync(examplesPath)
 
   examples.forEach(exampleName => {
-    it(`${exampleName} example should return the list of perfect width for its image and contexts`, async () => {
+    it(`${exampleName} example should return the list of perfect width for its image and stats`, async () => {
       expect.assertions(1)
 
       const configurationFile = path.join(

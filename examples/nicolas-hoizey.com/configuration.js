@@ -1,5 +1,5 @@
 module.exports = {
-  contextsFile: `${__dirname}/contexts.csv`,
+  statsFile: `${__dirname}/stats.csv`,
   url: `file://${__dirname}/page.html`,
   selector: '.main img[srcset]:first-of-type',
   maxViewport: 2560,

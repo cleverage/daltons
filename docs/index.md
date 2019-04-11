@@ -64,8 +64,8 @@ Global: limit viewport widths, for example for Art Direction (see docs)
   --minViewport, -i  Minimum viewport width to check  [number]
   --maxViewport, -x  Maximum viewport width to check  [number]
 
-Step 1: get actual contexts of site visitors
-  --contextsFile, -c  File path from which reading the actual contexts data in CSV format (screen density in dppx, viewport width in px, number of page views)  [string] [required]
+Step 1: get actual stats of site visitors
+  --statsFile, -c  File path from which reading the actual stats data in CSV format (screen density in dppx, viewport width in px, number of page views)  [string] [required]
 
 Step 2: get variations of image width across viewport widths
   --url, -u             Page URL  [required]
@@ -83,8 +83,8 @@ Options:
   -h, --help     Show help  [boolean]
 
 Examples:
-  npx cli.js --contextsFile ./contexts.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose
-  npx cli.js -c ./contexts.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v
+  npx cli.js --statsFile ./stats.csv --url 'https://example.com/' --selector 'main img[srcset]:first-of-type' --verbose
+  npx cli.js -c ./stats.csv -u 'https://example.com/' -s 'main img[srcset]:first-of-type' -i 320 -x 1280 -a ./variations.csv -f ./srcset-widths.txt -v
 ```
 
 See [details about each option](/daltons/options.html).

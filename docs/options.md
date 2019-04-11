@@ -18,24 +18,24 @@ Warning: reducing the number of viewport widths to check also speeds up the scri
 </aside>
 
 | option          | alias | required? | type   | default value | description                               |
-| --------------- | ----- | --------- | ------ | ------------- | ----------------------------------------- |
+|-----------------|-------|-----------|--------|---------------|-------------------------------------------|
 | `--minViewport` | `-i`  | optional  | number |               | Sets the minimum viewport width to check. |
 | `--maxViewport` | `-x`  | optional  | number |               | Sets the maximum viewport width to check. |
 
-## Step 1: get actual contexts of site visitors
+## Step 1: get actual stats of site visitors
 
-| option           | alias | required? | type      | default value | description                                           |
-| ---------------- | ----- | --------- | --------- | ------------- | ----------------------------------------------------- |
-| `--contextsFile` |       | required  | file path |               | File path from which reading the actual contexts data |
+| option        | alias | required? | type      | default value | description                                        |
+|---------------|-------|-----------|-----------|---------------|----------------------------------------------------|
+| `--statsFile` |       | required  | file path |               | File path from which reading the actual stats data |
 
-You need to provide a file with contexts, which means statistics about viewport widths and screen density of the website’s visitors.
+You need to provide a file with stats, which means statistics about viewport widths and screen density of the website’s visitors.
 
 See the details of [step 1](/daltons/step1.html).
 
 ## Step 2: get variations of image width across viewport widths
 
 | option  | alias | required? | type | default value | description                                                                           |
-| ------- | ----- | --------- | ---- | ------------- | ------------------------------------------------------------------------------------- |
+|---------|-------|-----------|------|---------------|---------------------------------------------------------------------------------------|
 | `--url` | `-u`  | required  | URL  |               | Defines the URL of the page in which to check the image width across viewport widths. |
 
 ## Step 3: compute optimal n widths from both datasets

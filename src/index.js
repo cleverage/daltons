@@ -3,8 +3,8 @@ const util = require('util')
 const path = require('path')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
-const adjustViewportsWithContexts = require('./adjustViewportsWithContexts')
-const getContexts = require('./getContexts')
+const adjustViewportsWithStats = require('./adjustViewportsWithStats')
+const getStats = require('./getStats')
 const browse = require('./browse')
 const logger = require('./logger')
 
@@ -13,7 +13,7 @@ const writeFile = util.promisify(fs.writeFile)
 const defaultOptions = {
   url: null,
   selector: 'img',
-  contextsFile: null,
+  statsFile: null,
   variationsFile: null,
   minViewport: null,
   maxViewport: null,
@@ -29,14 +29,14 @@ module.exports = async function main(settings) {
 
   logger.info(
     color.bgCyan.black(
-      '\nStep 1: get actual contexts (viewports & screen densities) of site visitors',
+      '\nStep 1: get actual stats (viewports & screen densities) of site visitors',
     ),
   )
-  let contexts = getContexts(
-    path.resolve(options.basePath, options.contextsFile),
+  let stats = getStats(
+    path.resolve(options.basePath, options.statsFile),
     options,
   )
-  Object.assign(options, adjustViewportsWithContexts(contexts, options))
+  Object.assign(options, adjustViewportsWithStats(stats, options))
 
   /* ======================================================================== */
   logger.info(
@@ -56,7 +56,7 @@ module.exports = async function main(settings) {
 
   let perfectWidths = new Map()
   let totalViews = 0
-  contexts.map(value => {
+  stats.map(value => {
     if (
       value.viewport >= options.minViewport &&
       value.viewport <= options.maxViewport
