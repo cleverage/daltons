@@ -3,6 +3,7 @@
 [![Travis build status](https://img.shields.io/travis/cleverage/daltons.svg?style=popout)](https://travis-ci.org/cleverage/daltons)
 [![Known Vulnerabilities](https://snyk.io/test/github/cleverage/daltons/badge.svg?targetFile=package.json)](https://snyk.io/test/github/cleverage/daltons?targetFile=package.json)
 [![License](https://img.shields.io/github/license/cleverage/daltons.svg?style=popout)](https://github.com/cleverage/daltons/blob/master/LICENSE.md)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcleverage%2Fdaltons.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcleverage%2Fdaltons?ref=badge_shield)
 [![GitHub stars](https://img.shields.io/github/stars/cleverage/daltons.svg?style=social)](https://github.com/cleverage/daltons/stargazers)
 
 `daltons` is a command-line tool that computes optimal image widths to put in [`srcset`](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) attributes of [responsive images](https://responsiveimages.org/).
