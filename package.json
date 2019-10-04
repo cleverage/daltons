@@ -20,14 +20,17 @@
   "scripts": {
     "test": "npm run test:lint && npm run test:examples",
     "test:lint": "npx eslint .",
-    "test:examples": "jest"
+    "test:examples": "jest",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "cli-table": "^0.3.1",
     "csv-parse": "^4.4.7",
     "puppeteer": "^1.20.0",
-    "yargs": "^13.3.0"
+    "yargs": "^13.3.0",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "eslint": "^6.3.0",
@@ -35,5 +38,6 @@
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.9.0",
     "prettier": "^1.16.4"
-  }
+  },
+  "snyk": true
 }
