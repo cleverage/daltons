@@ -69,17 +69,13 @@ module.exports = async function browse(opt) {
           .then(() => {
             logger.info(
               color.green(
-                `Image width variations saved to CSV file ${
-                  opt.variationsFile
-                }`,
+                `Image width variations saved to CSV file ${opt.variationsFile}`,
               ),
             )
           })
           .catch(error =>
             logger.error(
-              `Couldn’t save image width variations to CSV file ${
-                opt.variationsFile
-              }:\n${error}`,
+              `Couldn’t save image width variations to CSV file ${opt.variationsFile}:\n${error}`,
             ),
           )
       }
