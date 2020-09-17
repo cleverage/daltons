@@ -27,6 +27,7 @@
     "cli-table": "^0.3.11",
     "csv-parse": "^4.16.0",
     "puppeteer": "^13.5.2",
+    "skmeans": "^0.11.3",
     "yargs": "^17.4.1"
   },
   "devDependencies": {
