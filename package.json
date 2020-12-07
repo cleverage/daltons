@@ -27,7 +27,7 @@
     "cli-table": "^0.3.1",
     "csv-parse": "^4.14.1",
     "puppeteer": "^2.0.0",
-    "yargs": "^16.1.1"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
