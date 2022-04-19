@@ -86,7 +86,7 @@ const argv = yargs
     ['widthsNumber', 'destFile'],
     'Step 3: compute optimal n widths from both datasets',
   )
-  .check(argv => {
+  .check((argv) => {
     // waiting for https://github.com/yargs/yargs/issues/1079
     if (argv.minViewport !== undefined && isNaN(argv.minViewport)) {
       throw new Error(

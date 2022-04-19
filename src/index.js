@@ -56,7 +56,7 @@ module.exports = async function main(settings) {
 
   let perfectWidths = new Map()
   let totalViews = 0
-  stats.map(value => {
+  stats.map((value) => {
     if (
       value.viewport >= options.minViewport &&
       value.viewport <= options.maxViewport
@@ -128,7 +128,7 @@ widths in srcset: ${srcset.join(',')}`
       .then(() => {
         logger.info(color.green(`Data saved to file ${options.destFile}`))
       })
-      .catch(error =>
+      .catch((error) =>
         logger.error(
           `Couldn’t save data to file ${options.destFile}:\n${error}`,
         ),

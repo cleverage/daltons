@@ -10,7 +10,7 @@ describe('examples', () => {
   // Use sync method in order to declare test cases synchronously
   const examples = fs.readdirSync(examplesPath)
 
-  examples.forEach(exampleName => {
+  examples.forEach((exampleName) => {
     if (exampleName != 'nicolas-hoizey.com')
       it(`${exampleName} example should return the list of perfect width for its image and stats`, async () => {
         expect.assertions(1)
