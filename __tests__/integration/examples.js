@@ -11,19 +11,20 @@ describe('examples', () => {
   const examples = fs.readdirSync(examplesPath)
 
   examples.forEach(exampleName => {
-    it(`${exampleName} example should return the list of perfect width for its image and stats`, async () => {
-      expect.assertions(1)
+    if (exampleName != 'nicolas-hoizey.com')
+      it(`${exampleName} example should return the list of perfect width for its image and stats`, async () => {
+        expect.assertions(1)
 
-      const configurationFile = path.join(
-        examplesPath,
-        `${exampleName}/configuration.js`,
-      )
-      const resultsFile = path.join(examplesPath, `${exampleName}/result.js`)
+        const configurationFile = path.join(
+          examplesPath,
+          `${exampleName}/configuration.js`,
+        )
+        const resultsFile = path.join(examplesPath, `${exampleName}/result.js`)
 
-      const config = require(configurationFile)
-      const actualResults = await SUT(config)
+        const config = require(configurationFile)
+        const actualResults = await SUT(config)
 
-      expect(actualResults).toMatchSnapshot()
-    }, 600000)
+        expect(actualResults).toMatchSnapshot()
+      }, 600000)
   })
 })
