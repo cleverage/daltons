@@ -20,6 +20,7 @@ const defaultOptions = {
   delay: 5,
   verbose: false,
   basePath: process.cwd(),
+  widthsNumber: 1,
 }
 
 module.exports = async function main(settings) {
@@ -112,7 +113,7 @@ module.exports = async function main(settings) {
 
   let closestRealWidths = []
   const result = skmeans([...perfectWidths.entries()], options.widthsNumber)
-  result.centroids.forEach(centroid => {
+  result.centroids.forEach((centroid) => {
     const centroidWidth = centroid[0]
     closestRealWidths.push(
       [...perfectWidths.keys()].reduce((prev, curr) => {
@@ -127,7 +128,7 @@ module.exports = async function main(settings) {
   /* -------------------------- */
 
   let srcset = []
-  closestRealWidths.forEach(width => {
+  closestRealWidths.forEach((width) => {
     srcset.push(`your/image/path.ext ${width}w`)
   })
 
