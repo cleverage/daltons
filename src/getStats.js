@@ -12,7 +12,7 @@ module.exports = function getStats(csvFile, opt) {
   const result = csvparse(statsCsv, {
     columns: ['viewport', 'density', 'views'],
     from: csvHasHeader ? 2 : 1,
-    cast: function(value, stats) {
+    cast: function (value, stats) {
       if (stats.column == 'density') {
         return parseFloat(value)
       } else {

@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const logger = require('./logger')
 
-const sleep = timeout => new Promise(r => setTimeout(r, timeout))
+const sleep = (timeout) => new Promise((r) => setTimeout(r, timeout))
 
 module.exports = async function browse(opt) {
   const VIEWPORT = {
@@ -42,7 +42,7 @@ module.exports = async function browse(opt) {
         await sleep(opt.delay)
 
         // Check image width
-        let imageWidth = await page.evaluate(sel => {
+        let imageWidth = await page.evaluate((sel) => {
           return document.querySelector(sel).width
         }, opt.selector)
         imageWidths.set(VIEWPORT.width, imageWidth)
@@ -73,7 +73,7 @@ module.exports = async function browse(opt) {
               ),
             )
           })
-          .catch(error =>
+          .catch((error) =>
             logger.error(
               `Couldn’t save image width variations to CSV file ${opt.variationsFile}:\n${error}`,
             ),
@@ -96,7 +96,7 @@ module.exports = async function browse(opt) {
         logger.info(imageWidthsTable.toString())
       }
     })
-    .catch(error =>
+    .catch((error) =>
       logger.error(`Couldn’t load page located at ${opt.url}:\n${error}`),
     )
 
