@@ -30,7 +30,7 @@
     "yargs": "^17.4.1"
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
+    "eslint": "^8.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.4.1",
     "jest": "^24.9.0",
