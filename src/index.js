@@ -1,12 +1,12 @@
 const fs = require('fs')
 const util = require('util')
 const path = require('path')
-const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const adjustViewportsWithStats = require('./adjustViewportsWithStats')
 const getStats = require('./getStats')
 const browse = require('./browse')
 const logger = require('./logger')
+const skmeans = require('skmeans')
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -20,6 +20,7 @@ const defaultOptions = {
   delay: 5,
   verbose: false,
   basePath: process.cwd(),
+  widthsNumber: 1,
 }
 
 module.exports = async function main(settings) {
@@ -61,7 +62,9 @@ module.exports = async function main(settings) {
       value.viewport >= options.minViewport &&
       value.viewport <= options.maxViewport
     ) {
-      perfectWidth = Math.ceil(imageWidths.get(value.viewport) * value.density)
+      let perfectWidth = Math.ceil(
+        imageWidths.get(value.viewport) * value.density,
+      )
       perfectWidths.set(
         perfectWidth,
         (perfectWidths.get(perfectWidth) || 0) + value.views,
@@ -108,19 +111,40 @@ module.exports = async function main(settings) {
 
   logger.info(color.green(`Find ${options.widthsNumber} best widths`))
 
-  // todo
+  let closestRealWidths = []
+  const result = skmeans([...perfectWidths.entries()], options.widthsNumber)
+  result.centroids.forEach((centroid) => {
+    const centroidWidth = centroid[0]
+    closestRealWidths.push(
+      [...perfectWidths.keys()].reduce((prev, curr) => {
+        return Math.abs(prev - centroidWidth) > Math.abs(curr - centroidWidth)
+          ? curr
+          : prev
+      }),
+    )
+  })
+  closestRealWidths.sort().slice(0, options.widthsNumber)
+
+  /* -------------------------- */
+
   let srcset = []
+  closestRealWidths.forEach((width) => {
+    srcset.push(`your/image/path.ext ${width}w`)
+  })
 
   if (options.verbose) {
     console.dir(srcset)
   }
 
-  // Save data into the CSV file
+  // Save data into the TXT file
   if (options.destFile) {
     let fileString = `
-page           : ${options.url}
-image selector : ${options.selector}
-widths in srcset: ${srcset.join(',')}`
+page             : ${options.url}
+image selector   : ${options.selector}
+widths in srcset :
+srcset="
+  ${srcset.join(',\n')}"`
+
     await writeFile(
       path.resolve(options.basePath, options.destFile),
       fileString,
