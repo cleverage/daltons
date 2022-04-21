@@ -112,7 +112,14 @@ module.exports = async function main(settings) {
   logger.info(color.green(`Find ${options.widthsNumber} best widths`))
 
   let closestRealWidths = []
-  const result = skmeans([...perfectWidths.entries()], options.widthsNumber)
+  // Use the k-means algorithm to find the centroids of widths distribution,
+  // with the k-means++ cluster initialization method
+  const result = skmeans(
+    [...perfectWidths.entries()],
+    options.widthsNumber,
+    'kmpp',
+  )
+  console.dir(result)
   result.centroids.forEach((centroid) => {
     const centroidWidth = centroid[0]
     closestRealWidths.push(
