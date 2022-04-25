@@ -20,7 +20,8 @@ const defaultOptions = {
   delay: 5,
   verbose: false,
   basePath: process.cwd(),
-  widthsNumber: 1,
+  widthsNumber: 5,
+  widthsDivisor: 10,
 }
 
 module.exports = async function main(settings) {
@@ -65,9 +66,11 @@ module.exports = async function main(settings) {
       let perfectWidth = Math.ceil(
         imageWidths.get(value.viewport) * value.density,
       )
+      let roundedPerfectWidth =
+        perfectWidth - (perfectWidth % options.widthsDivisor)
       perfectWidths.set(
-        perfectWidth,
-        (perfectWidths.get(perfectWidth) || 0) + value.views,
+        roundedPerfectWidth,
+        (perfectWidths.get(roundedPerfectWidth) || 0) + value.views,
       )
       totalViews += value.views
     }
