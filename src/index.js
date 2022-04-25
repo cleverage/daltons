@@ -66,8 +66,12 @@ module.exports = async function main(settings) {
       let perfectWidth = Math.ceil(
         imageWidths.get(value.viewport) * value.density,
       )
-      let roundedPerfectWidth =
-        perfectWidth - (perfectWidth % options.widthsDivisor)
+      let roundedPerfectWidth = perfectWidth
+      if (perfectWidth % options.widthsDivisor !== 0) {
+        roundedPerfectWidth =
+          perfectWidth +
+          (options.widthsDivisor - (perfectWidth % options.widthsDivisor))
+      }
       perfectWidths.set(
         roundedPerfectWidth,
         (perfectWidths.get(roundedPerfectWidth) || 0) + value.views,
