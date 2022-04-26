@@ -6,7 +6,6 @@ const adjustViewportsWithStats = require('./adjustViewportsWithStats')
 const getStats = require('./getStats')
 const browse = require('./browse')
 const logger = require('./logger')
-const skmeans = require('skmeans')
 const fact = require('big-factorial')
 
 const writeFile = util.promisify(fs.writeFile)
