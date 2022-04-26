@@ -7,10 +7,9 @@ const getStats = require('./getStats')
 const browse = require('./browse')
 const logger = require('./logger')
 const skmeans = require('skmeans')
+const fact = require('big-factorial')
 
 const writeFile = util.promisify(fs.writeFile)
-
-const fact = (n) => (n === 0 ? 1 : n * fact(n - 1))
 
 const defaultOptions = {
   url: null,
