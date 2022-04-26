@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`examples simple example should return the list of perfect width for its image and stats 1`] = `
-Map {
-  520 => 0.4942528735632184,
-  510 => 0.13409961685823754,
-  650 => 0.12260536398467432,
-  770 => 0.10344827586206896,
-  570 => 0.08812260536398467,
-  1030 => 0.05747126436781609,
-}
+Array [
+  1030,
+  770,
+  650,
+  570,
+  520,
+]
 `;
