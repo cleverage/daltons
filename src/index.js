@@ -260,5 +260,5 @@ srcset="
       )
   }
 
-  return perfectWidths
+  return optimalWidths
 }
