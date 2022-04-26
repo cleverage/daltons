@@ -4,8 +4,6 @@ exports[`examples simple example should return the list of perfect width for its
 Array [
   1030,
   770,
-  650,
-  570,
   520,
 ]
 `;

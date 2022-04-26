@@ -3,4 +3,5 @@ module.exports = {
   url: `file://${__dirname}/page.html`,
   selector: 'img',
   delay: 100,
+  widthsNumber: 3,
 }
