@@ -21,7 +21,7 @@ module.exports = function getStats(csvFile, opt) {
     },
   })
 
-  logger.info(color.green(`Imported ${result.length} lines of stats`))
+  logger.info(`Imported ${color.green(result.length + ' lines')} of stats`)
 
   return result
 }

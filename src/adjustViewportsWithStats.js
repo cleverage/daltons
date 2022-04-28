@@ -11,9 +11,9 @@ module.exports = function adjustViewportsWithStats(stats, opt) {
     stats[0].viewport,
   )
   logger.info(
-    color.green(
-      `Viewports in stats go from ${statsMinViewport}px to ${statsMaxViewport}px`,
-    ),
+    `Viewports in stats go ${color.green(
+      'from ' + statsMinViewport + 'px to ' + statsMaxViewport + 'px',
+    )}`,
   )
   const result = {
     minViewport: statsMinViewport,
@@ -28,11 +28,9 @@ module.exports = function adjustViewportsWithStats(stats, opt) {
   }
 
   logger.info(
-    color.green(
-      `Viewports will be considered from ${color.white(
-        result.minViewport + 'px',
-      )} to ${color.white(result.maxViewport + 'px')}`,
-    ),
+    `Viewports will be limited to ${color.green(
+      result.minViewport + 'px to ' + result.maxViewport + 'px',
+    )}`,
   )
 
   return result
