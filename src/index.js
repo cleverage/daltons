@@ -81,7 +81,9 @@ module.exports = async function main(settings) {
   })
   let numberOfPerfectWidths = perfectWidths.size
   logger.info(
-    color.green(`${numberOfPerfectWidths} perfect widths have been computed`),
+    `${color.green(
+      numberOfPerfectWidths + ' perfect widths',
+    )} have been computed`,
   )
 
   // sort by decreasing views
@@ -104,10 +106,16 @@ module.exports = async function main(settings) {
     },
   })
   if (perfectWidthsTableByViews) {
+    let perfectWidthsTableByViewsLine = 0
     perfectWidthsByDecreasingViews.forEach((views, imageWidth) => {
-      let percentage = ((views / totalViews) * 100).toFixed(2) + ' %'
-      perfectWidthsTableByViews.push([views, percentage, imageWidth + 'px'])
+      if (perfectWidthsTableByViewsLine++ <= 20) {
+        let percentage = ((views / totalViews) * 100).toFixed(2) + ' %'
+        perfectWidthsTableByViews.push([views, percentage, imageWidth + 'px'])
+      }
     })
+    if (perfectWidthsByDecreasingViews.length > 20) {
+      perfectWidthsTableByViews.push(['…', '…', '…'])
+    }
     logger.info('\nPerfect widths per decreasing views:')
     logger.info(perfectWidthsTableByViews.toString())
   }
@@ -118,23 +126,27 @@ module.exports = async function main(settings) {
   )
 
   // Show perfect widths per decreasing widths in the console only when there are 20 or less
-  if (numberOfPerfectWidths <= 20) {
-    const perfectWidthsTableByWidths = logger.newTable({
-      head: ['image width', 'views', 'percentage'],
-      colAligns: ['right', 'right', 'right'],
-      style: {
-        head: ['green', 'green', 'green'],
-        compact: true,
-      },
-    })
-    if (perfectWidthsTableByWidths) {
-      perfectWidthsByDecreasingWidths.forEach((views, imageWidth) => {
+  const perfectWidthsTableByWidths = logger.newTable({
+    head: ['image width', 'views', 'percentage'],
+    colAligns: ['right', 'right', 'right'],
+    style: {
+      head: ['green', 'green', 'green'],
+      compact: true,
+    },
+  })
+  if (perfectWidthsTableByWidths) {
+    let perfectWidthsTableByWidthsLine = 0
+    perfectWidthsByDecreasingWidths.forEach((views, imageWidth) => {
+      if (perfectWidthsTableByWidthsLine++ <= 20) {
         let percentage = ((views / totalViews) * 100).toFixed(2) + ' %'
         perfectWidthsTableByWidths.push([imageWidth + 'px', views, percentage])
-      })
-      logger.info('\nPerfect widths per decreasing widths:')
-      logger.info(perfectWidthsTableByWidths.toString())
+      }
+    })
+    if (perfectWidthsByDecreasingWidths.length > 20) {
+      perfectWidthsTableByViews.push(['…', '…', '…'])
     }
+    logger.info('\nPerfect widths per decreasing widths:')
+    logger.info(perfectWidthsTableByWidths.toString())
   }
 
   let optimalWidths = []
@@ -148,15 +160,6 @@ module.exports = async function main(settings) {
     optimalWidths = perfectWidthsByDecreasingViews.values()
   } else {
     logger.info(color.green(`Find ${options.widthsNumber} best widths`))
-
-    // We have to keep the largest width
-    // So the number of compbinations depends on less items
-    let numberOfCombinations =
-      fact(numberOfPerfectWidths - 1) /
-      fact(numberOfPerfectWidths - options.widthsNumber - 2)
-    logger.info(
-      color.green(`There are ${numberOfCombinations} possible combinations`),
-    )
 
     // Get all possible subset combinations in an array, with minimum and maximum lengths
     // Adapted from https://www.w3resource.com/javascript-exercises/javascript-function-exercise-21.php
@@ -211,8 +214,23 @@ module.exports = async function main(settings) {
     }
 
     // Compute the distance for each subset and keep the best one
+    const spinner = logger.newSpinner()
+    if (spinner) {
+      spinner.start('Starting…')
+    }
+
+    const numberOfSubsets = subsets.length
     let bestSubsetDistance = -1
+    let counter = 1
     subsets.map((subset) => {
+      if (spinner) {
+        spinner.tick(
+          `Computing distance for combination ${color.cyan(
+            counter++,
+          )} on ${color.cyan(numberOfSubsets)}`,
+        )
+      }
+
       let distance = globalDistance(perfectWidthsByDecreasingWidths, subset)
       if (bestSubsetDistance === -1 || distance < bestSubsetDistance) {
         bestSubsetDistance = distance
