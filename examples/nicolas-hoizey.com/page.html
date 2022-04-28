@@ -641,123 +641,6 @@ article {
 </style>
 
 
-<link rel="preload" href="/assets/non-critical-styles-e43f4f7b24d5c169d7d1b34b8a9a46963ec5448ac360dfe98c7091e517cad0f9.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-<noscript>
-  <link rel="stylesheet" href="/assets/non-critical-styles-e43f4f7b24d5c169d7d1b34b8a9a46963ec5448ac360dfe98c7091e517cad0f9.css" />
-</noscript>
-<script integrity="sha256-pztS3H6bx784JiI8Vx1DPv2WS0NGaI+6VTxHsUQ3+rc=" crossorigin="anonymous" type="text/javascript">/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-/* This file is meant as a standalone workflow for
-- testing support for link[rel=preload]
-- enabling async CSS loading in browsers that do not support rel=preload
-- applying rel preload css once loaded, whether supported or not.
-*/
-
-;(function(w) {
-  'use strict'
-  // rel=preload support test
-  if (!w.loadCSS) {
-    w.loadCSS = function() {}
-  }
-  // define on the loadCSS obj
-  var rp = (loadCSS.relpreload = {})
-  // rel=preload feature support test
-  // runs once and returns a function for compat purposes
-  rp.support = (function() {
-    var ret
-    try {
-      ret = w.document.createElement('link').relList.supports('preload')
-    } catch (e) {
-      ret = false
-    }
-    return function() {
-      return ret
-    }
-  })()
-
-  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
-  // then change that media back to its intended value on load
-  rp.bindMediaToggle = function(link) {
-    // remember existing media attr for ultimate state, or default to 'all'
-    var finalMedia = link.media || 'all'
-
-    function enableStylesheet() {
-      link.media = finalMedia
-    }
-
-    // bind load handlers to enable media
-    if (link.addEventListener) {
-      link.addEventListener('load', enableStylesheet)
-    } else if (link.attachEvent) {
-      link.attachEvent('onload', enableStylesheet)
-    }
-
-    // Set rel and non-applicable media type to start an async request
-    // note: timeout allows this to happen async to let rendering continue in IE
-    setTimeout(function() {
-      link.rel = 'stylesheet'
-      link.media = 'only x'
-    })
-    // also enable media after 3 seconds,
-    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
-    setTimeout(enableStylesheet, 3000)
-  }
-
-  // loop through link elements in DOM
-  rp.poly = function() {
-    // double check this to prevent external calls from running
-    if (rp.support()) {
-      return
-    }
-    var links = w.document.getElementsByTagName('link')
-    for (var i = 0; i < links.length; i++) {
-      var link = links[i]
-      // qualify links to those with rel=preload and as=style attrs
-      if (
-        link.rel === 'preload' &&
-        link.getAttribute('as') === 'style' &&
-        !link.getAttribute('data-loadcss')
-      ) {
-        // prevent rerunning on link
-        link.setAttribute('data-loadcss', true)
-        // bind listeners to toggle media back
-        rp.bindMediaToggle(link)
-      }
-    }
-  }
-
-  // if unsupported, run the polyfill
-  if (!rp.support()) {
-    // run once at least
-    rp.poly()
-
-    // rerun poly on an interval until onload
-    var run = w.setInterval(rp.poly, 500)
-    if (w.addEventListener) {
-      w.addEventListener('load', function() {
-        rp.poly()
-        w.clearInterval(run)
-      })
-    } else if (w.attachEvent) {
-      w.attachEvent('onload', function() {
-        rp.poly()
-        w.clearInterval(run)
-      })
-    }
-  }
-
-  // commonjs
-  if (typeof exports !== 'undefined') {
-    exports.loadCSS = loadCSS
-  } else {
-    w.loadCSS = loadCSS
-  }
-})(typeof global !== 'undefined' ? global : this)
-;
-</script>
-
-
-
-
   <meta property="og:site_name" content="Nicolas Hoizey" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@nhoizey" />
@@ -798,8 +681,6 @@ article {
 
 
 
-
-  <meta property="og:image" content="https://res.cloudinary.com/nho/image/fetch/e_blur:2000,c_crop,ar_1200:630,b_white/e_grayscale/e_tint:75:41206b:0p:b491df:100p/w_1200/l_fetch:aHR0cHM6Ly9uaWNvbGFzLWhvaXpleS5jb20vMjAxNy8wMS93ZWJwYWdldGVzdC1yZXNpbGllbnQtd2ViLWRlc2lnbi5wbmc=,h_1.0,w_1.0,fl_relative,c_limit/e_grayscale/e_tint:75:41206b:0p:b491df:100p/b_rgb:3d2e68,o_80/w_1120,c_fit,l_text:georgia_60:How%20much%20data%20should%20my%20Service%20Worker%20put%20upfront%20in%20the%20offline%20cache%3F,g_north_west,x_42,y_42,co_black,o_50/w_1120,c_fit,l_text:georgia_60:How%20much%20data%20should%20my%20Service%20Worker%20put%20upfront%20in%20the%20offline%20cache%3F,g_north_west,x_40,y_40,co_white/l_text:georgia_50:nicolas-hoizey.com,g_south_west,x_41,y_40,co_black/l_text:georgia_50:nicolas-hoizey.com,g_south_west,x_40,y_41,co_white/l_fetch:aHR0cHM6Ly9uaWNvbGFzLWhvaXpleS5jb20vYXNzZXRzL2xvZ29zL3R3aXR0ZXIucG5n,g_south_east,x_220,y_40,c_fill,w_50,r_max/l_text:georgia_50:nhoizey,g_south_east,x_40,y_40,co_black/l_text:georgia_50:nhoizey,g_south_east,x_41,y_41,co_white/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -844,21 +725,18 @@ article {
 
 
 <svg style="display: none;" aria-hidden="true">
-  <?xml version="1.0"?>
 <symbol id="symbol-date" viewBox="0 0 32 32" width="1em" height="1em">
   <title>Date de publication</title>
   <path d="M29.334 3H25V1c0-.553-.447-1-1-1s-1 .447-1 1v2h-6V1c0-.553-.448-1-1-1s-1 .447-1 1v2H9V1c0-.553-.448-1-1-1S7 .447 7 1v2H2.667C1.194 3 0 4.193 0 5.666v23.667C0 30.806 1.194 32 2.667 32h26.667C30.807 32 32 30.806 32 29.333V5.666C32 4.193 30.807 3 29.334 3zM30 29.333c0 .368-.3.667-.666.667H2.667C2.3 30 2 29.7 2 29.333V5.666C2 5.3 2.3 5 2.667 5H7v2c0 .553.448 1 1 1s1-.447 1-1V5h6v2c0 .553.448 1 1 1s1-.447 1-1V5h6v2c0 .553.447 1 1 1s1-.447 1-1V5h4.334c.367 0 .666.3.666.666v23.667z"/>
   <path d="M7 12h4v3H7v-3zm0 5h4v3H7v-3zm0 5h4v3H7v-3zm7 0h4v3h-4v-3zm0-5h4v3h-4v-3zm0-5h4v3h-4v-3zm7 10h4v3h-4v-3zm0-5h4v3h-4v-3zm0-5h4v3h-4v-3z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-tags" width="1em" height="1em" viewBox="0 0 30 30">
   <title>Tag</title>
   <path d="M13 28.85c-.9 0-1.7-.3-2.3-.9l-8.9-8.9c-1.2-1.2-1.2-3.3 0-4.5l11.9-11.9c1-1 3-1.8 4.5-1.8h7.6c1.8 0 3.2 1.4 3.2 3.2v7.6c0 1.5-.8 3.4-1.8 4.5l-11.9 11.8c-.6.6-1.4.9-2.3.9zm5.2-26.1c-1 0-2.4.6-3 1.3L3.3 15.95c-.5.5-.5 1.2 0 1.7l8.9 8.9c.5.4 1.2.4 1.7 0l11.9-11.9c.7-.7 1.3-2.1 1.3-3v-7.6c0-.7-.5-1.2-1.2-1.2h-7.7v-.1z"/>
   <path d="M21 12.75c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-webmentions" viewBox="0 0 32 32" width="1em" height="1em">
   <title>Webmentions</title>
   <g fill-rule="evenodd" clip-rule="evenodd">
@@ -867,20 +745,17 @@ article {
   </g>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-link" viewBox="0 0 32 32" width="1em" height="1em">
   <title>Lien</title>
   <path d="M14.615 20.815c0 .2.1.5.1.8 0 1.4-.5 2.6-1.5 3.6l-2 2c-1 1-2.2 1.5-3.6 1.5-2.8 0-5.1-2.3-5.1-5.1 0-1.4.5-2.6 1.5-3.6l2-2c1-1 2.2-1.5 3.6-1.5.3 0 .5 0 .8.1l1.5-1.5c-.7-.3-1.5-.4-2.3-.4-1.9 0-3.6.7-4.9 2l-2 2c-1.3 1.3-2 3-2 4.9 0 3.8 3.1 6.9 6.9 6.9 1.9 0 3.6-.7 4.9-2l2-2c1.3-1.3 2-3 2-4.9 0-.8-.1-1.6-.4-2.3l-1.5 1.5zM23.615.715c-1.9 0-3.6.7-4.9 2l-2 2c-1.3 1.3-2 3-2 4.9 0 .8.1 1.6.4 2.3l1.5-1.5c0-.2-.1-.5-.1-.8 0-1.4.5-2.6 1.5-3.6l2-2c1-1 2.2-1.5 3.6-1.5 2.8 0 5.1 2.3 5.1 5.1 0 1.4-.5 2.6-1.5 3.6l-2 2c-1 1-2.2 1.5-3.6 1.5-.3 0-.5 0-.8-.1l-1.5 1.5c.7.3 1.5.4 2.3.4 1.9 0 3.6-.7 4.9-2l2-2c1.3-1.3 2-3 2-4.9 0-3.8-3.1-6.9-6.9-6.9z"/>
   <path d="M10.615 21.615c-.3 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l10-10c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-10 10c-.2.2-.4.3-.7.3z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-twitter" viewBox="0 0 300 244.2" width="1em" height="1em">
   <title>Twitter</title>
   <path d="M94.7 243.2c112.5 0 174-93.2 174-174 0-2.6 0-5.2-.2-8 12-8.5 22.3-19.3 30.5-31.5-11 4.8-22.7 8-35 9.6 12.5-7.6 22.2-19.5 26.8-33.8-11.8 7-25 12-38.8 14.8C240.8 8.3 225 1 207.3 1c-33.7 0-61 27.4-61 61 0 5 .4 9.6 1.5 14-51-2.5-96-26.8-126-63.8-5.3 9-8.3 19.5-8.3 30.7 0 21 10.8 40 27.2 50.8-10-.3-19.5-3-27.7-7.6v.8c0 29.6 21 54.3 49 60-5 1.3-10.5 2-16 2-4 0-8-.4-11.6-1 7.8 24.2 30.4 42 57 42.4-20.8 16.4-47.2 26.2-75.8 26.2-5 0-9.8-.3-14.6-1 27 17.5 59.2 27.6 93.7 27.6" fill="#1da1f2"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol xmlns="http://www.w3.org/2000/svg" id="symbol-algolia" width="6.30em" height="2em" viewBox="0 0 391 124" aria-labelledby="algolia-logo">
   <title id="algolia-logo">Algolia logo</title>
   <g fill="none" fill-rule="evenodd">
@@ -890,14 +765,12 @@ article {
   </g>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-online" role="img" width="1em" height="1em" viewBox="0 0 24 24" aria-labelledby="online-icon">
   <title id="online-icon">Online</title>
   <path d="M14.13 17.17a2.94 2.94 0 0 0-4.17 0l2.09 2.09 2.08-2.09zM5.82 13l2.08 2.1a5.89 5.89 0 0 1 8.32 0L18.3 13a8.82 8.82 0 0 0-12.48 0z"/>
   <path d="M20.36 10.92l2.09-2.09a14.7 14.7 0 0 0-20.8 0l2.08 2.09a11.77 11.77 0 0 1 16.63 0z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-offline" role="img" width="1em" height="1em" viewBox="0 0 24 24" aria-labelledby="offline-icon">
   <title id="offline-icon">Offline</title>
   <path d="M21.014 2.875l-2.632 2.632C12.596 2.974 5.592 4.042.85 8.785l2.235 2.235c3.477-3.476 8.468-4.495 12.84-3.054l-2.61 2.607c-2.83-.397-5.81.497-7.995 2.682l2.235 2.235c.695-.695 1.49-1.192 2.36-1.49l-6.11 6.084.92.92 17.208-17.21-.92-.92zm-10.9 14.527l-.324.323 2.21 2.21 2.235-2.235c-1.117-1.117-2.88-1.217-4.122-.298zm3.55-3.55c1.018.272 1.986.82 2.78 1.613l2.236-2.235c-.77-.77-1.64-1.39-2.583-1.837l-2.433 2.458zM20.716 6.8l-2.284 2.28c.894.522 1.713 1.167 2.483 1.937L23.15 8.78c-.745-.744-1.564-1.414-2.434-1.985z"/>
@@ -918,7 +791,6 @@ article {
     <input id="search_sites" type="hidden" name="as_sitesearch" value="nicolas-hoizey.com" />
     <input id="search_input" name="q" type="search" size="5" spellcheck="false" autocorrect="off" autocomplete="off" aria-label="Search articles on the site" />
     <label for="search_button">
-      <?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" role="img" width="1em" height="1em" viewBox="0 0 32 32" aria-labelledby="search-icon-svg">
   <title id="search-icon-svg">Recherche</title>
   <path d="M20,0.005c-6.627,0-12,5.373-12,12c0,2.026,0.507,3.933,1.395,5.608l-8.344,8.342l0.007,0.006 C0.406,26.602,0,27.49,0,28.477c0,1.949,1.58,3.529,3.529,3.529c0.985,0,1.874-0.406,2.515-1.059l-0.002-0.002l8.341-8.34 c1.676,0.891,3.586,1.4,5.617,1.4c6.627,0,12-5.373,12-12C32,5.378,26.627,0.005,20,0.005z M4.795,29.697 c-0.322,0.334-0.768,0.543-1.266,0.543c-0.975,0-1.765-0.789-1.765-1.764c0-0.498,0.21-0.943,0.543-1.266l-0.009-0.008l8.066-8.066 c0.705,0.951,1.545,1.791,2.494,2.498L4.795,29.697z M20,22.006c-5.522,0-10-4.479-10-10c0-5.522,4.478-10,10-10 c5.521,0,10,4.478,10,10C30,17.527,25.521,22.006,20,22.006z"/>
@@ -1049,10 +921,7 @@ window.document.getElementById('search_button').style.display = 'none'
 <p>According to my browser network panel or <a href="https://www.webpagetest.org/result/170111_P9_D0V3/">WebPagetest</a>, it means <strong>almost 16 Mb are downloaded</strong> right away when you access one page of the site.</p>
 
 <figure>
-<img src="https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_800/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png" srcset="https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_360/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png 360w,
-https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_670/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png 670w,
-https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_980/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png 980w,
-https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_1034/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png 1034w" sizes="(min-width: 50rem) 50rem, 90vw" width="1034" height="740" />
+<img src="webpagetest-resilient-web-design.png" srcset="webpagetest-resilient-web-design.png 1034w," sizes="(min-width: 50rem) 50rem, 90vw" width="1034" height="740" />
 <figcaption><p>The Resilient Web Design web book audited by WebPagetest</p>
 </figcaption>
 </figure>
@@ -1066,17 +935,13 @@ https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_1034/https://
 <p>Just to illustrate, it means that <strong>one visit to this site will cost a Mauritanian at least 10 % of his daily income</strong>, according to <a href="https://twitter.com/tkadlec">Tim Kadlec</a>’s simulation on <a href="https://whatdoesmysitecost.com/test/170111_P9_D0V3#gniCost">What Does My Site Cost?</a>.</p>
 
 <figure>
-<img src="https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_800/https://nicolas-hoizey.com/2017/01/what-does-my-site-cost.png" srcset="https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_360/https://nicolas-hoizey.com/2017/01/what-does-my-site-cost.png 360w,
-https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_670/https://nicolas-hoizey.com/2017/01/what-does-my-site-cost.png 670w,
-https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_980/https://nicolas-hoizey.com/2017/01/what-does-my-site-cost.png 980w,
-https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_1074/https://nicolas-hoizey.com/2017/01/what-does-my-site-cost.png 1074w" sizes="(min-width: 50rem) 50rem, 90vw" width="1074" height="1278" />
+<img src="what-does-my-site-cost.png" srcset="what-does-my-site-cost.png 1074w" sizes="(min-width: 50rem) 50rem, 90vw" width="1074" height="1278" />
 <figcaption><p>Cost of visiting this website as a percentage of daily income</p>
 </figcaption>
 </figure>
 
 <p>Only 0.24 % for Jeremy in UK or 0.28 % for me in France, but we are here because we love the <a href="https://www.paris-web.fr/2016/conferences/www-world-wide-web-not-wealthy-westerners-web.php">World Wide Web, not Wealthy Westerners’ Web</a>, as presented by <a href="https://twitter.com/brucel">Bruce Lawson</a> during 2016 edition of the Paris Web conference.</p>
 
-<p><img src="https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_200/https://nicolas-hoizey.com/assets/logos/lighthouse.png" srcset="https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_100/https://nicolas-hoizey.com/assets/logos/lighthouse.png 100w, https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_250/https://nicolas-hoizey.com/assets/logos/lighthouse.png 250w, https://res.cloudinary.com/nho/image/fetch/c_limit,f_auto,q_auto,w_400/https://nicolas-hoizey.com/assets/logos/lighthouse.png 400w" sizes="(min-width: 55rem) 12.5rem, (min-width: 30rem) 22.5vw, 30vw" class="logo" width="1850" height="1042" crossorigin="anonymous" />
 Because I use it quite a lot these days to check my own Progressive Web Apps, I thought it would be nice if <a href="https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk">Lighthouse</a>, the Chrome extension that check web pages against <a href="https://developers.google.com/web/updates/2016/12/lighthouse-dbw">a growing list of best practices</a>, included a check on total page weight. It looks like <a href="https://twitter.com/hsablonniere">Hubert Sablonnière</a> already <a href="https://github.com/GoogleChrome/lighthouse/issues/584">had this idea and created an issue</a>, which got support from <a href="https://twitter.com/paul_irish">Paul Irish</a>, so it will come sooner or later.</p>
 
 <p>For my own website, I first thought I would only cache visited pages. But I now cache the homepage, the two about pages, and the last post, regardless of the page on which the user arrives, for a really light total weight of 87 KB additional resources. The offline fallback page lists the pages that are in the cache, so that the user can discover some unknown content even when she’s offline. This is a <abbr title="Work In Progress">WIP</abbr>, so it might break, and it will change over the coming weeks, because I might adjust my strategy.</p>
@@ -1125,10 +990,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/no-avatar.png"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/no-avatar.png 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/no-avatar.png 2x"
+                  src="no-avatar.png"
                   alt="Emmanuel avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Emmanuel</b>
@@ -1149,10 +1011,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="https://nicolas-hoizey.com/" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 2x"
+                  src="no-avatar.png"
                   alt="Nicolas Hoizey avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Nicolas Hoizey</b>
@@ -1173,10 +1032,8 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="https://webplatformdaily.org" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/simevidas.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/simevidas.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/simevidas.jpg 2x"
+                  src="no-avatar.png"
+
                   alt="Šime Vidas avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Šime Vidas</b>
@@ -1197,10 +1054,8 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="https://nicolas-hoizey.com/" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 2x"
+                  src="no-avatar.png"
+
                   alt="Nicolas Hoizey avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Nicolas Hoizey</b>
@@ -1221,10 +1076,8 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/michael_gunner.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/michael_gunner.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/michael_gunner.jpg 2x"
+                  src="no-avatar.png"
+
                   alt="Michael Gunner avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Michael Gunner</b>
@@ -1245,10 +1098,8 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="https://nicolas-hoizey.com/" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 2x"
+                  src="no-avatar.png"
+
                   alt="Nicolas Hoizey avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Nicolas Hoizey</b>
@@ -1269,10 +1120,8 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="http://sphvn.com" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/sphvn.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/sphvn.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/sphvn.jpg 2x"
+                  src="no-avatar.png"
+
                   alt="sphvn avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">sphvn</b>
@@ -1293,10 +1142,8 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <div class="comment__author p-author h-card">
               <a href="https://nicolas-hoizey.com/" class="u-url">
                 <img
-                  src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg"
-                  srcset="
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 1x,
-                    https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://nicolas-hoizey.com/assets/avatars/nhoizey.jpg 2x"
+                  src="no-avatar.png"
+
                   alt="Nicolas Hoizey avatar"
                   class="comment__author__photo u-photo" />
                 <b class="p-name">Nicolas Hoizey</b>
@@ -1335,7 +1182,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
           <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                 width= "48"
                 height="48"
                 alt="Nicolas Hoizey avatar" />
@@ -1350,7 +1197,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg 2x"
+                data-srcset="4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg "
                 width= "48"
                 height="48"
                 alt="Bob Volte avatar" />
@@ -1365,7 +1212,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
               <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/76bd4ecb28c363b80f49addc246a624928774f59f8ce02e8e2e002105385b5c2.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/76bd4ecb28c363b80f49addc246a624928774f59f8ce02e8e2e002105385b5c2.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/76bd4ecb28c363b80f49addc246a624928774f59f8ce02e8e2e002105385b5c2.jpg 2x"
+                data-srcset="76bd4ecb28c363b80f49addc246a624928774f59f8ce02e8e2e002105385b5c2.jpg "
                 width= "48"
                 height="48"
                 alt="jbcordina avatar" />
@@ -1380,7 +1227,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                 <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg 2x"
+                data-srcset="bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg "
                 width= "48"
                 height="48"
                 alt="Gaël Poupard avatar" />
@@ -1395,7 +1242,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                   <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/b6ccd529f1a26a908dddff90d90bef7b5eb6ca359e6d71d3bcca49c0e30b2688.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/b6ccd529f1a26a908dddff90d90bef7b5eb6ca359e6d71d3bcca49c0e30b2688.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/b6ccd529f1a26a908dddff90d90bef7b5eb6ca359e6d71d3bcca49c0e30b2688.jpg 2x"
+                data-srcset="b6ccd529f1a26a908dddff90d90bef7b5eb6ca359e6d71d3bcca49c0e30b2688.jpg "
                 width= "48"
                 height="48"
                 alt="Nicolas Hoffmann avatar" />
@@ -1410,7 +1257,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                     <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/119db3d83628f9cf5464f7371bb0769aa9c447cb96ab47ce214c685370bebbf5.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/119db3d83628f9cf5464f7371bb0769aa9c447cb96ab47ce214c685370bebbf5.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/119db3d83628f9cf5464f7371bb0769aa9c447cb96ab47ce214c685370bebbf5.jpg 2x"
+                data-srcset="119db3d83628f9cf5464f7371bb0769aa9c447cb96ab47ce214c685370bebbf5.jpg "
                 width= "48"
                 height="48"
                 alt="˗ˏˋ tzi ˊˎ˗ avatar" />
@@ -1425,7 +1272,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                       <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/38c3623fd0e6792dde79d244b57c34917892b48ee08136d219ccfc19dbcd97e9.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/38c3623fd0e6792dde79d244b57c34917892b48ee08136d219ccfc19dbcd97e9.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/38c3623fd0e6792dde79d244b57c34917892b48ee08136d219ccfc19dbcd97e9.jpg 2x"
+                data-srcset="38c3623fd0e6792dde79d244b57c34917892b48ee08136d219ccfc19dbcd97e9.jpg "
                 width= "48"
                 height="48"
                 alt="Florian Bouvot avatar" />
@@ -1440,7 +1287,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                         <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/abs.twimg.com/ef3e3b7e1fb12075aa77f10c3fe19f06dfdc7a26d44653f05ae6876463499260.png"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/abs.twimg.com/ef3e3b7e1fb12075aa77f10c3fe19f06dfdc7a26d44653f05ae6876463499260.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/abs.twimg.com/ef3e3b7e1fb12075aa77f10c3fe19f06dfdc7a26d44653f05ae6876463499260.png 2x"
+                data-srcset="ef3e3b7e1fb12075aa77f10c3fe19f06dfdc7a26d44653f05ae6876463499260.png "
                 width= "48"
                 height="48"
                 alt="NoFuiInvitado avatar" />
@@ -1455,7 +1302,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                           <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/0bb42067d123157202a2c272e97e7080290055c5682d0aad7135dad7f0ac9004.jpeg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/0bb42067d123157202a2c272e97e7080290055c5682d0aad7135dad7f0ac9004.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/0bb42067d123157202a2c272e97e7080290055c5682d0aad7135dad7f0ac9004.jpeg 2x"
+                data-srcset="0bb42067d123157202a2c272e97e7080290055c5682d0aad7135dad7f0ac9004.jpeg "
                 width= "48"
                 height="48"
                 alt="Marco Hengstenberg avatar" />
@@ -1470,7 +1317,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                             <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/19a5e335f6d943d7b17776e4ac159672b9600830406a7b0213eca57322e22f56.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/19a5e335f6d943d7b17776e4ac159672b9600830406a7b0213eca57322e22f56.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/19a5e335f6d943d7b17776e4ac159672b9600830406a7b0213eca57322e22f56.jpg 2x"
+                data-srcset="19a5e335f6d943d7b17776e4ac159672b9600830406a7b0213eca57322e22f56.jpg "
                 width= "48"
                 height="48"
                 alt="Tobias Baldauf 🦁 avatar" />
@@ -1485,7 +1332,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                               <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/1abe3844450887b0d714bb9355413606dd3d4f7afa4f857cca4ca94d5e935fba.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/1abe3844450887b0d714bb9355413606dd3d4f7afa4f857cca4ca94d5e935fba.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/1abe3844450887b0d714bb9355413606dd3d4f7afa4f857cca4ca94d5e935fba.jpg 2x"
+                data-srcset="1abe3844450887b0d714bb9355413606dd3d4f7afa4f857cca4ca94d5e935fba.jpg "
                 width= "48"
                 height="48"
                 alt="blinch avatar" />
@@ -1500,7 +1347,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                 <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/77839f315d125db8683cede9fa9e4b51be28b6dc54050a29e11aa01c92627418.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/77839f315d125db8683cede9fa9e4b51be28b6dc54050a29e11aa01c92627418.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/77839f315d125db8683cede9fa9e4b51be28b6dc54050a29e11aa01c92627418.jpg 2x"
+                data-srcset="77839f315d125db8683cede9fa9e4b51be28b6dc54050a29e11aa01c92627418.jpg "
                 width= "48"
                 height="48"
                 alt="Eric Bidelman avatar" />
@@ -1515,7 +1362,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                   <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg 2x"
+                data-srcset="0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg "
                 width= "48"
                 height="48"
                 alt="Bastien Jaillot avatar" />
@@ -1530,7 +1377,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                     <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/22ae04569dcd72f7f71312c5464615f0efa3065e768f4bed598eda0b28899f84.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/22ae04569dcd72f7f71312c5464615f0efa3065e768f4bed598eda0b28899f84.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/22ae04569dcd72f7f71312c5464615f0efa3065e768f4bed598eda0b28899f84.jpg 2x"
+                data-srcset="22ae04569dcd72f7f71312c5464615f0efa3065e768f4bed598eda0b28899f84.jpg "
                 width= "48"
                 height="48"
                 alt="Tony-S avatar" />
@@ -1545,7 +1392,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                       <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/42a3dd5a95b5bc28010de2ebb20870721a30dd052dfddd88f2777b699e2ea8a4.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/42a3dd5a95b5bc28010de2ebb20870721a30dd052dfddd88f2777b699e2ea8a4.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/42a3dd5a95b5bc28010de2ebb20870721a30dd052dfddd88f2777b699e2ea8a4.jpg 2x"
+                data-srcset="42a3dd5a95b5bc28010de2ebb20870721a30dd052dfddd88f2777b699e2ea8a4.jpg "
                 width= "48"
                 height="48"
                 alt="Stéphanie Walter 🦊 avatar" />
@@ -1560,7 +1407,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                         <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg 2x"
+                data-srcset="bebb7c8bbc4d5d316c64a4e8278e4fb1a662dd836590aa669864c8f7d7ca013d.jpeg "
                 width= "48"
                 height="48"
                 alt="Gaël Poupard avatar" />
@@ -1575,7 +1422,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                           <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/a20e63f7fbcbb336acfccfce21481f89883270fe8f0a4b63dc8928cdfbcc270c.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/a20e63f7fbcbb336acfccfce21481f89883270fe8f0a4b63dc8928cdfbcc270c.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/a20e63f7fbcbb336acfccfce21481f89883270fe8f0a4b63dc8928cdfbcc270c.jpg 2x"
+                data-srcset="a20e63f7fbcbb336acfccfce21481f89883270fe8f0a4b63dc8928cdfbcc270c.jpg "
                 width= "48"
                 height="48"
                 alt="Christoph Jerolimov avatar" />
@@ -1590,7 +1437,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                             <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg 2x"
+                data-srcset="0dbb6910fed96ef1e3fdf19d6b27ac2dd24a7d5fbdcc7d71e693325a349d8280.jpg "
                 width= "48"
                 height="48"
                 alt="Bastien Jaillot avatar" />
@@ -1605,7 +1452,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                               <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/39d744bff233c88f8ded80dce247824a6495d298a10506b0cebf5408e50a507b.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/39d744bff233c88f8ded80dce247824a6495d298a10506b0cebf5408e50a507b.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/39d744bff233c88f8ded80dce247824a6495d298a10506b0cebf5408e50a507b.jpg 2x"
+                data-srcset="39d744bff233c88f8ded80dce247824a6495d298a10506b0cebf5408e50a507b.jpg "
                 width= "48"
                 height="48"
                 alt="Alex Carpenter avatar" />
@@ -1620,7 +1467,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                 <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/a8ad80e291b628f4926777d42929ccf3acfc7409aad2a3b6c5f874154ec198d3.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/a8ad80e291b628f4926777d42929ccf3acfc7409aad2a3b6c5f874154ec198d3.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/a8ad80e291b628f4926777d42929ccf3acfc7409aad2a3b6c5f874154ec198d3.jpg 2x"
+                data-srcset="a8ad80e291b628f4926777d42929ccf3acfc7409aad2a3b6c5f874154ec198d3.jpg "
                 width= "48"
                 height="48"
                 alt="Luca Degasperi avatar" />
@@ -1635,7 +1482,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                   <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg 2x"
+                data-srcset="05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg "
                 width= "48"
                 height="48"
                 alt="Thomas Steiner avatar" />
@@ -1662,7 +1509,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
           <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg 2x"
+                data-srcset="4df3c5b7d56c2e332e972354c57e0ace330784caefa9896039c4850c454cf9b4.jpg "
                 width= "48"
                 height="48"
                 alt="Bob Volte avatar" />
@@ -1677,7 +1524,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <img
                 class="webmention__author__photo u-photo"
                 data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/49b2c32b4e66a684ff60ef23dbf5690e2a6a535cfa47618bb52057afc14af228.jpg"
-                data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/49b2c32b4e66a684ff60ef23dbf5690e2a6a535cfa47618bb52057afc14af228.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/49b2c32b4e66a684ff60ef23dbf5690e2a6a535cfa47618bb52057afc14af228.jpg 2x"
+                data-srcset="49b2c32b4e66a684ff60ef23dbf5690e2a6a535cfa47618bb52057afc14af228.jpg "
                 width= "48"
                 height="48"
                 alt="Anselm Hannemann avatar" />
@@ -1704,7 +1551,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
             <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg 2x"
+                      data-srcset="14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg "
                       width= "48"
                       height="48"
                       alt="Boris avatar" />
@@ -1732,7 +1579,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
               <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg 2x"
+                      data-srcset="14c251bf27a426adfbbaf0db67ff146801ca5971f9ee476a694e5cf3f4cf2ef6.jpg "
                       width= "48"
                       height="48"
                       alt="Boris avatar" />
@@ -1762,7 +1609,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                 <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/33893b1a6a64ed6c0171735249f36aa71712fb1c284e073f255c429becba2863.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/33893b1a6a64ed6c0171735249f36aa71712fb1c284e073f255c429becba2863.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/33893b1a6a64ed6c0171735249f36aa71712fb1c284e073f255c429becba2863.jpg 2x"
+                      data-srcset="33893b1a6a64ed6c0171735249f36aa71712fb1c284e073f255c429becba2863.jpg "
                       width= "48"
                       height="48"
                       alt="Bruce Lawson avatar" />
@@ -1790,7 +1637,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                   <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 2x"
+                      data-srcset="ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png "
                       width= "48"
                       height="48"
                       alt="Smashing Magazine avatar" />
@@ -1819,7 +1666,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                     <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 2x"
+                      data-srcset="ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png "
                       width= "48"
                       height="48"
                       alt="Smashing Magazine avatar" />
@@ -1848,7 +1695,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                       <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 2x"
+                      data-srcset="ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png "
                       width= "48"
                       height="48"
                       alt="Smashing Magazine avatar" />
@@ -1877,7 +1724,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                         <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/1588f8aced27f4b0ad30875e148e35be065a0e71101f8295fbc18e8af7dc6a46.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/1588f8aced27f4b0ad30875e148e35be065a0e71101f8295fbc18e8af7dc6a46.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/1588f8aced27f4b0ad30875e148e35be065a0e71101f8295fbc18e8af7dc6a46.jpg 2x"
+                      data-srcset="1588f8aced27f4b0ad30875e148e35be065a0e71101f8295fbc18e8af7dc6a46.jpg "
                       width= "48"
                       height="48"
                       alt="Philippe Vayssière avatar" />
@@ -1905,7 +1752,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                           <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -1934,7 +1781,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                             <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -1962,7 +1809,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                               <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -1991,7 +1838,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                 <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png 2x"
+                      data-srcset="ada5ba04a1f7a9b5e5df0b971fa5fc1db5597c98d6f425a111729e16348b3727.png "
                       width= "48"
                       height="48"
                       alt="Smashing Magazine avatar" />
@@ -2020,7 +1867,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                   <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/7c4a3f2156496456b525784885e111fd9956eeb8002fded39aa6e963fa94b24b.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/7c4a3f2156496456b525784885e111fd9956eeb8002fded39aa6e963fa94b24b.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/7c4a3f2156496456b525784885e111fd9956eeb8002fded39aa6e963fa94b24b.jpg 2x"
+                      data-srcset="7c4a3f2156496456b525784885e111fd9956eeb8002fded39aa6e963fa94b24b.jpg "
                       width= "48"
                       height="48"
                       alt="Doron Sherman avatar" />
@@ -2048,7 +1895,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                     <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -2076,7 +1923,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                       <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ef82f596d044f637c43ebb38059d99447745f5a9a7ad637b4da1f079c1afa9ec.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ef82f596d044f637c43ebb38059d99447745f5a9a7ad637b4da1f079c1afa9ec.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ef82f596d044f637c43ebb38059d99447745f5a9a7ad637b4da1f079c1afa9ec.jpeg 2x"
+                      data-srcset="ef82f596d044f637c43ebb38059d99447745f5a9a7ad637b4da1f079c1afa9ec.jpeg "
                       width= "48"
                       height="48"
                       alt="Tim Kadlec avatar" />
@@ -2105,7 +1952,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                         <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg 2x"
+                      data-srcset="6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg "
                       width= "48"
                       height="48"
                       alt="antoinefauchié avatar" />
@@ -2133,7 +1980,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                           <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/24b28ace1efc70b89d90e105de5119ad6caabb01217f431549b3abb8c7fefab7.png"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/24b28ace1efc70b89d90e105de5119ad6caabb01217f431549b3abb8c7fefab7.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/24b28ace1efc70b89d90e105de5119ad6caabb01217f431549b3abb8c7fefab7.png 2x"
+                      data-srcset="24b28ace1efc70b89d90e105de5119ad6caabb01217f431549b3abb8c7fefab7.png "
                       width= "48"
                       height="48"
                       alt="GreenIT.fr avatar" />
@@ -2167,7 +2014,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                             <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/23b7a29e84860bb2b76dd1baee76f5e45928b3519ff6818c2d8b88e9f8cfa13f.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/23b7a29e84860bb2b76dd1baee76f5e45928b3519ff6818c2d8b88e9f8cfa13f.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/23b7a29e84860bb2b76dd1baee76f5e45928b3519ff6818c2d8b88e9f8cfa13f.jpg 2x"
+                      data-srcset="23b7a29e84860bb2b76dd1baee76f5e45928b3519ff6818c2d8b88e9f8cfa13f.jpg "
                       width= "48"
                       height="48"
                       alt="Веб-стандарты avatar" />
@@ -2179,7 +2026,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                             <p>Сколько офлайнового кэша стоит хранить в сервис-воркерах, Николас Хойзи о стоимости трафика и ответственности — <a href="https://nicolas-hoizey.com/2017/01/how-much-data-should-my-service-worker-put-upfront-in-the-offline-cache.html">nicolas-hoizey.com/2017/01/how-mu…</a></p>
                                             <p>
                                               <a href="https://twitter.com/webstandards_ru/status/819913641743044614">
-                                                <img alt="" src="http://pbs.twimg.com/media/C2DrHCfWEAEFlyH.jpg" /></a>
+                                                <img alt="" src="no-avatar.png" /></a>
                                             </p>
                                           </div>
                                           <div class="webmention__meta">
@@ -2199,7 +2046,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                               <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/c5048a0ddd46ec12573f95b7ce1fcb65fb8518b24d6bc010e8c8ab72596fc96d.png"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/c5048a0ddd46ec12573f95b7ce1fcb65fb8518b24d6bc010e8c8ab72596fc96d.png 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/c5048a0ddd46ec12573f95b7ce1fcb65fb8518b24d6bc010e8c8ab72596fc96d.png 2x"
+                      data-srcset="c5048a0ddd46ec12573f95b7ce1fcb65fb8518b24d6bc010e8c8ab72596fc96d.png "
                       width= "48"
                       height="48"
                       alt="Fresh Frontend Links avatar" />
@@ -2227,7 +2074,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                 <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/f01eab1a78256fc28c11c765a19f52b4814ca593677e5f756d4c46f2f3a38d10.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/f01eab1a78256fc28c11c765a19f52b4814ca593677e5f756d4c46f2f3a38d10.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/f01eab1a78256fc28c11c765a19f52b4814ca593677e5f756d4c46f2f3a38d10.jpg 2x"
+                      data-srcset="f01eab1a78256fc28c11c765a19f52b4814ca593677e5f756d4c46f2f3a38d10.jpg "
                       width= "48"
                       height="48"
                       alt="Radimir Bitsov avatar" />
@@ -2255,7 +2102,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                   <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ef7bf01051744a3b1dba9b96a0bdb9dae228ce09f043daa00c00359f7b5d6329.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ef7bf01051744a3b1dba9b96a0bdb9dae228ce09f043daa00c00359f7b5d6329.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ef7bf01051744a3b1dba9b96a0bdb9dae228ce09f043daa00c00359f7b5d6329.jpeg 2x"
+                      data-srcset="ef7bf01051744a3b1dba9b96a0bdb9dae228ce09f043daa00c00359f7b5d6329.jpeg "
                       width= "48"
                       height="48"
                       alt="stefan judis avatar" />
@@ -2283,7 +2130,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                     <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/d0c25176e93668bcf2ef821ddd8921ba00754bdac6eb972a77754d4531263b29.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/d0c25176e93668bcf2ef821ddd8921ba00754bdac6eb972a77754d4531263b29.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/d0c25176e93668bcf2ef821ddd8921ba00754bdac6eb972a77754d4531263b29.jpg 2x"
+                      data-srcset="d0c25176e93668bcf2ef821ddd8921ba00754bdac6eb972a77754d4531263b29.jpg "
                       width= "48"
                       height="48"
                       alt="Gokul avatar" />
@@ -2369,7 +2216,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                           <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/2365104028559f92078f050980bf554b11ad2f8aa287fc0567f43e80eecc0d39.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/2365104028559f92078f050980bf554b11ad2f8aa287fc0567f43e80eecc0d39.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/2365104028559f92078f050980bf554b11ad2f8aa287fc0567f43e80eecc0d39.jpg 2x"
+                      data-srcset="2365104028559f92078f050980bf554b11ad2f8aa287fc0567f43e80eecc0d39.jpg "
                       width= "48"
                       height="48"
                       alt="Brian Daley avatar" />
@@ -2397,7 +2244,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                             <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/17933b68d677d8ca61a2240ef1f5917a67665693bea47b2d08ebca707d3b19c7.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/17933b68d677d8ca61a2240ef1f5917a67665693bea47b2d08ebca707d3b19c7.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/17933b68d677d8ca61a2240ef1f5917a67665693bea47b2d08ebca707d3b19c7.jpg 2x"
+                      data-srcset="17933b68d677d8ca61a2240ef1f5917a67665693bea47b2d08ebca707d3b19c7.jpg "
                       width= "48"
                       height="48"
                       alt="🦄 bredele avatar" />
@@ -2454,7 +2301,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                 <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/776faacdb063b19b894d2e13be0eaee09b72b0d1d4eb35f8091b5c8d8b784f47.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/776faacdb063b19b894d2e13be0eaee09b72b0d1d4eb35f8091b5c8d8b784f47.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/776faacdb063b19b894d2e13be0eaee09b72b0d1d4eb35f8091b5c8d8b784f47.jpg 2x"
+                      data-srcset="776faacdb063b19b894d2e13be0eaee09b72b0d1d4eb35f8091b5c8d8b784f47.jpg "
                       width= "48"
                       height="48"
                       alt="pierre choffe avatar" />
@@ -2482,7 +2329,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                   <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/17f9f0308b22132de78d065aa0332849727c8a21e4e36bf8ff680a91652d0b2f.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/17f9f0308b22132de78d065aa0332849727c8a21e4e36bf8ff680a91652d0b2f.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/17f9f0308b22132de78d065aa0332849727c8a21e4e36bf8ff680a91652d0b2f.jpg 2x"
+                      data-srcset="17f9f0308b22132de78d065aa0332849727c8a21e4e36bf8ff680a91652d0b2f.jpg "
                       width= "48"
                       height="48"
                       alt="Jacky avatar" />
@@ -2510,7 +2357,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                     <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/869f93dcf5ea26fd618af591a7613892f9eb5c7f33db6cdbbcbeb891ca1a23f1.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/869f93dcf5ea26fd618af591a7613892f9eb5c7f33db6cdbbcbeb891ca1a23f1.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/869f93dcf5ea26fd618af591a7613892f9eb5c7f33db6cdbbcbeb891ca1a23f1.jpg 2x"
+                      data-srcset="869f93dcf5ea26fd618af591a7613892f9eb5c7f33db6cdbbcbeb891ca1a23f1.jpg "
                       width= "48"
                       height="48"
                       alt="Andrew Solomon avatar" />
@@ -2538,7 +2385,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                       <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/18770dadcefd7e7aafab8af54f359e86d4bb23429626cd45a936108c0ec2d67a.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/18770dadcefd7e7aafab8af54f359e86d4bb23429626cd45a936108c0ec2d67a.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/18770dadcefd7e7aafab8af54f359e86d4bb23429626cd45a936108c0ec2d67a.jpg 2x"
+                      data-srcset="18770dadcefd7e7aafab8af54f359e86d4bb23429626cd45a936108c0ec2d67a.jpg "
                       width= "48"
                       height="48"
                       alt="CiTA avatar" />
@@ -2550,7 +2397,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                       <p>How much data should my Service Worker put upfront in the offline cache?<a href="http://buff.ly/2lbO80t">buff.ly/2lbO80t</a> via <a href="https://twitter.com/nhoizey">@nhoizey</a><a href="https://twitter.com/search?q=%23offlice">#offlice</a> <a href="https://twitter.com/search?q=%23web">#web</a> <a href="https://twitter.com/search?q=%23workers">#workers</a></p>
                                                                       <p>
                                                                         <a href="https://twitter.com/malimirkeccita/status/831491705358655490">
-                                                                          <img alt="" src="http://pbs.twimg.com/media/C4oNTFBWQAAcmpt.jpg" /></a>
+                                                                          <img alt="" src="no-avatar.png" /></a>
                                                                       </p>
                                                                       <p><a class="u-mention" href="https://nicolas-hoizey.com/2017/01/how-much-data-should-my-service-worker-put-upfront-in-the-offline-cache.html"></a></p>
                                                                     </div>
@@ -2600,7 +2447,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                           <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 2x"
+                      data-srcset="6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg "
                       width= "48"
                       height="48"
                       alt="Owen Campbell-Moore avatar" />
@@ -2628,7 +2475,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                             <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 2x"
+                      data-srcset="6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg "
                       width= "48"
                       height="48"
                       alt="Owen Campbell-Moore avatar" />
@@ -2656,7 +2503,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                               <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -2684,7 +2531,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                 <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 2x"
+                      data-srcset="6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg "
                       width= "48"
                       height="48"
                       alt="Owen Campbell-Moore avatar" />
@@ -2712,7 +2559,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                   <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg 2x"
+                      data-srcset="6177175a9b467a02cfe904cdb090a0017fa04ba8cfc4fda22e4ee25b9c9672d1.jpg "
                       width= "48"
                       height="48"
                       alt="Owen Campbell-Moore avatar" />
@@ -2740,7 +2587,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                     <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -2797,7 +2644,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                         <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg 2x"
+                      data-srcset="05796e7c6ce8b47a935fae4489812faf9813783f9c99b9b9dbb54d2de4bb9770.jpg "
                       width= "48"
                       height="48"
                       alt="Thomas Steiner avatar" />
@@ -2825,7 +2672,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                           <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg 2x"
+                      data-srcset="6d76f4edc760e9357524263c6c4c483de9272f3f3aa0b549e7f1d9caef3721f2.jpeg "
                       width= "48"
                       height="48"
                       alt="antoinefauchié avatar" />
@@ -2853,7 +2700,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                             <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -2882,7 +2729,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                               <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/59fd2e44e41d79057dccd699173af08a7cb6e6579ff273345b5827ab207d355d.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/59fd2e44e41d79057dccd699173af08a7cb6e6579ff273345b5827ab207d355d.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/59fd2e44e41d79057dccd699173af08a7cb6e6579ff273345b5827ab207d355d.jpg 2x"
+                      data-srcset="59fd2e44e41d79057dccd699173af08a7cb6e6579ff273345b5827ab207d355d.jpg "
                       width= "48"
                       height="48"
                       alt="Max Böck avatar" />
@@ -2910,7 +2757,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                                 <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/09bb4880190585b5e89c617e2b0fc0af42f2bd0b1eefa64fa76f35eb307555a6.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/09bb4880190585b5e89c617e2b0fc0af42f2bd0b1eefa64fa76f35eb307555a6.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/09bb4880190585b5e89c617e2b0fc0af42f2bd0b1eefa64fa76f35eb307555a6.jpeg 2x"
+                      data-srcset="09bb4880190585b5e89c617e2b0fc0af42f2bd0b1eefa64fa76f35eb307555a6.jpeg "
                       width= "48"
                       height="48"
                       alt="Šime Vidas avatar" />
@@ -2938,7 +2785,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                                   <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/c966f88def36ca2e45c24a14ba64d1bbc9758c5682b330130512cbbdc5e55b67.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/c966f88def36ca2e45c24a14ba64d1bbc9758c5682b330130512cbbdc5e55b67.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/c966f88def36ca2e45c24a14ba64d1bbc9758c5682b330130512cbbdc5e55b67.jpg 2x"
+                      data-srcset="c966f88def36ca2e45c24a14ba64d1bbc9758c5682b330130512cbbdc5e55b67.jpg "
                       width= "48"
                       height="48"
                       alt="WebPageTest bot avatar" />
@@ -2966,7 +2813,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                                     <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ae7867c48e7a05d07fb2ba529fd56fdb60d6186988b81412c08128565f0ff668.jpg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/ae7867c48e7a05d07fb2ba529fd56fdb60d6186988b81412c08128565f0ff668.jpg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/ae7867c48e7a05d07fb2ba529fd56fdb60d6186988b81412c08128565f0ff668.jpg 2x"
+                      data-srcset="ae7867c48e7a05d07fb2ba529fd56fdb60d6186988b81412c08128565f0ff668.jpg "
                       width= "48"
                       height="48"
                       alt="Chris Love avatar" />
@@ -2988,7 +2835,7 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
                                                                                                       <img
                       class="webmention__author__photo u-photo"
                       data-src="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg"
-                      data-srcset="https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_48,h_48/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 1x, https://res.cloudinary.com/nho/image/fetch/c_fill,f_auto,q_auto,w_96,h_96/https://webmention.io/avatar/pbs.twimg.com/157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg 2x"
+                      data-srcset="157a8e9c1212a9506cc12c2cc7013889236e35667ba1444b7343ce6f69928ad9.jpeg "
                       width= "48"
                       height="48"
                       alt="Nicolas Hoizey avatar" />
@@ -3022,411 +2869,6 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
 </footer>
 
 >
-<script integrity="sha256-LwgtxnJwT8EExRNNpRCbQs7jCa6NY1SkfSB9t0hYegk=" crossorigin="anonymous" type="text/javascript">/*****************************************************************
- * Statistics
- * ****************************************************************/
-
-
-;(function(win, doc) {
-  doc.body.setAttribute('data-viewportwidth', win.viewport_width)
-  doc.body.setAttribute('data-screendensity', win.screen_density)
-  doc.body.setAttribute('data-rootfontsize', win.root_font_size)
-})(window, document)
-
-/*****************************************************************
- * UX
- * ****************************************************************/
-
-// Add anchor links to titles in the article
-;(function(w) {
-  var i,
-    list = w.document.querySelectorAll(
-      'article.main h2, article.main h3, article.main h4, article.main h5, article.main h6',
-    ),
-    nb = list.length
-
-  for (i = 0; i < nb; ++i) {
-    if (undefined !== list[i].id) {
-      list[i].innerHTML +=
-        '&nbsp;<a class="deeplink" href="#' +
-        list[i].id +
-        '"><svg><use xlink:href="#symbol-link" /></svg></a>'
-    } else {
-      list[i].innerHTML +=
-        '&nbsp;<a class="deeplink" href="#' +
-        i +
-        '"><svg><use xlink:href="#symbol-link" /></svg></a>'
-    }
-  }
-})(this)
-
-// Lazyload Webmentions avatars
-;[].forEach.call(document.querySelectorAll('img[data-src]'), function(img) {
-  img.setAttribute('srcset', img.getAttribute('data-srcset'))
-  img.setAttribute('src', img.getAttribute('data-src'))
-  img.onload = function() {
-    img.removeAttribute('data-srcset')
-    img.removeAttribute('data-src')
-  }
-})
-
-/*****************************************************************
- * PWA
- * ****************************************************************/
-
-// Install Service Worker
-if ('serviceWorker' in navigator) {
-  // https://slides.com/webmax/serviceworker-thebest/#/23
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-  })
-}
-
-// https://stackoverflow.com/a/18650828/717195
-function formatBytes(a, b) {
-  if (0 == a) return '0 Bytes'
-  var c = 1024,
-    d = b || 2,
-    e = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-    f = Math.floor(Math.log(a) / Math.log(c))
-  return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f]
-}
-
-// Log storage quota usage
-// https://slides.com/webmax/serviceworker-thebest/#/35
-if ('storage' in navigator && 'estimate' in navigator.storage) {
-  navigator.storage.estimate().then(({ usage, quota }) => {
-    console.log(
-      'Using ' +
-        formatBytes(usage) +
-        ' out of ' +
-        formatBytes(quota) +
-        ' bytes.',
-    )
-  })
-}
-
-// Clean Service Worker cache
-// https://adactio.com/journal/9888
-window.addEventListener('load', function() {
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({ command: 'trimCaches' })
-  }
-})
-
-/*****************************************************************
- * Deal with offline/online events
- * ****************************************************************/
-
-// https://mxb.at/blog/youre-offline/
-// https://www.youtube.com/watch?v=7fnpsF9tMXc
-
-let isOffline = false
-window.addEventListener('load', checkConnectivity)
-
-// when the page has finished loading,
-// listen for future changes in connection
-function checkConnectivity() {
-  updateConnectivityStatus()
-  window.addEventListener('online', updateConnectivityStatus)
-  window.addEventListener('offline', updateConnectivityStatus)
-}
-
-// check if we're online, set a class on <body> if offline
-function updateConnectivityStatus() {
-  let offlineNotificationToShow = false
-  let offlineNotificationIcon = ''
-  let offlineNotificationType = ''
-  let offlineNotificationMessage = ''
-  let offlineNotificationElement = window.document.getElementById(
-    'offline-notification',
-  )
-
-  if (typeof navigator.onLine !== 'undefined') {
-    if (!navigator.onLine) {
-      // add 'offline' class to the body, for any CSS adjustment
-      document.body.classList.add('offline')
-
-      offlineNotificationToShow = true
-      offlineNotificationIcon = 'offline'
-      if ('serviceWorker' in navigator) {
-        // If the browser supports Service Workers and the Cache API,
-        // getting offline should be less stressful. Use a "warning"
-        // message instead of an "error and provide a link to content
-        // available in cache.
-        offlineNotificationType = 'warning'
-        offlineNotificationMessage =
-          'Désolé, <strong>vous ne semblez plus être connecté</strong>. Vous pouvez continuer à lire cette page, ou <a href="/offline.html">voir ce qui est dans votre cache</a>.'
-      } else {
-        offlineNotificationType = 'error'
-        offlineNotificationMessage =
-          'Désolé, <strong>vous ne semblez plus être connecté</strong>. Vous pouvez continuer à lire cette page en attendant le retour de la connexion.'
-      }
-    } else {
-      // remove 'offline' class from the body
-      document.body.classList.remove('offline')
-
-      offlineNotificationIcon = 'online'
-      if (offlineNotificationElement) {
-        offlineNotificationToShow = true
-        offlineNotificationType = 'success'
-        offlineNotificationMessage =
-          '<strong>Vous être de nouveau connecté</strong> ! Vous pouvez reprendre une navigation normale sur le site.'
-      }
-    }
-
-    if (
-      offlineNotificationToShow &&
-      !window.document.getElementById('offline-notification-static')
-    ) {
-      // https://stackoverflow.com/a/25214113/717195
-      let newOfflineNotificationElement = document.createRange()
-        .createContextualFragment(`<div class="wrap" id="offline-notification">
-        <div class="alert alert-${offlineNotificationType}">
-          <p class="alert__icon"><svg class="icon"><use xlink:href="#symbol-${offlineNotificationIcon}" /></svg></p>
-          <p class="alert__message">${offlineNotificationMessage}</p>
-        </div>
-      </div>`)
-
-      if (offlineNotificationElement) {
-        offlineNotificationElement.parentNode.replaceChild(
-          offlineNotificationElement,
-          newOfflineNotificationElement,
-        )
-      } else {
-        let mainElement = document.querySelector('main')
-        mainElement.parentNode.insertBefore(
-          newOfflineNotificationElement,
-          mainElement,
-        )
-      }
-    }
-  }
-}
-
-/*****************************************************************
- * Search
- * ****************************************************************/
-
-// Utility function to get the search query from the URL query string
-// http://stackoverflow.com/a/901144/717195
-function getParameterByName(name) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-    results = regex.exec(location.search)
-  return results === null
-    ? ''
-    : decodeURIComponent(results[1].replace(/\+/g, ' '))
-}
-
-var algoliaLinked = false
-var algoliaLoaded = false
-var algoliaClient
-var algoliaIndex
-
-function onAlgoliaAvailable(callback) {
-  if (typeof algoliasearch === 'function') {
-    algoliaLoaded = true
-    algoliaClient = algoliasearch(algoliaApplicationId, algoliaApiKey)
-    algoliaIndex = algoliaClient.initIndex(algoliaIndexName)
-    callback()
-  } else {
-    if (!algoliaLinked) {
-      var algoliaScript = window.document.createElement('script')
-      algoliaScript.setAttribute(
-        'src',
-        '/assets/javascript/vendors/algoliasearchLite-3.24.6.min.js',
-      )
-      window.document.getElementsByTagName('head')[0].appendChild(algoliaScript)
-      algoliaLinked = true
-    }
-    setTimeout(function() {
-      onAlgoliaAvailable(callback)
-    }, 50)
-  }
-}
-
-var $intro = window.document.getElementById('intro')
-var $input = window.document.getElementById('search_input')
-var $results = window.document.getElementById('search_results')
-var $currentUrl = window.location.toString()
-var $currentContent = window.document.querySelector('main')
-var $searchContent = window.document.querySelector('.search')
-var searchSettings = {
-  hitsPerPage: 50,
-  facets: '*',
-  attributesToHighlight: 'title,tags',
-  attributesToSnippet: 'content:20',
-}
-
-// A search query may come from the URL query string
-var queryString = getParameterByName('q')
-if (queryString.length > 0) {
-  $input.value = queryString
-  onAlgoliaAvailable(function() {
-    algoliaIndex.search(queryString, searchSettings, searchCallback)
-  })
-}
-
-// A search query may come from the user typing in the search field
-$input.addEventListener('keyup', function() {
-  if ($input.value.length > 0) {
-    history.pushState(null, null, '/recherche.html?q=' + $input.value)
-    if ($intro) $intro.style.display = 'none'
-    $currentContent.style.display = 'none'
-    $searchContent.style.display = 'block'
-    onAlgoliaAvailable(function() {
-      algoliaIndex.search($input.value, searchSettings, searchCallback)
-    })
-  } else {
-    history.pushState(null, null, $currentUrl)
-    if ($intro) $intro.style.display = 'block'
-    $currentContent.style.display = 'block'
-    $searchContent.style.display = 'none'
-    $results.innerHTML = ''
-  }
-})
-
-// Search callback function that shows the results
-function searchCallback(err, content) {
-  if (content.query !== $input.value) {
-    // If we receive a result for an old query, abort
-    return
-  }
-
-  var months = [
-    'janvier',
-    'février',
-    'mars',
-    'avril',
-    'mai',
-    'juin',
-    'juillet',
-    'août',
-    'septembre',
-    'octobre',
-    'novembre',
-    'décembre',
-  ]
-  $results.innerHTML = ''
-
-  if (err) {
-    console.error(err)
-    return
-  }
-
-  var resultsNumber = content.hits.length
-
-  if (resultsNumber === 0) {
-    $results.innerHTML =
-      '<p>Aucun résultat, veuillez modifier votre recherche.</p>'
-    return
-  }
-
-  var result, results, hit, hit_type, hit_title, hit_excerpt, hit_date, hit_tags
-
-  results =
-    '<p class="nb">' +
-    resultsNumber +
-    ' résultat' +
-    (resultsNumber > 1 ? 's' : '') +
-    ' :'
-
-  for (var i = 0; i < resultsNumber; i++) {
-    hit = content.hits[i]
-    result = ''
-
-    hit_type = ''
-    switch (hit.type) {
-      case 'post':
-      case 'page':
-        hit_type = hit.type
-      case 'document':
-        if (hit.collection === 'notes') {
-          hit_type = 'note'
-        }
-    }
-
-    hit_date = ''
-    if (hit.date) {
-      js_hit_date = new Date(hit.date * 1000)
-      date_options = { year: 'numeric', month: 'long', day: 'numeric' }
-
-      if (hit.lang === 'en') {
-        hit_date = js_hit_date.toLocaleDateString('en-US', date_options)
-      } else {
-        hit_date = js_hit_date.toLocaleDateString('fr-FR', date_options)
-      }
-    }
-
-    if (hit_type === 'note') {
-      if (hit.lang === 'en') {
-        hit_title = 'Note from ' + hit_date
-      } else {
-        hit_title = 'Note du ' + hit_date
-      }
-    } else {
-      hit_title = hit._highlightResult.title.value
-    }
-
-    hit_excerpt = hit._highlightResult.html
-      ? hit._highlightResult.html.value
-      : hit._snippetResult.content
-        ? hit._snippetResult.content.value
-        : hit.excerpt_html
-
-    hit_tags = ''
-    if (hit._highlightResult.tags) {
-      // Build the tags list
-      hit_tags = ''
-      hit_tags_number = hit._highlightResult.tags.length
-      for (var j = 0; j < hit_tags_number; j++) {
-        hit_tags = hit_tags + ', ' + hit._highlightResult.tags[j].value
-      }
-      hit_tags = hit_tags.replace(/^, /, '')
-    }
-
-    result =
-      '<article class="' +
-      hit_type +
-      '"><a href="' +
-      hit.url +
-      '"><h2>' +
-      hit_title +
-      '</h2>' +
-      hit_excerpt +
-      '</a>'
-    if (hit_date || hit_tags) {
-      result += '<footer><ul>'
-      if (hit_date) {
-        result +=
-          '<li class="date"><svg class="icon"><use xlink:href="#symbol-date" /></svg> ' +
-          hit_date +
-          '</li>'
-      }
-      if (hit_tags) {
-        result +=
-          '<li class="tags"><svg class="icon"><use xlink:href="#symbol-tags" /></svg> ' +
-          hit_tags +
-          '</li>'
-      }
-      result += '</ul></footer>'
-    }
-    result += '</article>'
-
-    results += result
-  }
-
-  $results.innerHTML =
-    results +
-    '<p id="powered-by-algolia"><a href="/2015/06/la-recherche-dans-du-statique-facile-avec-algolia.html">Propulsé par l\'excellent <svg><use xlink:href="#symbol-algolia" /></svg></a></p>'
-}
-;
-</script>
-
-
-
-
 
 </body>
 
