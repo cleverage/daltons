@@ -6,7 +6,6 @@ const adjustViewportsWithStats = require('./adjustViewportsWithStats')
 const getStats = require('./getStats')
 const browse = require('./browse')
 const logger = require('./logger')
-const fact = require('big-factorial')
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -30,8 +29,10 @@ module.exports = async function main(settings) {
   logger.level = options.verbose ? 'info' : 'warn'
 
   logger.info(
-    color.bgCyan.black(
-      '\nStep 1: get actual stats (viewports & screen densities) of site visitors',
+    color.bgGreen.black(
+      '\n Step 1: get actual stats (viewports & screen densities) of site visitors '.padEnd(
+        100,
+      ) + '\n',
     ),
   )
   let stats = getStats(
@@ -42,8 +43,10 @@ module.exports = async function main(settings) {
 
   /* ======================================================================== */
   logger.info(
-    color.bgCyan.black(
-      '\nStep 2: get variations of image width across viewport widths',
+    color.bgGreen.black(
+      '\n Step 2: get variations of image width across viewport widths '.padEnd(
+        100,
+      ) + '\n',
     ),
   )
 
@@ -51,10 +54,17 @@ module.exports = async function main(settings) {
 
   /* ======================================================================== */
   logger.info(
-    color.bgCyan.black('\nStep 3: compute optimal n widths from both datasets'),
+    color.bgGreen.black(
+      '\n Step 3: compute optimal n widths from both datasets '.padEnd(100) +
+        '\n',
+    ),
   )
 
-  logger.info(color.green('Compute all perfect image widths'))
+  logger.info(
+    color.bgBlack.greenBright.underline(
+      '\n Step 3.1: Compute all perfect image widths '.padEnd(100) + '\n',
+    ),
+  )
 
   let perfectWidths = new Map()
   let totalViews = 0
@@ -106,14 +116,15 @@ module.exports = async function main(settings) {
     },
   })
   if (perfectWidthsTableByViews) {
-    let perfectWidthsTableByViewsLine = 0
+    let perfectWidthsTableByViewsLine = 1
     perfectWidthsByDecreasingViews.forEach((views, imageWidth) => {
-      if (perfectWidthsTableByViewsLine++ <= 20) {
+      if (perfectWidthsTableByViewsLine <= 20) {
         let percentage = ((views / totalViews) * 100).toFixed(2) + ' %'
         perfectWidthsTableByViews.push([views, percentage, imageWidth + 'px'])
+        perfectWidthsTableByViewsLine++
       }
     })
-    if (perfectWidthsByDecreasingViews.length > 20) {
+    if (perfectWidthsByDecreasingViews.size > 20) {
       perfectWidthsTableByViews.push(['…', '…', '…'])
     }
     logger.info('\nPerfect widths per decreasing views:')
@@ -135,32 +146,39 @@ module.exports = async function main(settings) {
     },
   })
   if (perfectWidthsTableByWidths) {
-    let perfectWidthsTableByWidthsLine = 0
+    let perfectWidthsTableByWidthsLine = 1
     perfectWidthsByDecreasingWidths.forEach((views, imageWidth) => {
-      if (perfectWidthsTableByWidthsLine++ <= 20) {
+      if (perfectWidthsTableByWidthsLine <= 20) {
         let percentage = ((views / totalViews) * 100).toFixed(2) + ' %'
         perfectWidthsTableByWidths.push([imageWidth + 'px', views, percentage])
+        perfectWidthsTableByWidthsLine++
       }
     })
-    if (perfectWidthsByDecreasingWidths.length > 20) {
+    if (perfectWidthsByDecreasingWidths.size > 20) {
       perfectWidthsTableByViews.push(['…', '…', '…'])
     }
     logger.info('\nPerfect widths per decreasing widths:')
     logger.info(perfectWidthsTableByWidths.toString())
   }
 
+  logger.info(
+    color.bgBlack.greenBright.underline(
+      `\n Step 3.2: Find ${options.widthsNumber} best image widths for srcset`.padEnd(
+        100,
+      ) + '\n',
+    ),
+  )
+
   let optimalWidths = []
   if (numberOfPerfectWidths <= options.widthsNumber) {
     // TODO: enhance this case
     logger.info(
-      color.green(
-        `There are already less than ${options.widthsNumber} best widths, no computation necessary`,
-      ),
+      `There are already less than ${
+        options.widthsNumber
+      } best widths, ${color.green('no computation necessary')}`,
     )
     optimalWidths = perfectWidthsByDecreasingViews.values()
   } else {
-    logger.info(color.green(`Find ${options.widthsNumber} best widths`))
-
     // Get all possible subset combinations in an array, with minimum and maximum lengths
     // Adapted from https://www.w3resource.com/javascript-exercises/javascript-function-exercise-21.php
     const subset = (items, min, max) => {
@@ -195,6 +213,10 @@ module.exports = async function main(settings) {
       [maxWidth].concat(data.sort((a, b) => b - a)),
     )
 
+    logger.info(
+      `There are ${color.green(subsets.length + ' combinations')} to try`,
+    )
+
     const globalDistance = (actualWidths, subset) => {
       let distance = 0
       // Adds a floor value to the subset
@@ -221,13 +243,14 @@ module.exports = async function main(settings) {
 
     const numberOfSubsets = subsets.length
     let bestSubsetDistance = -1
-    let counter = 1
+    let counter = 0
     subsets.map((subset) => {
+      counter++
       if (spinner) {
         spinner.tick(
-          `Computing distance for combination ${color.cyan(
-            counter++,
-          )} on ${color.cyan(numberOfSubsets)}`,
+          `Computing distance for combination ${color.green(
+            counter,
+          )} on ${color.green(numberOfSubsets)}`,
         )
       }
 
@@ -237,6 +260,11 @@ module.exports = async function main(settings) {
         optimalWidths = subset
       }
     })
+    if (spinner) {
+      spinner.stop(
+        `Computed distance for ${color.green(counter + ' combinations')}`,
+      )
+    }
   }
 
   /* -------------------------- */
@@ -248,7 +276,7 @@ module.exports = async function main(settings) {
 
   if (options.verbose) {
     console.log(
-      `Here are the best image width for the 'srcset' attribute:\n\n${srcset.join(
+      `Here are the best image widths for the 'srcset' attribute:\n\n${srcset.join(
         ',\n',
       )}`,
     )

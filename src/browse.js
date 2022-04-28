@@ -12,19 +12,18 @@ module.exports = async function browse(opt) {
   }
   const imageWidths = new Map()
 
-  logger.info(color.green('Launch headless Chrome'))
+  logger.info('Launch headless Chrome')
 
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
-  logger.info(color.green(`Go to ${opt.url}`))
+  logger.info(`Navigate to ${color.green(opt.url)}`)
 
   await page
     .goto(opt.url, { waitUntil: 'networkidle2' })
     .then(async () => {
-      logger.info(
-        color.green(`Checking widths of image ${color.white(opt.selector)}`),
-      )
+      logger.info(`Check widths of image ${color.green(opt.selector)}`)
+
       const spinner = logger.newSpinner()
       if (spinner) {
         spinner.start('Starting…')
@@ -33,7 +32,9 @@ module.exports = async function browse(opt) {
       while (VIEWPORT.width <= opt.maxViewport) {
         // Update log in the console
         if (spinner) {
-          spinner.tick(`Current viewport: ${color.cyan(VIEWPORT.width)}px`)
+          spinner.tick(
+            `Current viewport: ${color.green(VIEWPORT.width + 'px')}`,
+          )
         }
         // Set new viewport width
         await page.setViewport(VIEWPORT)
@@ -52,7 +53,7 @@ module.exports = async function browse(opt) {
       }
 
       if (spinner) {
-        spinner.stop(`Finished at viewport: ${color.cyan(opt.maxViewport)}px`)
+        spinner.stop(`Finished at viewport: ${color.green(opt.maxViewport)}px`)
       }
 
       // Save data into the CSV file
