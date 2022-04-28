@@ -641,123 +641,6 @@ article {
 </style>
 
 
-<link rel="preload" href="/assets/non-critical-styles-e43f4f7b24d5c169d7d1b34b8a9a46963ec5448ac360dfe98c7091e517cad0f9.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-<noscript>
-  <link rel="stylesheet" href="/assets/non-critical-styles-e43f4f7b24d5c169d7d1b34b8a9a46963ec5448ac360dfe98c7091e517cad0f9.css" />
-</noscript>
-<script integrity="sha256-pztS3H6bx784JiI8Vx1DPv2WS0NGaI+6VTxHsUQ3+rc=" crossorigin="anonymous" type="text/javascript">/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-/* This file is meant as a standalone workflow for
-- testing support for link[rel=preload]
-- enabling async CSS loading in browsers that do not support rel=preload
-- applying rel preload css once loaded, whether supported or not.
-*/
-
-;(function(w) {
-  'use strict'
-  // rel=preload support test
-  if (!w.loadCSS) {
-    w.loadCSS = function() {}
-  }
-  // define on the loadCSS obj
-  var rp = (loadCSS.relpreload = {})
-  // rel=preload feature support test
-  // runs once and returns a function for compat purposes
-  rp.support = (function() {
-    var ret
-    try {
-      ret = w.document.createElement('link').relList.supports('preload')
-    } catch (e) {
-      ret = false
-    }
-    return function() {
-      return ret
-    }
-  })()
-
-  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
-  // then change that media back to its intended value on load
-  rp.bindMediaToggle = function(link) {
-    // remember existing media attr for ultimate state, or default to 'all'
-    var finalMedia = link.media || 'all'
-
-    function enableStylesheet() {
-      link.media = finalMedia
-    }
-
-    // bind load handlers to enable media
-    if (link.addEventListener) {
-      link.addEventListener('load', enableStylesheet)
-    } else if (link.attachEvent) {
-      link.attachEvent('onload', enableStylesheet)
-    }
-
-    // Set rel and non-applicable media type to start an async request
-    // note: timeout allows this to happen async to let rendering continue in IE
-    setTimeout(function() {
-      link.rel = 'stylesheet'
-      link.media = 'only x'
-    })
-    // also enable media after 3 seconds,
-    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
-    setTimeout(enableStylesheet, 3000)
-  }
-
-  // loop through link elements in DOM
-  rp.poly = function() {
-    // double check this to prevent external calls from running
-    if (rp.support()) {
-      return
-    }
-    var links = w.document.getElementsByTagName('link')
-    for (var i = 0; i < links.length; i++) {
-      var link = links[i]
-      // qualify links to those with rel=preload and as=style attrs
-      if (
-        link.rel === 'preload' &&
-        link.getAttribute('as') === 'style' &&
-        !link.getAttribute('data-loadcss')
-      ) {
-        // prevent rerunning on link
-        link.setAttribute('data-loadcss', true)
-        // bind listeners to toggle media back
-        rp.bindMediaToggle(link)
-      }
-    }
-  }
-
-  // if unsupported, run the polyfill
-  if (!rp.support()) {
-    // run once at least
-    rp.poly()
-
-    // rerun poly on an interval until onload
-    var run = w.setInterval(rp.poly, 500)
-    if (w.addEventListener) {
-      w.addEventListener('load', function() {
-        rp.poly()
-        w.clearInterval(run)
-      })
-    } else if (w.attachEvent) {
-      w.attachEvent('onload', function() {
-        rp.poly()
-        w.clearInterval(run)
-      })
-    }
-  }
-
-  // commonjs
-  if (typeof exports !== 'undefined') {
-    exports.loadCSS = loadCSS
-  } else {
-    w.loadCSS = loadCSS
-  }
-})(typeof global !== 'undefined' ? global : this)
-;
-</script>
-
-
-
-
   <meta property="og:site_name" content="Nicolas Hoizey" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@nhoizey" />
@@ -798,8 +681,6 @@ article {
 
 
 
-
-  <meta property="og:image" content="https://res.cloudinary.com/nho/image/fetch/e_blur:2000,c_crop,ar_1200:630,b_white/e_grayscale/e_tint:75:41206b:0p:b491df:100p/w_1200/l_fetch:aHR0cHM6Ly9uaWNvbGFzLWhvaXpleS5jb20vMjAxNy8wMS93ZWJwYWdldGVzdC1yZXNpbGllbnQtd2ViLWRlc2lnbi5wbmc=,h_1.0,w_1.0,fl_relative,c_limit/e_grayscale/e_tint:75:41206b:0p:b491df:100p/b_rgb:3d2e68,o_80/w_1120,c_fit,l_text:georgia_60:How%20much%20data%20should%20my%20Service%20Worker%20put%20upfront%20in%20the%20offline%20cache%3F,g_north_west,x_42,y_42,co_black,o_50/w_1120,c_fit,l_text:georgia_60:How%20much%20data%20should%20my%20Service%20Worker%20put%20upfront%20in%20the%20offline%20cache%3F,g_north_west,x_40,y_40,co_white/l_text:georgia_50:nicolas-hoizey.com,g_south_west,x_41,y_40,co_black/l_text:georgia_50:nicolas-hoizey.com,g_south_west,x_40,y_41,co_white/l_fetch:aHR0cHM6Ly9uaWNvbGFzLWhvaXpleS5jb20vYXNzZXRzL2xvZ29zL3R3aXR0ZXIucG5n,g_south_east,x_220,y_40,c_fill,w_50,r_max/l_text:georgia_50:nhoizey,g_south_east,x_40,y_40,co_black/l_text:georgia_50:nhoizey,g_south_east,x_41,y_41,co_white/https://nicolas-hoizey.com/2017/01/webpagetest-resilient-web-design.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -844,21 +725,18 @@ article {
 
 
 <svg style="display: none;" aria-hidden="true">
-  <?xml version="1.0"?>
 <symbol id="symbol-date" viewBox="0 0 32 32" width="1em" height="1em">
   <title>Date de publication</title>
   <path d="M29.334 3H25V1c0-.553-.447-1-1-1s-1 .447-1 1v2h-6V1c0-.553-.448-1-1-1s-1 .447-1 1v2H9V1c0-.553-.448-1-1-1S7 .447 7 1v2H2.667C1.194 3 0 4.193 0 5.666v23.667C0 30.806 1.194 32 2.667 32h26.667C30.807 32 32 30.806 32 29.333V5.666C32 4.193 30.807 3 29.334 3zM30 29.333c0 .368-.3.667-.666.667H2.667C2.3 30 2 29.7 2 29.333V5.666C2 5.3 2.3 5 2.667 5H7v2c0 .553.448 1 1 1s1-.447 1-1V5h6v2c0 .553.448 1 1 1s1-.447 1-1V5h6v2c0 .553.447 1 1 1s1-.447 1-1V5h4.334c.367 0 .666.3.666.666v23.667z"/>
   <path d="M7 12h4v3H7v-3zm0 5h4v3H7v-3zm0 5h4v3H7v-3zm7 0h4v3h-4v-3zm0-5h4v3h-4v-3zm0-5h4v3h-4v-3zm7 10h4v3h-4v-3zm0-5h4v3h-4v-3zm0-5h4v3h-4v-3z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-tags" width="1em" height="1em" viewBox="0 0 30 30">
   <title>Tag</title>
   <path d="M13 28.85c-.9 0-1.7-.3-2.3-.9l-8.9-8.9c-1.2-1.2-1.2-3.3 0-4.5l11.9-11.9c1-1 3-1.8 4.5-1.8h7.6c1.8 0 3.2 1.4 3.2 3.2v7.6c0 1.5-.8 3.4-1.8 4.5l-11.9 11.8c-.6.6-1.4.9-2.3.9zm5.2-26.1c-1 0-2.4.6-3 1.3L3.3 15.95c-.5.5-.5 1.2 0 1.7l8.9 8.9c.5.4 1.2.4 1.7 0l11.9-11.9c.7-.7 1.3-2.1 1.3-3v-7.6c0-.7-.5-1.2-1.2-1.2h-7.7v-.1z"/>
   <path d="M21 12.75c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-webmentions" viewBox="0 0 32 32" width="1em" height="1em">
   <title>Webmentions</title>
   <g fill-rule="evenodd" clip-rule="evenodd">
@@ -867,20 +745,17 @@ article {
   </g>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-link" viewBox="0 0 32 32" width="1em" height="1em">
   <title>Lien</title>
   <path d="M14.615 20.815c0 .2.1.5.1.8 0 1.4-.5 2.6-1.5 3.6l-2 2c-1 1-2.2 1.5-3.6 1.5-2.8 0-5.1-2.3-5.1-5.1 0-1.4.5-2.6 1.5-3.6l2-2c1-1 2.2-1.5 3.6-1.5.3 0 .5 0 .8.1l1.5-1.5c-.7-.3-1.5-.4-2.3-.4-1.9 0-3.6.7-4.9 2l-2 2c-1.3 1.3-2 3-2 4.9 0 3.8 3.1 6.9 6.9 6.9 1.9 0 3.6-.7 4.9-2l2-2c1.3-1.3 2-3 2-4.9 0-.8-.1-1.6-.4-2.3l-1.5 1.5zM23.615.715c-1.9 0-3.6.7-4.9 2l-2 2c-1.3 1.3-2 3-2 4.9 0 .8.1 1.6.4 2.3l1.5-1.5c0-.2-.1-.5-.1-.8 0-1.4.5-2.6 1.5-3.6l2-2c1-1 2.2-1.5 3.6-1.5 2.8 0 5.1 2.3 5.1 5.1 0 1.4-.5 2.6-1.5 3.6l-2 2c-1 1-2.2 1.5-3.6 1.5-.3 0-.5 0-.8-.1l-1.5 1.5c.7.3 1.5.4 2.3.4 1.9 0 3.6-.7 4.9-2l2-2c1.3-1.3 2-3 2-4.9 0-3.8-3.1-6.9-6.9-6.9z"/>
   <path d="M10.615 21.615c-.3 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l10-10c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-10 10c-.2.2-.4.3-.7.3z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-twitter" viewBox="0 0 300 244.2" width="1em" height="1em">
   <title>Twitter</title>
   <path d="M94.7 243.2c112.5 0 174-93.2 174-174 0-2.6 0-5.2-.2-8 12-8.5 22.3-19.3 30.5-31.5-11 4.8-22.7 8-35 9.6 12.5-7.6 22.2-19.5 26.8-33.8-11.8 7-25 12-38.8 14.8C240.8 8.3 225 1 207.3 1c-33.7 0-61 27.4-61 61 0 5 .4 9.6 1.5 14-51-2.5-96-26.8-126-63.8-5.3 9-8.3 19.5-8.3 30.7 0 21 10.8 40 27.2 50.8-10-.3-19.5-3-27.7-7.6v.8c0 29.6 21 54.3 49 60-5 1.3-10.5 2-16 2-4 0-8-.4-11.6-1 7.8 24.2 30.4 42 57 42.4-20.8 16.4-47.2 26.2-75.8 26.2-5 0-9.8-.3-14.6-1 27 17.5 59.2 27.6 93.7 27.6" fill="#1da1f2"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol xmlns="http://www.w3.org/2000/svg" id="symbol-algolia" width="6.30em" height="2em" viewBox="0 0 391 124" aria-labelledby="algolia-logo">
   <title id="algolia-logo">Algolia logo</title>
   <g fill="none" fill-rule="evenodd">
@@ -890,14 +765,12 @@ article {
   </g>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-online" role="img" width="1em" height="1em" viewBox="0 0 24 24" aria-labelledby="online-icon">
   <title id="online-icon">Online</title>
   <path d="M14.13 17.17a2.94 2.94 0 0 0-4.17 0l2.09 2.09 2.08-2.09zM5.82 13l2.08 2.1a5.89 5.89 0 0 1 8.32 0L18.3 13a8.82 8.82 0 0 0-12.48 0z"/>
   <path d="M20.36 10.92l2.09-2.09a14.7 14.7 0 0 0-20.8 0l2.08 2.09a11.77 11.77 0 0 1 16.63 0z"/>
 </symbol>
 
-  <?xml version="1.0"?>
 <symbol id="symbol-offline" role="img" width="1em" height="1em" viewBox="0 0 24 24" aria-labelledby="offline-icon">
   <title id="offline-icon">Offline</title>
   <path d="M21.014 2.875l-2.632 2.632C12.596 2.974 5.592 4.042.85 8.785l2.235 2.235c3.477-3.476 8.468-4.495 12.84-3.054l-2.61 2.607c-2.83-.397-5.81.497-7.995 2.682l2.235 2.235c.695-.695 1.49-1.192 2.36-1.49l-6.11 6.084.92.92 17.208-17.21-.92-.92zm-10.9 14.527l-.324.323 2.21 2.21 2.235-2.235c-1.117-1.117-2.88-1.217-4.122-.298zm3.55-3.55c1.018.272 1.986.82 2.78 1.613l2.236-2.235c-.77-.77-1.64-1.39-2.583-1.837l-2.433 2.458zM20.716 6.8l-2.284 2.28c.894.522 1.713 1.167 2.483 1.937L23.15 8.78c-.745-.744-1.564-1.414-2.434-1.985z"/>
@@ -918,7 +791,6 @@ article {
     <input id="search_sites" type="hidden" name="as_sitesearch" value="nicolas-hoizey.com" />
     <input id="search_input" name="q" type="search" size="5" spellcheck="false" autocorrect="off" autocomplete="off" aria-label="Search articles on the site" />
     <label for="search_button">
-      <?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" role="img" width="1em" height="1em" viewBox="0 0 32 32" aria-labelledby="search-icon-svg">
   <title id="search-icon-svg">Recherche</title>
   <path d="M20,0.005c-6.627,0-12,5.373-12,12c0,2.026,0.507,3.933,1.395,5.608l-8.344,8.342l0.007,0.006 C0.406,26.602,0,27.49,0,28.477c0,1.949,1.58,3.529,3.529,3.529c0.985,0,1.874-0.406,2.515-1.059l-0.002-0.002l8.341-8.34 c1.676,0.891,3.586,1.4,5.617,1.4c6.627,0,12-5.373,12-12C32,5.378,26.627,0.005,20,0.005z M4.795,29.697 c-0.322,0.334-0.768,0.543-1.266,0.543c-0.975,0-1.765-0.789-1.765-1.764c0-0.498,0.21-0.943,0.543-1.266l-0.009-0.008l8.066-8.066 c0.705,0.951,1.545,1.791,2.494,2.498L4.795,29.697z M20,22.006c-5.522,0-10-4.479-10-10c0-5.522,4.478-10,10-10 c5.521,0,10,4.478,10,10C30,17.527,25.521,22.006,20,22.006z"/>
@@ -3022,411 +2894,6 @@ Because I use it quite a lot these days to check my own Progressive Web Apps, I 
 </footer>
 
 >
-<script integrity="sha256-LwgtxnJwT8EExRNNpRCbQs7jCa6NY1SkfSB9t0hYegk=" crossorigin="anonymous" type="text/javascript">/*****************************************************************
- * Statistics
- * ****************************************************************/
-
-
-;(function(win, doc) {
-  doc.body.setAttribute('data-viewportwidth', win.viewport_width)
-  doc.body.setAttribute('data-screendensity', win.screen_density)
-  doc.body.setAttribute('data-rootfontsize', win.root_font_size)
-})(window, document)
-
-/*****************************************************************
- * UX
- * ****************************************************************/
-
-// Add anchor links to titles in the article
-;(function(w) {
-  var i,
-    list = w.document.querySelectorAll(
-      'article.main h2, article.main h3, article.main h4, article.main h5, article.main h6',
-    ),
-    nb = list.length
-
-  for (i = 0; i < nb; ++i) {
-    if (undefined !== list[i].id) {
-      list[i].innerHTML +=
-        '&nbsp;<a class="deeplink" href="#' +
-        list[i].id +
-        '"><svg><use xlink:href="#symbol-link" /></svg></a>'
-    } else {
-      list[i].innerHTML +=
-        '&nbsp;<a class="deeplink" href="#' +
-        i +
-        '"><svg><use xlink:href="#symbol-link" /></svg></a>'
-    }
-  }
-})(this)
-
-// Lazyload Webmentions avatars
-;[].forEach.call(document.querySelectorAll('img[data-src]'), function(img) {
-  img.setAttribute('srcset', img.getAttribute('data-srcset'))
-  img.setAttribute('src', img.getAttribute('data-src'))
-  img.onload = function() {
-    img.removeAttribute('data-srcset')
-    img.removeAttribute('data-src')
-  }
-})
-
-/*****************************************************************
- * PWA
- * ****************************************************************/
-
-// Install Service Worker
-if ('serviceWorker' in navigator) {
-  // https://slides.com/webmax/serviceworker-thebest/#/23
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-  })
-}
-
-// https://stackoverflow.com/a/18650828/717195
-function formatBytes(a, b) {
-  if (0 == a) return '0 Bytes'
-  var c = 1024,
-    d = b || 2,
-    e = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-    f = Math.floor(Math.log(a) / Math.log(c))
-  return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f]
-}
-
-// Log storage quota usage
-// https://slides.com/webmax/serviceworker-thebest/#/35
-if ('storage' in navigator && 'estimate' in navigator.storage) {
-  navigator.storage.estimate().then(({ usage, quota }) => {
-    console.log(
-      'Using ' +
-        formatBytes(usage) +
-        ' out of ' +
-        formatBytes(quota) +
-        ' bytes.',
-    )
-  })
-}
-
-// Clean Service Worker cache
-// https://adactio.com/journal/9888
-window.addEventListener('load', function() {
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({ command: 'trimCaches' })
-  }
-})
-
-/*****************************************************************
- * Deal with offline/online events
- * ****************************************************************/
-
-// https://mxb.at/blog/youre-offline/
-// https://www.youtube.com/watch?v=7fnpsF9tMXc
-
-let isOffline = false
-window.addEventListener('load', checkConnectivity)
-
-// when the page has finished loading,
-// listen for future changes in connection
-function checkConnectivity() {
-  updateConnectivityStatus()
-  window.addEventListener('online', updateConnectivityStatus)
-  window.addEventListener('offline', updateConnectivityStatus)
-}
-
-// check if we're online, set a class on <body> if offline
-function updateConnectivityStatus() {
-  let offlineNotificationToShow = false
-  let offlineNotificationIcon = ''
-  let offlineNotificationType = ''
-  let offlineNotificationMessage = ''
-  let offlineNotificationElement = window.document.getElementById(
-    'offline-notification',
-  )
-
-  if (typeof navigator.onLine !== 'undefined') {
-    if (!navigator.onLine) {
-      // add 'offline' class to the body, for any CSS adjustment
-      document.body.classList.add('offline')
-
-      offlineNotificationToShow = true
-      offlineNotificationIcon = 'offline'
-      if ('serviceWorker' in navigator) {
-        // If the browser supports Service Workers and the Cache API,
-        // getting offline should be less stressful. Use a "warning"
-        // message instead of an "error and provide a link to content
-        // available in cache.
-        offlineNotificationType = 'warning'
-        offlineNotificationMessage =
-          'Désolé, <strong>vous ne semblez plus être connecté</strong>. Vous pouvez continuer à lire cette page, ou <a href="/offline.html">voir ce qui est dans votre cache</a>.'
-      } else {
-        offlineNotificationType = 'error'
-        offlineNotificationMessage =
-          'Désolé, <strong>vous ne semblez plus être connecté</strong>. Vous pouvez continuer à lire cette page en attendant le retour de la connexion.'
-      }
-    } else {
-      // remove 'offline' class from the body
-      document.body.classList.remove('offline')
-
-      offlineNotificationIcon = 'online'
-      if (offlineNotificationElement) {
-        offlineNotificationToShow = true
-        offlineNotificationType = 'success'
-        offlineNotificationMessage =
-          '<strong>Vous être de nouveau connecté</strong> ! Vous pouvez reprendre une navigation normale sur le site.'
-      }
-    }
-
-    if (
-      offlineNotificationToShow &&
-      !window.document.getElementById('offline-notification-static')
-    ) {
-      // https://stackoverflow.com/a/25214113/717195
-      let newOfflineNotificationElement = document.createRange()
-        .createContextualFragment(`<div class="wrap" id="offline-notification">
-        <div class="alert alert-${offlineNotificationType}">
-          <p class="alert__icon"><svg class="icon"><use xlink:href="#symbol-${offlineNotificationIcon}" /></svg></p>
-          <p class="alert__message">${offlineNotificationMessage}</p>
-        </div>
-      </div>`)
-
-      if (offlineNotificationElement) {
-        offlineNotificationElement.parentNode.replaceChild(
-          offlineNotificationElement,
-          newOfflineNotificationElement,
-        )
-      } else {
-        let mainElement = document.querySelector('main')
-        mainElement.parentNode.insertBefore(
-          newOfflineNotificationElement,
-          mainElement,
-        )
-      }
-    }
-  }
-}
-
-/*****************************************************************
- * Search
- * ****************************************************************/
-
-// Utility function to get the search query from the URL query string
-// http://stackoverflow.com/a/901144/717195
-function getParameterByName(name) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-    results = regex.exec(location.search)
-  return results === null
-    ? ''
-    : decodeURIComponent(results[1].replace(/\+/g, ' '))
-}
-
-var algoliaLinked = false
-var algoliaLoaded = false
-var algoliaClient
-var algoliaIndex
-
-function onAlgoliaAvailable(callback) {
-  if (typeof algoliasearch === 'function') {
-    algoliaLoaded = true
-    algoliaClient = algoliasearch(algoliaApplicationId, algoliaApiKey)
-    algoliaIndex = algoliaClient.initIndex(algoliaIndexName)
-    callback()
-  } else {
-    if (!algoliaLinked) {
-      var algoliaScript = window.document.createElement('script')
-      algoliaScript.setAttribute(
-        'src',
-        '/assets/javascript/vendors/algoliasearchLite-3.24.6.min.js',
-      )
-      window.document.getElementsByTagName('head')[0].appendChild(algoliaScript)
-      algoliaLinked = true
-    }
-    setTimeout(function() {
-      onAlgoliaAvailable(callback)
-    }, 50)
-  }
-}
-
-var $intro = window.document.getElementById('intro')
-var $input = window.document.getElementById('search_input')
-var $results = window.document.getElementById('search_results')
-var $currentUrl = window.location.toString()
-var $currentContent = window.document.querySelector('main')
-var $searchContent = window.document.querySelector('.search')
-var searchSettings = {
-  hitsPerPage: 50,
-  facets: '*',
-  attributesToHighlight: 'title,tags',
-  attributesToSnippet: 'content:20',
-}
-
-// A search query may come from the URL query string
-var queryString = getParameterByName('q')
-if (queryString.length > 0) {
-  $input.value = queryString
-  onAlgoliaAvailable(function() {
-    algoliaIndex.search(queryString, searchSettings, searchCallback)
-  })
-}
-
-// A search query may come from the user typing in the search field
-$input.addEventListener('keyup', function() {
-  if ($input.value.length > 0) {
-    history.pushState(null, null, '/recherche.html?q=' + $input.value)
-    if ($intro) $intro.style.display = 'none'
-    $currentContent.style.display = 'none'
-    $searchContent.style.display = 'block'
-    onAlgoliaAvailable(function() {
-      algoliaIndex.search($input.value, searchSettings, searchCallback)
-    })
-  } else {
-    history.pushState(null, null, $currentUrl)
-    if ($intro) $intro.style.display = 'block'
-    $currentContent.style.display = 'block'
-    $searchContent.style.display = 'none'
-    $results.innerHTML = ''
-  }
-})
-
-// Search callback function that shows the results
-function searchCallback(err, content) {
-  if (content.query !== $input.value) {
-    // If we receive a result for an old query, abort
-    return
-  }
-
-  var months = [
-    'janvier',
-    'février',
-    'mars',
-    'avril',
-    'mai',
-    'juin',
-    'juillet',
-    'août',
-    'septembre',
-    'octobre',
-    'novembre',
-    'décembre',
-  ]
-  $results.innerHTML = ''
-
-  if (err) {
-    console.error(err)
-    return
-  }
-
-  var resultsNumber = content.hits.length
-
-  if (resultsNumber === 0) {
-    $results.innerHTML =
-      '<p>Aucun résultat, veuillez modifier votre recherche.</p>'
-    return
-  }
-
-  var result, results, hit, hit_type, hit_title, hit_excerpt, hit_date, hit_tags
-
-  results =
-    '<p class="nb">' +
-    resultsNumber +
-    ' résultat' +
-    (resultsNumber > 1 ? 's' : '') +
-    ' :'
-
-  for (var i = 0; i < resultsNumber; i++) {
-    hit = content.hits[i]
-    result = ''
-
-    hit_type = ''
-    switch (hit.type) {
-      case 'post':
-      case 'page':
-        hit_type = hit.type
-      case 'document':
-        if (hit.collection === 'notes') {
-          hit_type = 'note'
-        }
-    }
-
-    hit_date = ''
-    if (hit.date) {
-      js_hit_date = new Date(hit.date * 1000)
-      date_options = { year: 'numeric', month: 'long', day: 'numeric' }
-
-      if (hit.lang === 'en') {
-        hit_date = js_hit_date.toLocaleDateString('en-US', date_options)
-      } else {
-        hit_date = js_hit_date.toLocaleDateString('fr-FR', date_options)
-      }
-    }
-
-    if (hit_type === 'note') {
-      if (hit.lang === 'en') {
-        hit_title = 'Note from ' + hit_date
-      } else {
-        hit_title = 'Note du ' + hit_date
-      }
-    } else {
-      hit_title = hit._highlightResult.title.value
-    }
-
-    hit_excerpt = hit._highlightResult.html
-      ? hit._highlightResult.html.value
-      : hit._snippetResult.content
-        ? hit._snippetResult.content.value
-        : hit.excerpt_html
-
-    hit_tags = ''
-    if (hit._highlightResult.tags) {
-      // Build the tags list
-      hit_tags = ''
-      hit_tags_number = hit._highlightResult.tags.length
-      for (var j = 0; j < hit_tags_number; j++) {
-        hit_tags = hit_tags + ', ' + hit._highlightResult.tags[j].value
-      }
-      hit_tags = hit_tags.replace(/^, /, '')
-    }
-
-    result =
-      '<article class="' +
-      hit_type +
-      '"><a href="' +
-      hit.url +
-      '"><h2>' +
-      hit_title +
-      '</h2>' +
-      hit_excerpt +
-      '</a>'
-    if (hit_date || hit_tags) {
-      result += '<footer><ul>'
-      if (hit_date) {
-        result +=
-          '<li class="date"><svg class="icon"><use xlink:href="#symbol-date" /></svg> ' +
-          hit_date +
-          '</li>'
-      }
-      if (hit_tags) {
-        result +=
-          '<li class="tags"><svg class="icon"><use xlink:href="#symbol-tags" /></svg> ' +
-          hit_tags +
-          '</li>'
-      }
-      result += '</ul></footer>'
-    }
-    result += '</article>'
-
-    results += result
-  }
-
-  $results.innerHTML =
-    results +
-    '<p id="powered-by-algolia"><a href="/2015/06/la-recherche-dans-du-statique-facile-avec-algolia.html">Propulsé par l\'excellent <svg><use xlink:href="#symbol-algolia" /></svg></a></p>'
-}
-;
-</script>
-
-
-
-
 
 </body>
 
