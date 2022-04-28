@@ -19,8 +19,6 @@ describe('examples', () => {
           examplesPath,
           `${exampleName}/configuration.js`,
         )
-        const resultsFile = path.join(examplesPath, `${exampleName}/result.js`)
-
         const config = require(configurationFile)
         const actualResults = await SUT(config)
 

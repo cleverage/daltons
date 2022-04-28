@@ -62,6 +62,12 @@ const argv = yargs
       default: 5,
       type: 'number',
     },
+    widthsDivisor: {
+      alias: 'o',
+      describe: 'Number by which the computed widths must be divisible',
+      default: 10,
+      type: 'number',
+    },
     destFile: {
       alias: 'f',
       describe:
@@ -83,7 +89,7 @@ const argv = yargs
     'Step 2: get variations of image width across viewport widths',
   )
   .group(
-    ['widthsNumber', 'destFile'],
+    ['widthsDivisor', 'widthsNumber', 'destFile'],
     'Step 3: compute optimal n widths from both datasets',
   )
   .check((argv) => {
@@ -131,6 +137,13 @@ const argv = yargs
           `Error: file ${argv.variationsFile} set with ${color.redBright(
             'variationsFile',
           )} already exists`,
+        ),
+      )
+    }
+    if (isNaN(argv.widthsDivisor)) {
+      throw new Error(
+        color.red(
+          `Error: ${color.redBright('widthsDivisor')} must be a number`,
         ),
       )
     }
