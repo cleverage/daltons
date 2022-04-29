@@ -28,7 +28,7 @@ module.exports = function adjustViewportsWithStats(stats, opt) {
   }
 
   logger.info(
-    `Viewports will be limited to ${color.green(
+    `Viewports will be limited from ${color.green(
       result.minViewport + 'px to ' + result.maxViewport + 'px',
     )}`,
   )

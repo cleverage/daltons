@@ -9,6 +9,8 @@ const logger = require('./logger')
 
 const writeFile = util.promisify(fs.writeFile)
 
+const NUMBER_FORMAT = new Intl.NumberFormat('en-US')
+
 const defaultOptions = {
   url: null,
   selector: 'img',
@@ -92,7 +94,7 @@ module.exports = async function main(settings) {
   let numberOfPerfectWidths = perfectWidths.size
   logger.info(
     `${color.green(
-      numberOfPerfectWidths + ' perfect widths',
+      NUMBER_FORMAT.format(numberOfPerfectWidths) + ' perfect widths',
     )} have been computed`,
   )
 
@@ -184,11 +186,44 @@ module.exports = async function main(settings) {
     const subset = (items, min, max) => {
       let result_set = []
       let result
+      let loops = 0
 
-      for (var x = 0; x < Math.pow(2, items.length); x++) {
+      const optionsNumber = Math.pow(2, items.length)
+      const loopsNumber = optionsNumber * items.length
+      const loopsForOnePercent = Math.floor(loopsNumber / 100)
+
+      logger.info(
+        `There are ${color.green(
+          NUMBER_FORMAT.format(optionsNumber) + ' potential combinations',
+        )}`,
+      )
+
+      const spinner = logger.newSpinner()
+      if (spinner) {
+        spinner.start('Starting…')
+      }
+
+      for (var x = 0; x < optionsNumber; x++) {
         result = []
         i = items.length - 1
         do {
+          if (loops % loopsForOnePercent === 0) {
+            // Show the progress in the console
+            if (spinner) {
+              spinner.tick(
+                `${color.green(
+                  (Math.floor(loops / loopsForOnePercent) + ' %').padStart(5),
+                )} ${''
+                  .padEnd(
+                    Math.floor(((loops / loopsForOnePercent) * 95) / 100),
+                    '#',
+                  )
+                  .padEnd(95, '-')}`,
+              )
+            }
+          }
+          loops++
+
           if ((x & (1 << i)) !== 0) {
             result.push(items[i])
           }
@@ -197,6 +232,15 @@ module.exports = async function main(settings) {
         if (result.length >= min && result.length <= max) {
           result_set.push(result)
         }
+      }
+
+      if (spinner) {
+        spinner.stop(
+          `Found ${color.green(
+            NUMBER_FORMAT.format(result_set.length) +
+              ' compatible combinations',
+          )}`,
+        )
       }
 
       return result_set
@@ -211,10 +255,6 @@ module.exports = async function main(settings) {
     // Compute subset combinations of the other sizes, and add back the max width
     let subsets = subset(widthValues, 0, options.widthsNumber - 1).map((data) =>
       [maxWidth].concat(data.sort((a, b) => b - a)),
-    )
-
-    logger.info(
-      `There are ${color.green(subsets.length + ' combinations')} to try`,
     )
 
     const globalDistance = (actualWidths, subset) => {
@@ -249,8 +289,8 @@ module.exports = async function main(settings) {
       if (spinner) {
         spinner.tick(
           `Computing distance for combination ${color.green(
-            counter,
-          )} on ${color.green(numberOfSubsets)}`,
+            NUMBER_FORMAT.format(counter),
+          )} on ${color.green(NUMBER_FORMAT.format(numberOfSubsets))}`,
         )
       }
 
@@ -262,7 +302,9 @@ module.exports = async function main(settings) {
     })
     if (spinner) {
       spinner.stop(
-        `Computed distance for ${color.green(counter + ' combinations')}`,
+        `Computed distance for ${color.green(
+          NUMBER_FORMAT.format(counter) + ' combinations',
+        )}`,
       )
     }
   }
@@ -276,7 +318,7 @@ module.exports = async function main(settings) {
 
   if (options.verbose) {
     console.log(
-      `Here are the best image widths for the 'srcset' attribute:\n\n${srcset.join(
+      `\nHere are the best image widths for the 'srcset' attribute:\n\n${srcset.join(
         ',\n',
       )}`,
     )

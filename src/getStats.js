@@ -21,7 +21,11 @@ module.exports = function getStats(csvFile, opt) {
     },
   })
 
-  logger.info(`Imported ${color.green(result.length + ' lines')} of stats`)
+  logger.info(
+    `Imported ${color.green(
+      new Intl.NumberFormat('en-US').format(result.length) + ' lines',
+    )} of stats`,
+  )
 
   return result
 }
