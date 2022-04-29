@@ -11,7 +11,10 @@ describe('examples', () => {
   const examples = fs.readdirSync(examplesPath)
 
   examples.forEach((exampleName) => {
-    if (exampleName != 'nicolas-hoizey.com')
+    if (
+      fs.statSync(path.join(examplesPath, exampleName)).isDirectory() &&
+      exampleName != 'nicolas-hoizey.com'
+    )
       it(`${exampleName} example should return the list of perfect width for its image and stats`, async () => {
         expect.assertions(1)
 
