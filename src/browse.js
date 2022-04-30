@@ -1,6 +1,11 @@
+const fs = require('fs')
+const util = require('util')
+const path = require('path')
 const puppeteer = require('puppeteer')
 const color = require('ansi-colors')
 const logger = require('./logger')
+
+const writeFile = util.promisify(fs.writeFile)
 
 const sleep = (timeout) => new Promise((r) => setTimeout(r, timeout))
 
@@ -43,6 +48,7 @@ module.exports = async function browse(opt) {
         await sleep(opt.delay)
 
         // Check image width
+        await page.waitForSelector(opt.selector)
         let imageWidth = await page.evaluate((sel) => {
           return document.querySelector(sel).width
         }, opt.selector)
