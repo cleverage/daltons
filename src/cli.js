@@ -33,6 +33,14 @@ const argv = yargs
       describe: 'Maximum viewport width to check',
       type: 'number',
     },
+    minDensity: {
+      describe: 'Minimum screen density to consider',
+      type: 'number',
+    },
+    maxDensity: {
+      describe: 'Maximum screen density to consider',
+      type: 'number',
+    },
     url: {
       alias: 'u',
       describe: 'Page URL',
@@ -83,7 +91,10 @@ const argv = yargs
     ['minViewport', 'maxViewport'],
     'Global: limit viewport widths, for example for Art Direction (see docs)',
   )
-  .group(['statsFile'], 'Step 1: get actual stats of site visitors')
+  .group(
+    ['statsFile', 'minDensity', 'maxDensity'],
+    'Step 1: get actual stats of site visitors',
+  )
   .group(
     ['url', 'selector', 'delay', 'variationsFile'],
     'Step 2: get variations of image width across viewport widths',
@@ -115,6 +126,30 @@ const argv = yargs
           `Error: ${color.redBright(
             'maxViewport',
           )} must be greater than minViewport`,
+        ),
+      )
+    }
+    if (argv.minDensity !== undefined && isNaN(argv.minDensity)) {
+      throw new Error(
+        color.red(`Error: ${color.redBright('minDensity')} must be a number`),
+      )
+    }
+    if (argv.minDensity < 0) {
+      throw new Error(
+        color.red(`Error: ${color.redBright('minDensity')} must be >= 0`),
+      )
+    }
+    if (argv.maxDensity !== undefined && isNaN(argv.maxDensity)) {
+      throw new Error(
+        color.red(`Error: ${color.redBright('maxDensity')} must be a number`),
+      )
+    }
+    if (argv.maxDensity < argv.minDensity) {
+      throw new Error(
+        color.red(
+          `Error: ${color.redBright(
+            'maxDensity',
+          )} must be greater than minDensity`,
         ),
       )
     }
