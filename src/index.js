@@ -170,7 +170,7 @@ module.exports = async function main(settings) {
 
   logger.info(
     color.bgBlack.greenBright.underline(
-      `\n Step 3.2: Find ${options.widthsNumber} best image widths for srcset`.padEnd(
+      `\n Step 3.2: Find at most ${options.widthsNumber} best image widths for srcset`.padEnd(
         100,
       ) + '\n',
     ),
