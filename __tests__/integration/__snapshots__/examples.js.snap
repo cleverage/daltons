@@ -3,7 +3,7 @@
 exports[`examples simple example should return the list of perfect width for its image and stats 1`] = `
 Array [
   1030,
-  770,
   520,
+  770,
 ]
 `;

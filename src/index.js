@@ -2,7 +2,7 @@ const fs = require('fs')
 const util = require('util')
 const path = require('path')
 const color = require('ansi-colors')
-const adjustViewportsWithStats = require('./adjustViewportsWithStats')
+const adjustDensitiesAndViewportsWithStats = require('./adjustDensitiesAndViewportsWithStats')
 const getStats = require('./getStats')
 const browse = require('./browse')
 const logger = require('./logger')
@@ -16,11 +16,14 @@ const defaultOptions = {
   selector: 'img',
   statsFile: null,
   variationsFile: null,
+  minDensity: null,
+  maxDensity: null,
   minViewport: null,
   maxViewport: null,
-  delay: 5,
+  delay: 100,
   verbose: false,
   basePath: process.cwd(),
+  minPercentage: 0.0001,
   widthsNumber: 5,
   widthsDivisor: 10,
 }
@@ -41,7 +44,7 @@ module.exports = async function main(settings) {
     path.resolve(options.basePath, options.statsFile),
     options,
   )
-  Object.assign(options, adjustViewportsWithStats(stats, options))
+  Object.assign(options, adjustDensitiesAndViewportsWithStats(stats, options))
 
   /* ======================================================================== */
   logger.info(
@@ -72,6 +75,8 @@ module.exports = async function main(settings) {
   let totalViews = 0
   stats.map((value) => {
     if (
+      value.density >= options.minDensity &&
+      value.density <= options.maxDensity &&
       value.viewport >= options.minViewport &&
       value.viewport <= options.maxViewport
     ) {
@@ -97,6 +102,29 @@ module.exports = async function main(settings) {
       NUMBER_FORMAT.format(numberOfPerfectWidths) + ' perfect widths',
     )} have been computed`,
   )
+
+  if (options.minPercentage > 0) {
+    let numberOfPerfectWidthsWithTooFewViews = 0
+    perfectWidths.forEach((value, key, map) => {
+      if (value / totalViews < options.minPercentage) {
+        perfectWidths.delete(key)
+        numberOfPerfectWidthsWithTooFewViews++
+      }
+    })
+    if (numberOfPerfectWidthsWithTooFewViews > 0) {
+      logger.info(
+        `${color.green(
+          numberOfPerfectWidthsWithTooFewViews +
+            ' perfect width' +
+            (numberOfPerfectWidthsWithTooFewViews > 1 ? 's' : ''),
+        )} with less than ${color.green(
+          options.minPercentage * 100 + ' % views',
+        )} ${
+          numberOfPerfectWidthsWithTooFewViews > 1 ? 'have' : 'has'
+        } been removed`,
+      )
+    }
+  }
 
   // sort by decreasing views
   let perfectWidthsByDecreasingViews = new Map(
@@ -165,7 +193,7 @@ module.exports = async function main(settings) {
 
   logger.info(
     color.bgBlack.greenBright.underline(
-      `\n Step 3.2: Find ${options.widthsNumber} best image widths for srcset`.padEnd(
+      `\n Step 3.2: Find at most ${options.widthsNumber} best image widths for srcset`.padEnd(
         100,
       ) + '\n',
     ),
@@ -179,7 +207,7 @@ module.exports = async function main(settings) {
         options.widthsNumber
       } best widths, ${color.green('no computation necessary')}`,
     )
-    optimalWidths = perfectWidthsByDecreasingViews.values()
+    optimalWidths = [...perfectWidthsByDecreasingViews.keys()]
   } else {
     // Get all possible subset combinations in an array, with minimum and maximum lengths
     // Adapted from https://www.w3resource.com/javascript-exercises/javascript-function-exercise-21.php
@@ -312,7 +340,7 @@ module.exports = async function main(settings) {
   /* -------------------------- */
 
   let srcset = []
-  optimalWidths.forEach((width) => {
+  optimalWidths.sort().forEach((width) => {
     srcset.push(`your/image/path.ext ${width}w`)
   })
 
