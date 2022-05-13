@@ -103,6 +103,29 @@ module.exports = async function main(settings) {
     )} have been computed`,
   )
 
+  if (options.minPercentage > 0) {
+    let numberOfPerfectWidthsWithTooFewViews = 0
+    perfectWidths.forEach((value, key, map) => {
+      if (value / totalViews < options.minPercentage) {
+        perfectWidths.delete(key)
+        numberOfPerfectWidthsWithTooFewViews++
+      }
+    })
+    if (numberOfPerfectWidthsWithTooFewViews > 0) {
+      logger.info(
+        `${color.green(
+          numberOfPerfectWidthsWithTooFewViews +
+            ' perfect width' +
+            (numberOfPerfectWidthsWithTooFewViews > 1 ? 's' : ''),
+        )} with less than ${color.green(
+          options.minPercentage * 100 + ' % views',
+        )} ${
+          numberOfPerfectWidthsWithTooFewViews > 1 ? 'have' : 'has'
+        } been removed`,
+      )
+    }
+  }
+
   // sort by decreasing views
   let perfectWidthsByDecreasingViews = new Map(
     [...perfectWidths.entries()].sort((a, b) => {

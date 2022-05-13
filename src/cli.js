@@ -64,16 +64,22 @@ const argv = yargs
         'File path to which saving the image width variations data, in CSV format',
       type: 'string',
     },
-    widthsNumber: {
-      alias: 'n',
-      describe: 'Number of widths to recommend',
-      default: 5,
+    minPercentage: {
+      describe:
+        'Minimum percentage of "perfect" image width to keep from stats (0 <= % < 1)',
       type: 'number',
+      default: 0.0001,
     },
     widthsDivisor: {
       alias: 'o',
       describe: 'Number by which the computed widths must be divisible',
       default: 10,
+      type: 'number',
+    },
+    widthsNumber: {
+      alias: 'n',
+      describe: 'Number of widths to recommend',
+      default: 5,
       type: 'number',
     },
     destFile: {
@@ -100,7 +106,7 @@ const argv = yargs
     'Step 2: get variations of image width across viewport widths',
   )
   .group(
-    ['widthsDivisor', 'widthsNumber', 'destFile'],
+    ['minPercentage', 'widthsDivisor', 'widthsNumber', 'destFile'],
     'Step 3: compute optimal n widths from both datasets',
   )
   .check((argv) => {
@@ -172,6 +178,22 @@ const argv = yargs
           `Error: file ${argv.variationsFile} set with ${color.redBright(
             'variationsFile',
           )} already exists`,
+        ),
+      )
+    }
+    if (argv.minPercentage !== undefined && isNaN(argv.minPercentage)) {
+      throw new Error(
+        color.red(
+          `Error: ${color.redBright(
+            'minPercentage',
+          )} must be a number, between 0 and 1`,
+        ),
+      )
+    }
+    if (argv.minPercentage < 0 || argv.minPercentage >= 1) {
+      throw new Error(
+        color.red(
+          `Error: ${color.redBright('minPercentage')} must be >= 0 and < 1`,
         ),
       )
     }
