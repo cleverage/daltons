@@ -20,9 +20,10 @@ const defaultOptions = {
   maxDensity: null,
   minViewport: null,
   maxViewport: null,
-  delay: 5,
+  delay: 100,
   verbose: false,
   basePath: process.cwd(),
+  minPercentage: 0.0001,
   widthsNumber: 5,
   widthsDivisor: 10,
 }
