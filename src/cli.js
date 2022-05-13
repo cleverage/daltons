@@ -55,7 +55,7 @@ const argv = yargs
       alias: 'd',
       describe:
         'Delay after viewport resizing before checking image width (ms)',
-      default: 500,
+      default: 100,
       type: 'number',
     },
     variationsFile: {
